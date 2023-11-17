@@ -8,4 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class ProductPrice extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'product_id', 'from_date', 'end_date', 'status'
+    ];
+    /**
+     * Dates
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * Guarded fields of model
+     * @var array
+     */
+    protected $guarded = [
+        'id'
+    ];
 }
