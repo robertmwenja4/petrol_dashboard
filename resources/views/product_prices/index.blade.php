@@ -116,6 +116,42 @@
                                         </td>
                                         
                                     </tr>
+                                    <div class="modal fade" id="exampleModal{{$product_price->id}}" tabindex="0" aria-labelledby="exampleModalLabel{{$product_price->id}}" aria-hidden="false">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="exampleModalLabel{{$product_price->id}}">Edit product_price</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{route('product_price.update', ['product_price' => $product_price->id])}}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="mb-1">
+                                                        <label class="form-label" for="basic-icon-default-name">Product Category</label>
+                                                        <select name="category" id="category" class="form-control">
+                                                            @foreach (['diesel','petrol','kerosine'] as $item)
+                                                                <option value="{{$item}}" {{$item == $product_price->category ? 'selected':''}}>{{ucfirst($item)}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <label class="form-label" for="date">From Date</label>
+                                                        <input type="date" class="form-control" id="date" value="{{$product_price->from_date}}" placeholder="e" name="from_date" />
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <label class="form-label" for="price">Price per Litre</label>
+                                                        <input type="text" class="form-control" id="price" value="{{$product_price->price}}" placeholder="0.00" name="price" />
+                                                    </div>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </form>
+                                            </div>
+                                            
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
                                 @endforeach
                             </tbody>
                         </table>

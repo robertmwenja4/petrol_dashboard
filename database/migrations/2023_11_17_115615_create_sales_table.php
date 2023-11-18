@@ -18,7 +18,7 @@ class CreateSalesTable extends Migration
             $table->enum('type', ['cash', 'invoice']);
             $table->unsignedBigInteger('product_id');
             $table->unsignedDecimal('rate', 16, 4);
-            $table->unsignedDecimal('quantity_sold', 16, 4);
+            $table->unsignedDecimal('qty', 16, 4);
             $table->unsignedDecimal('total_price', 16, 4);
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('user_id');
