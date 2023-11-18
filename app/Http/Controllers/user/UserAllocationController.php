@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
-use App\Models\UserAllocation;
+use App\Models\user_allocation\UserAllocation;
 use Illuminate\Http\Request;
+use App\Models\shift\ShiftItem;
+use App\Models\User;
+use App\Models\pump\Pump;
 
 class UserAllocationController extends Controller
 {
@@ -15,7 +18,8 @@ class UserAllocationController extends Controller
      */
     public function index()
     {
-        //
+        $user_allocations = UserAllocation::all();
+        return view('user_allocations.index', compact('user_allocations'));
     }
 
     /**
@@ -25,7 +29,12 @@ class UserAllocationController extends Controller
      */
     public function create()
     {
-        //
+        $shifts = ShiftItem::whereHas('shift', function($q){
+            $q->where('status','active');
+        })->get();
+        $users = User::where('status','active')->get();
+        $pumps = Pump::all();
+        return view('user_allocations.create', compact('shifts','users','pumps'));
     }
 
     /**
@@ -38,7 +47,7 @@ class UserAllocationController extends Controller
     {
         $data = $request->only(['user_id','shift_id','pump_id']);
         $data_items = $request->only([
-            'name', 'start_time','end_time'
+            'product_id'
         ]);
         $data_items = modify_array($data_items);
         

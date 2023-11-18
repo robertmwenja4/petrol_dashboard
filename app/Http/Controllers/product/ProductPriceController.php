@@ -101,9 +101,15 @@ class ProductPriceController extends Controller
     public function update(Request $request, $id)
     {
         $product_price = ProductPrice::find($id);
+        $products = Product::where('category', $product_price['category'])->get();
         $data = $request->except(['_token']);
         try {
             DB::beginTransaction();
+            foreach ($products as $product) {
+                // dd($product);
+                $product->price = $data['price'];
+                $product->update();
+            }
             $result = $product_price->update($data);
             if($product_price){
                 DB::commit();

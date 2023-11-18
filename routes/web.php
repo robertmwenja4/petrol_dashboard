@@ -3,12 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\DashBoardController;
 use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\user\UserAllocationController;
 use App\Http\Controllers\shift\ShiftController;
 use App\Http\Controllers\role\RolesController;
 use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\pump\PumpController;
 use App\Http\Controllers\product\ProductController;
 use App\Http\Controllers\product\ProductPriceController;
+use App\Http\Controllers\sale\SaleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pump', PumpController::class);
     Route::resource('product', ProductController::class);
     Route::resource('product_price', ProductPriceController::class);
+    Route::resource('user_allocation', UserAllocationController::class);
+    Route::resource('sale', SaleController::class);
     Route::post('users/update', [UserController::class, 'update_user'])->name('users.update');
 });
 Auth::routes();
