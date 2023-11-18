@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('code');
             $table->unsignedBigInteger('pump_id');
             $table->unsignedDecimal('price', 16, 4);
+            $table->unsignedDecimal('readings', 16, 4);
             $table->enum('category', ['diesel', 'petrol', 'kerosene']);
             $table->timestamps();
         });
