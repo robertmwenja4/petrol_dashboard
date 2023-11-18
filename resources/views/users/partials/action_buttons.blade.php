@@ -1,5 +1,5 @@
 <a class="btn btn-sm btn-primary" href="{{route('user.show', $user->id)}}"><i data-feather="eye"></i></a>
-<a class="btn btn-sm btn-secondary btnEdit" data-toggle="modal" data-target="#editModal" data-user-id="{{ $user->id }}" href="javascript:"><i data-feather="edit"></i></a>
+<a class="btn btn-sm btn-secondary btnEdit" data-toggle="modal" data-target="#editModal{{ $user->id }}" data-user-id="{{ $user->id }}" href="javascript:"><i data-feather="edit"></i></a>
 <form action="{{ route('user.destroy', ['user' => $user->id]) }}" method="POST">
     @csrf
     @method('DELETE')

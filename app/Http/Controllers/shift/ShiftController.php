@@ -57,6 +57,9 @@ class ShiftController extends Controller
         
         try {
             DB::beginTransaction();
+            $previous_shift = Shift::where('status','active')->first();
+            $previous_shift->status = 'inactive';
+            $previous_shift->update();
             $shift = Shift::create($data);
 
             // $data_items = $input['data_items'];
@@ -76,7 +79,7 @@ class ShiftController extends Controller
             DB::rollback();
             return redirect()->back()->with('status', 'Error Creating Shift!!');
         }
-        return redirect()->back()->with('status', 'Shift Created Successfully!!');
+        return redirect()->route('shift.index')->with('status', 'Shift Created Successfully!!');
     }
 
     /**

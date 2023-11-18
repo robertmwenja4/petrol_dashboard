@@ -69,7 +69,7 @@ class UserController extends Controller
             'role_id' => $request->input('role_id'),
             'password' => Hash::make($predefined_password),
         ]);
-        return redirect()->back()->with('status','User Created Successfully!!');
+        return redirect()->back()->with('flash_success','User Created Successfully!!');
     }
 
     /**

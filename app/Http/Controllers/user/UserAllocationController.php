@@ -36,7 +36,34 @@ class UserAllocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->only(['user_id','shift_id','pump_id']);
+        $data_items = $request->only([
+            'name', 'start_time','end_time'
+        ]);
+        $data_items = modify_array($data_items);
+        
+        try {
+            DB::beginTransaction();
+            $shift = Shift::create($data);
+
+            // $data_items = $input['data_items'];
+            $data_items = array_map(function ($v) use($shift) {
+                return array_replace($v, [
+                    'shift_id' => $shift->id, 
+                ]);
+            }, $data_items);
+            // dd($data_items);
+            ShiftItem::insert($data_items);
+            if($shift){
+                DB::commit();
+            }
+            
+        } catch (\Throwable $th) {dd($th);
+            //throw $th;
+            DB::rollback();
+            return redirect()->back()->with('status', 'Error Creating Shift!!');
+        }
+        return redirect()->back()->with('status', 'Shift Created Successfully!!');
     }
 
     /**

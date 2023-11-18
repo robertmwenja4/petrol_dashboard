@@ -5,6 +5,7 @@ namespace App\Http\Controllers\role;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\role\Role;
+use DB;
 
 class RolesController extends Controller
 {
@@ -39,7 +40,7 @@ class RolesController extends Controller
     {
         $data = $request->only(['name']);
         $role = Role::create($data);
-        return redirect()->back()->with('status', 'Role Created Successfully!!');
+        return redirect()->back()->with('flash_success', 'Role Created Successfully!!');
     }
 
     /**

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShiftsTable extends Migration
+class CreateUserAllocationItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateShiftsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shifts', function (Blueprint $table) {
+        Schema::create('user_allocation_items', function (Blueprint $table) {
             $table->id();
-            $table->string('shift_name');
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->unsignedBigInteger('user_allocation_id');
+            $table->unsignedBigInteger('product_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateShiftsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shifts');
+        Schema::dropIfExists('user_allocation_items');
     }
 }
