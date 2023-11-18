@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\product;
 
+use App\Http\Controllers\Controller;
 use App\Models\product\Product;
 use Illuminate\Http\Request;
+use DB;
+use App\Models\pump\Pump;
 
 class ProductController extends Controller
 {
@@ -14,7 +17,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -24,7 +28,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $pumps = Pump::all();
+        return view('products.create', compact('pumps'));
     }
 
     /**
@@ -35,7 +40,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $data = $request->except(['_token']);
+        try {
+            DB::beginTransaction();
+            $product = Product::create($data);
+            if($product){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status', 'Error Creating product');
+        }
+        return redirect()->route('product.index')->with('status', 'Product Created Successfully!!');
     }
 
     /**
@@ -44,9 +61,10 @@ class ProductController extends Controller
      * @param  \App\Models\product\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::find($id);
+        return view('products.view', compact('product'));
     }
 
     /**
@@ -55,9 +73,11 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        $pumps = Pump::all();
+        return view('products.edit', compact('product','pumps'));
     }
 
     /**
@@ -67,9 +87,21 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+        $data = $request->except(['_token']);
+        try {
+            DB::beginTransaction();
+            $result = $product->update($data);
+            if($product){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status', 'Error Updating Product');
+        }
+        return redirect()->route('product.index')->with('status','Product Updated Successfully!!');
     }
 
     /**
@@ -78,8 +110,18 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product = Product::find($id);
+            if($product->delete()){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status','product Failed to Delete!!');
+        }
+        return redirect()->back()->with('status','product Deleted Successfully!!');
     }
 }

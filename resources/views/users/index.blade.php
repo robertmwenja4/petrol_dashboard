@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">21,459</h3>
+                                    <h3 class="fw-bolder mb-75">{{$users->count()}}</h3>
                                     <span>Total Users</span>
                                 </div>
                                 <div class="avatar bg-light-primary p-50">
@@ -30,8 +30,8 @@
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">4,567</h3>
-                                    <span>Paid Users</span>
+                                    <h3 class="fw-bolder mb-75">{{$users->where('status','active')->count()}}</h3>
+                                    <span>Active Users</span>
                                 </div>
                                 <div class="avatar bg-light-danger p-50">
                                     <span class="avatar-content">
@@ -45,8 +45,8 @@
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">19,860</h3>
-                                    <span>Active Users</span>
+                                    <h3 class="fw-bolder mb-75">{{$users->where('status','inactive')->count()}}</h3>
+                                    <span>Inactive Users</span>
                                 </div>
                                 <div class="avatar bg-light-success p-50">
                                     <span class="avatar-content">
@@ -60,7 +60,7 @@
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">237</h3>
+                                    <h3 class="fw-bolder mb-75">{{$users->where('status','pending')->count()}}</h3>
                                     <span>Pending Users</span>
                                 </div>
                                 <div class="avatar bg-light-warning p-50">
@@ -88,7 +88,7 @@
                             <div class="col-md-4 user_status"></div>
                         </div>
                     </div> --}}
-                    <div class="card-datatable table-responsive pt-0">
+                    <div class="card-datatable card-body table-responsive pt-0">
                         {{-- user-list-table --}}
                         <table class="table" id="usersTbl">
                             <thead class="table-light">

@@ -15,8 +15,8 @@
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">{{$roles->count()}}</h3>
-                                    <span>Total Roles</span>
+                                    <h3 class="fw-bolder mb-75">{{$product_prices->count()}}</h3>
+                                    <span>Total product_prices</span>
                                 </div>
                                 <div class="avatar bg-light-primary p-50">
                                     <span class="avatar-content">
@@ -76,37 +76,43 @@
                 <div class="card">
                     <div class="card-header">
                         <button type="button" id="btnPop" class="btn btn-primary" style="margin-right: 0;">
-                            Add Role
+                            Add Product Price
                         </button>
                         {{-- @include('users.partials.user_modal') --}}
                     </div>
                     {{-- <div class="card-body border-bottom">
                         <h4 class="card-title">Search & Filter</h4>
                         <div class="row">
-                            <div class="col-md-4 user_role"></div>
+                            <div class="col-md-4 user_product_price"></div>
                             <div class="col-md-4 user_plan"></div>
                             <div class="col-md-4 user_status"></div>
                         </div>
                     </div> --}}
                     <div class="card-datatable card-body table-responsive pt-0">
                         {{-- user-list-table --}}
-                        <table class="table" id="rolesTbl">
+                        <table class="table" id="product_pricesTbl">
                             <thead class="table-light">
                                 <tr>
                                     <th></th>
-                                    <th>Name</th>
-                                    <th>Created At</th>
+                                    <th>Category</th>
+                                    <th>From Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Price</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $i => $role)
+                                @foreach ($product_prices as $i => $product_price)
                                     <tr>
                                         <td>{{$i+1}}</td>
-                                        <td>{{$role->name}}</td>
-                                        <td>{{$role->created_at}}</td>
+                                        <td>{{ucfirst($product_price->category)}}</td>
+                                        <td>{{$product_price->from_date}}</td>
+                                        <td>{{$product_price->end_date}}</td>
+                                        <td>{{$product_price->status}}</td>
+                                        <td>{{$product_price->price}}</td>
                                         <td>
-                                            @include('roles.partials.action_buttons')
+                                            @include('product_prices.partials.action_buttons')
                                         </td>
                                         
                                     </tr>
@@ -115,13 +121,13 @@
                         </table>
                     </div>
                     <!-- Modal to add new user starts-->
-                    @include('roles.partials.role_modal')
-                    @include('roles.partials.role_edit_modal')
+                    @include('product_prices.partials.product_price_modal')
+                    @include('product_prices.partials.product_price_edit_modal')
                     <!-- Modal to add new user Ends-->
                 </div>
                 <!-- list and filter end -->
             </section>
-            <!-- roles list ends -->
+            <!-- product_prices list ends -->
 
         </div>
     </div>
@@ -131,23 +137,25 @@
 @section('extra-scripts')
     <script>
        $.ajaxSetup({headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }});
-        $('#rolesTbl').DataTable();
+        $('#product_pricesTbl').DataTable();
         $('#btnPop').click(function () {
             // Show the modal
-            $('#roleModal').modal('show');
+            $('#product_priceModal').modal('show');
         });
         $('.btnEdit').on('click', function() {
 
-            var roleId = $(this).data('role-id');
-            var role = @json($roles);
-            console.log(role, roleId);
-            // Find the role by ID
-            var selectedrole = role.find(u => u.id === roleId);
-            console.log(selectedrole);
+            var product_priceId = $(this).data('product_price-id');
+            var product_price = @json($product_prices);
+            console.log(product_price, product_priceId);
+            // Find the product_price by ID
+            var selectedproduct_price = product_price.find(u => u.id === product_priceId);
+            console.log(selectedproduct_price);
 
-            // Populate the modal with role data
-            $('#editname').val(selectedrole.name);
-            $('#editroleId').val(selectedrole.id);
+            // Populate the modal with product_price data
+            $('#editname').val(selectedproduct_price.name);
+            $('#editcode').val(selectedproduct_price.code);
+            $('#editdescription').val(selectedproduct_price.description);
+            $('#editproduct_priceId').val(selectedproduct_price.id);
             $('#editModal').modal('show');
         });
 

@@ -96,8 +96,7 @@
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
+                                    
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -105,9 +104,8 @@
                                 @foreach ($shifts as $i => $shift)
                                     <tr>
                                         <td>{{$i+1}}</td>
-                                        <td>{{$shift->name}}</td>
-                                        <td>{{$shift->start_time}}</td>
-                                        <td>{{$shift->end_time}}</td>
+                                        <td>{{$shift->shift_name}}</td>
+                                        
                                         <td>
                                             @include('shifts.partials.action_buttons')
                                         </td>
@@ -149,10 +147,10 @@
             console.log(selectedshift);
 
             // Populate the modal with shift data
-            $('#name').val(selectedshift.name);
-            $('#start_time').val(selectedshift.start_time);
-            $('#end_time').val(selectedshift.end_time);
-            $('#editshiftId').val(selectedshift.id);
+            // $('#name').val(selectedshift.name);
+            // $('#start_time').val(selectedshift.start_time);
+            // $('#end_time').val(selectedshift.end_time);
+            // $('#editshiftId').val(selectedshift.id);
             $('#editModal').modal('show');
         });
 

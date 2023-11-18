@@ -4,6 +4,7 @@ namespace App\Models\product;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\pump\Pump;
 
 class Product extends Model
 {
@@ -29,4 +30,8 @@ class Product extends Model
     protected $guarded = [
         'id'
     ];
+
+    public function pump(){
+        return $this->belongsTo(Pump::class, 'pump_id');
+    }
 }

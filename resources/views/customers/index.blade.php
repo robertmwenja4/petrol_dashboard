@@ -8,15 +8,15 @@
         <div class="content-header row">
         </div>
         <div class="content-body">
-            <!-- users list start -->
+            <!-- Customer list start -->
             <section class="app-user-list">
                 <div class="row">
                     <div class="col-lg-3 col-sm-6">
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">{{$roles->count()}}</h3>
-                                    <span>Total Roles</span>
+                                    <h3 class="fw-bolder mb-75">{{$customers->count()}}</h3>
+                                    <span>Total Customers</span>
                                 </div>
                                 <div class="avatar bg-light-primary p-50">
                                     <span class="avatar-content">
@@ -26,12 +26,12 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
                                     <h3 class="fw-bolder mb-75">4,567</h3>
-                                    <span>Paid Users</span>
+                                    <span>Paid Customer</span>
                                 </div>
                                 <div class="avatar bg-light-danger p-50">
                                     <span class="avatar-content">
@@ -46,7 +46,7 @@
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
                                     <h3 class="fw-bolder mb-75">19,860</h3>
-                                    <span>Active Users</span>
+                                    <span>Active Customer</span>
                                 </div>
                                 <div class="avatar bg-light-success p-50">
                                     <span class="avatar-content">
@@ -61,7 +61,7 @@
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
                                     <h3 class="fw-bolder mb-75">237</h3>
-                                    <span>Pending Users</span>
+                                    <span>Pending Customer</span>
                                 </div>
                                 <div class="avatar bg-light-warning p-50">
                                     <span class="avatar-content">
@@ -70,15 +70,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
                 <!-- list and filter start -->
                 <div class="card">
                     <div class="card-header">
-                        <button type="button" id="btnPop" class="btn btn-primary" style="margin-right: 0;">
-                            Add Role
-                        </button>
-                        {{-- @include('users.partials.user_modal') --}}
+                        {{-- <button type="button" id="btnPop" class="btn btn-primary" style="margin-right: 0;">
+                            Add customer
+                        </button> --}}
+                        <a href="{{route('customer.create')}}" class="btn btn-primary">Add customer</a>
+                        {{-- @include('Customer.partials.user_modal') --}}
                     </div>
                     {{-- <div class="card-body border-bottom">
                         <h4 class="card-title">Search & Filter</h4>
@@ -90,23 +91,30 @@
                     </div> --}}
                     <div class="card-datatable card-body table-responsive pt-0">
                         {{-- user-list-table --}}
-                        <table class="table" id="rolesTbl">
+                        <table class="table" id="customersTbl">
                             <thead class="table-light">
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
-                                    <th>Created At</th>
+                                    <th>Contact</th>
+                                    <th>Address</th>
+                                    <th>VRN</th>
+                                    <th>TIN</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $i => $role)
+                                @foreach ($customers as $i => $customer)
                                     <tr>
                                         <td>{{$i+1}}</td>
-                                        <td>{{$role->name}}</td>
-                                        <td>{{$role->created_at}}</td>
+                                        <td>{{$customer->company}}</td>
+                                        <td>{{$customer->phone_number}}</td>
+                                        <td>{{$customer->address}}</td>
+                                        <td>{{$customer->vrn}}</td>
+                                        <td>{{$customer->tin}}</td>
+                                        
                                         <td>
-                                            @include('roles.partials.action_buttons')
+                                            @include('customers.partials.action_buttons')
                                         </td>
                                         
                                     </tr>
@@ -115,13 +123,11 @@
                         </table>
                     </div>
                     <!-- Modal to add new user starts-->
-                    @include('roles.partials.role_modal')
-                    @include('roles.partials.role_edit_modal')
-                    <!-- Modal to add new user Ends-->
+                     <!-- Modal to add new user Ends-->
                 </div>
                 <!-- list and filter end -->
             </section>
-            <!-- roles list ends -->
+            <!-- customers list ends -->
 
         </div>
     </div>
@@ -131,45 +137,7 @@
 @section('extra-scripts')
     <script>
        $.ajaxSetup({headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }});
-        $('#rolesTbl').DataTable();
-        $('#btnPop').click(function () {
-            // Show the modal
-            $('#roleModal').modal('show');
-        });
-        $('.btnEdit').on('click', function() {
-
-            var roleId = $(this).data('role-id');
-            var role = @json($roles);
-            console.log(role, roleId);
-            // Find the role by ID
-            var selectedrole = role.find(u => u.id === roleId);
-            console.log(selectedrole);
-
-            // Populate the modal with role data
-            $('#editname').val(selectedrole.name);
-            $('#editroleId').val(selectedrole.id);
-            $('#editModal').modal('show');
-        });
-
-        $("#editForm").submit(function (e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
-            // console.log(formData);
-
-            // Submit form data via AJAX
-            $.ajax({
-                url: "{{route('users.update')}}",
-                type: "post",
-                data: formData,
-                success: function (data) {
-                    // Handle success, e.g., close the modal or update the table
-                    $("#editModal").modal("hide");
-                    // Update the table or perform any other necessary actions
-                },
-                error: function (error) {
-                    console.log("Error updating user:", error);
-                }
-            });
-        });
+        $('#customersTbl').DataTable();
+       
     </script>
 @endsection

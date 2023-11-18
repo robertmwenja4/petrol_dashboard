@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\product;
 
-use App\Models\ProductPrice;
+use App\Http\Controllers\Controller;
+use App\Models\product\ProductPrice;
+use App\Models\product\Product;
 use Illuminate\Http\Request;
+use DB;
 
 class ProductPriceController extends Controller
 {
@@ -14,7 +17,8 @@ class ProductPriceController extends Controller
      */
     public function index()
     {
-        //
+        $product_prices = ProductPrice::all();
+        return view('product_prices.index', compact('product_prices'));
     }
 
     /**
@@ -24,7 +28,7 @@ class ProductPriceController extends Controller
      */
     public function create()
     {
-        //
+        return view('product_prices.create');
     }
 
     /**
@@ -35,7 +39,32 @@ class ProductPriceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $data = $request->except(['_token']);
+        $data['status'] = 'active';
+        $products = Product::where('category', $data['category'])->get();
+        try {
+            DB::beginTransaction();
+            $previous_product_price = ProductPrice::where(['category'=> $data['category'], 'status'=>'active'])->first();
+            if($previous_product_price){
+
+                $previous_product_price->status = 'inactive';
+                $previous_product_price->end_date = $data['from_date'];
+                $previous_product_price->update();
+            }
+            $product_price = ProductPrice::create($data);
+            foreach ($products as $product) {
+                $product->price = $product_price->price;
+                $product->update();
+            }
+            if($product_price){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status', 'Error Creating Product Price');
+        }
+        return redirect()->route('product_price.index')->with('status', 'ProductPrice Created Successfully!!');
     }
 
     /**
@@ -44,9 +73,10 @@ class ProductPriceController extends Controller
      * @param  \App\Models\ProductPrice  $productPrice
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductPrice $productPrice)
+    public function show($id)
     {
-        //
+        $product_price = ProductPrice::find($id);
+        return view('product_prices.view', compact('product_price'));
     }
 
     /**
@@ -55,9 +85,10 @@ class ProductPriceController extends Controller
      * @param  \App\Models\ProductPrice  $productPrice
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductPrice $productPrice)
+    public function edit($id)
     {
-        //
+        $product_price = ProductPrice::find($id);
+        return view('product_prices.edit', compact('product_price'));
     }
 
     /**
@@ -67,9 +98,21 @@ class ProductPriceController extends Controller
      * @param  \App\Models\ProductPrice  $productPrice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductPrice $productPrice)
+    public function update(Request $request, $id)
     {
-        //
+        $product_price = ProductPrice::find($id);
+        $data = $request->except(['_token']);
+        try {
+            DB::beginTransaction();
+            $result = $product_price->update($data);
+            if($product_price){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status', 'Error Updating Product_price');
+        }
+        return redirect()->route('product_price.index')->with('status','ProductPrice Updated Successfully!!');
     }
 
     /**
@@ -78,8 +121,18 @@ class ProductPriceController extends Controller
      * @param  \App\Models\ProductPrice  $productPrice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductPrice $productPrice)
+    public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product_price = ProductPrice::find($id);
+            if($product_price->delete()){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status','ProductPrice Failed to Delete!!');
+        }
+        return redirect()->back()->with('status','ProductPrice Deleted Successfully!!');
     }
 }

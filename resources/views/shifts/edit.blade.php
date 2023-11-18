@@ -10,8 +10,9 @@
             <a href="{{route('shift.index')}}" class="btn btn-primary">List</a>
         </div>
         <div class="card-body">
-            <form action="{{route('shift.store')}}" method="POST">
+            <form action="{{route('shift.update', $shift->id)}}" method="POST">
                 @csrf
+                @method("PATCH")
                 @include('shifts.form')
             </form>
         </div>
@@ -28,18 +29,21 @@
 
     const Form = {
         shifts: @json(@$shift),
+        shift_item: @json(@$shift->items),
         rowIds: 0,
         tableRow: $('#shiftTbl tbody tr:first').html(),
 
         init() {
             $.ajaxSetup(config.ajax);
-
+            
             if (this.shifts) {
+                this.rowIds = this.shift_item.length;
+                // console.log(this.shift_item.length);
                 const request = this.shifts;
+                $('#shiftTbl tbody tr:first').remove();
             } else {
 
             }
-            // $('#shiftTbl tbody tr:first').remove();
             
             
             

@@ -15,6 +15,12 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('company');
+            $table->string('phone_number')->nullable();
+            $table->string('address')->nullable();
+            $table->string('vrn')->nullable();
+            $table->string('tin')->nullable();
+            $table->enum('customer_type', ['cash', 'credit'])->default('credit');
             $table->timestamps();
         });
     }

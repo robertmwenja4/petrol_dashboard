@@ -5,6 +5,10 @@ use App\Http\Controllers\dashboard\DashBoardController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\shift\ShiftController;
 use App\Http\Controllers\role\RolesController;
+use App\Http\Controllers\customer\CustomerController;
+use App\Http\Controllers\pump\PumpController;
+use App\Http\Controllers\product\ProductController;
+use App\Http\Controllers\product\ProductPriceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,11 +23,18 @@ use App\Http\Controllers\role\RolesController;
 Route::get('/', function () {
     return view('auth.login');
 });
-Route::resource('dashboard', DashBoardController::class);
-Route::resource('user', UserController::class);
-Route::resource('shift', ShiftController::class);
-Route::resource('role', RolesController::class);
-Route::post('users/update', [UserController::class, 'update_user'])->name('users.update');
+Route::middleware(['auth'])->group(function () {
+    
+    Route::resource('dashboard', DashBoardController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('shift', ShiftController::class);
+    Route::resource('role', RolesController::class);
+    Route::resource('customer', CustomerController::class);
+    Route::resource('pump', PumpController::class);
+    Route::resource('product', ProductController::class);
+    Route::resource('product_price', ProductPriceController::class);
+    Route::post('users/update', [UserController::class, 'update_user'])->name('users.update');
+});
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\customer\Customer;
+use DB;
 
 class CustomerController extends Controller
 {
@@ -14,7 +16,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::all();
+        return view('customers.index', compact('customers'));
     }
 
     /**
@@ -24,7 +27,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('customers.create');
     }
 
     /**
@@ -35,7 +38,20 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->only([
+            'company','phone_number','vrn','tin','address'
+        ]);
+        try {
+            DB::beginTransaction();
+            $customer = Customer::create($data);
+            if($customer){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status', 'Error Creating Customer');
+        }
+        return redirect()->route('customer.index')->with('status','Customer Created Successfully!!');
     }
 
     /**
@@ -46,7 +62,8 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $customer = Customer::find($id);
+        return view('customers.view', compact('customer'));
     }
 
     /**
@@ -57,7 +74,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customer = Customer::find($id);
+        return view('customers.edit', compact('customer'));
     }
 
     /**
@@ -69,7 +87,21 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $customer = Customer::find($id);
+        $data = $request->only([
+            'company','phone_number','vrn','tin','address'
+        ]);
+        try {
+            DB::beginTransaction();
+            $result = $customer->update($data);
+            if($customer){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status', 'Error Updating Customer');
+        }
+        return redirect()->route('customer.index')->with('status','Customer Updated Successfully!!');
     }
 
     /**
@@ -80,6 +112,16 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $customer = Customer::find($id);
+            if($customer->delete()){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('status','Customer Failed to Delete!!');
+        }
+        return redirect()->back()->with('status','Customer Deleted Successfully!!');
     }
 }

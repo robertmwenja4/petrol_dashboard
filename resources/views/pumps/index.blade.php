@@ -15,8 +15,8 @@
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">{{$roles->count()}}</h3>
-                                    <span>Total Roles</span>
+                                    <h3 class="fw-bolder mb-75">{{$pumps->count()}}</h3>
+                                    <span>Total pumps</span>
                                 </div>
                                 <div class="avatar bg-light-primary p-50">
                                     <span class="avatar-content">
@@ -76,37 +76,41 @@
                 <div class="card">
                     <div class="card-header">
                         <button type="button" id="btnPop" class="btn btn-primary" style="margin-right: 0;">
-                            Add Role
+                            Add Pump
                         </button>
                         {{-- @include('users.partials.user_modal') --}}
                     </div>
                     {{-- <div class="card-body border-bottom">
                         <h4 class="card-title">Search & Filter</h4>
                         <div class="row">
-                            <div class="col-md-4 user_role"></div>
+                            <div class="col-md-4 user_pump"></div>
                             <div class="col-md-4 user_plan"></div>
                             <div class="col-md-4 user_status"></div>
                         </div>
                     </div> --}}
                     <div class="card-datatable card-body table-responsive pt-0">
                         {{-- user-list-table --}}
-                        <table class="table" id="rolesTbl">
+                        <table class="table" id="pumpsTbl">
                             <thead class="table-light">
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
+                                    <th>Code</th>
+                                    <th>Description</th>
                                     <th>Created At</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $i => $role)
+                                @foreach ($pumps as $i => $pump)
                                     <tr>
                                         <td>{{$i+1}}</td>
-                                        <td>{{$role->name}}</td>
-                                        <td>{{$role->created_at}}</td>
+                                        <td>{{$pump->name}}</td>
+                                        <td>{{$pump->code}}</td>
+                                        <td>{{$pump->description}}</td>
+                                        <td>{{$pump->created_at}}</td>
                                         <td>
-                                            @include('roles.partials.action_buttons')
+                                            @include('pumps.partials.action_buttons')
                                         </td>
                                         
                                     </tr>
@@ -115,13 +119,13 @@
                         </table>
                     </div>
                     <!-- Modal to add new user starts-->
-                    @include('roles.partials.role_modal')
-                    @include('roles.partials.role_edit_modal')
+                    @include('pumps.partials.pump_modal')
+                    @include('pumps.partials.pump_edit_modal')
                     <!-- Modal to add new user Ends-->
                 </div>
                 <!-- list and filter end -->
             </section>
-            <!-- roles list ends -->
+            <!-- pumps list ends -->
 
         </div>
     </div>
@@ -131,23 +135,25 @@
 @section('extra-scripts')
     <script>
        $.ajaxSetup({headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }});
-        $('#rolesTbl').DataTable();
+        $('#pumpsTbl').DataTable();
         $('#btnPop').click(function () {
             // Show the modal
-            $('#roleModal').modal('show');
+            $('#pumpModal').modal('show');
         });
         $('.btnEdit').on('click', function() {
 
-            var roleId = $(this).data('role-id');
-            var role = @json($roles);
-            console.log(role, roleId);
-            // Find the role by ID
-            var selectedrole = role.find(u => u.id === roleId);
-            console.log(selectedrole);
+            var pumpId = $(this).data('pump-id');
+            var pump = @json($pumps);
+            console.log(pump, pumpId);
+            // Find the pump by ID
+            var selectedpump = pump.find(u => u.id === pumpId);
+            console.log(selectedpump);
 
-            // Populate the modal with role data
-            $('#editname').val(selectedrole.name);
-            $('#editroleId').val(selectedrole.id);
+            // Populate the modal with pump data
+            $('#editname').val(selectedpump.name);
+            $('#editcode').val(selectedpump.code);
+            $('#editdescription').val(selectedpump.description);
+            $('#editpumpId').val(selectedpump.id);
             $('#editModal').modal('show');
         });
 

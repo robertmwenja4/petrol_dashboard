@@ -4,12 +4,12 @@
             @csrf
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
             <div class="modal-header mb-1">
-                <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
             </div>
             <div class="modal-body flex-grow-1">
                 <div class="mb-1">
                     <label class="form-label" for="basic-icon-default-name">Role Name</label>
-                    <input type="text" class="form-control dt-shift-name" id="name" placeholder="eg. Admin" name="name" />
+                    <input type="text" class="form-control dt-shift-name" id="editname" placeholder="eg. Admin" name="name" />
                 </div>
                 <input type="hidden" id="editroleId" name="id">
                 <button type="submit" id="submitBtn" class="btn btn-primary me-1 data-submit">Submit</button>

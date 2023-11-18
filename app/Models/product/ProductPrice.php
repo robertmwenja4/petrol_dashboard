@@ -10,7 +10,7 @@ class ProductPrice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_id', 'from_date', 'end_date', 'status'
+        'category', 'from_date', 'end_date', 'status','price'
     ];
     /**
      * Dates
