@@ -13,13 +13,20 @@ class Sale extends Model
         'type',
         'product_id',
         'rate',
-        'quantity_sold',
+        'qty',
         'total_price',
         'customer_id',
         'user_id',
         'pump_id',
         'shift_id',
+        'lpo_no',
+        'other_vrn_no',
+        'other_tin_no',
+        'customer_id',
+        'driver',
+        'vehicle_no',
     ];
+
 
     /**
      * Dates

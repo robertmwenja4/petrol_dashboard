@@ -28,7 +28,6 @@ class CreateSalesTable extends Migration
             $table->string('other_vrn_no')->nullable();
             $table->string('other_tin_no')->nullable();
             $table->string('driver')->nullable();
-            $table->string('driver')->nullable();
             $table->string('vehicle_no')->nullable();
 
             $table->timestamps();

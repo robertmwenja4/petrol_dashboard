@@ -20,5 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'oryx'], function () {
+    //fetch pump with products
     Route::get('/fetchPumps', [PetrolConsumptionController::class, 'fetchPumps'])->name('api.fetchPumps');
+    //fetch customers who are of type credit
+    Route::get('/fetchCreditCustomers', [PetrolConsumptionController::class, 'fetchCreditCustomers'])->name('api.fetchCreditCustomers');
+    //record sales
+    Route::post('/recordSale', [PetrolConsumptionController::class, 'recordSale'])->name('api.recordSale');
 });
