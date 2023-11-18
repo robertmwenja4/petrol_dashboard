@@ -8,7 +8,7 @@
 
 <div class="row col-2">
 
-    @if ($shift)
+    @if (@$shift)
     <button type="submit" class="btn btn-primary btn-lg">Update</button>
     @else
     <button type="submit" class="btn btn-primary btn-lg">Create</button>

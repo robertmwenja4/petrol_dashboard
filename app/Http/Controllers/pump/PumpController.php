@@ -49,7 +49,7 @@ class PumpController extends Controller
             DB::rollback();
             return redirect()->back()->with('status', 'Error Creating Pump');
         }
-        return redirect()->route('pump.index')->with('status', 'Pump Created Successfully!!');
+        return redirect()->route('pump.index')->with('flash_success', 'Pump Created Successfully!!');
     }
 
     /**

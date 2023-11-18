@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/charts/apexcharts.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/extensions/toastr.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('core/assets/css/bootstrap.min.css')}}">
     <!-- END: Vendor CSS-->
 
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/forms/select/select2.min.css')}}">
@@ -355,7 +356,7 @@
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
-                <li class="nav-item me-auto"><a class="navbar-brand" href="../../../html/ltr/vertical-menu-template-semi-dark/index.html"><span class="brand-logo">
+                <li class="nav-item me-auto"><a class="navbar-brand" href="{{url('dashboard')}}"><span class="brand-logo">
                             <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">
                                 <defs>
                                     <lineargradient id="linearGradient-1" x1="100%" y1="10.5120544%" x2="50%" y2="89.4879456%">
@@ -419,7 +420,7 @@
                     <ul class="menu-content">
                         <li><a class="d-flex align-items-center" href="{{route('shift.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" href="card-advance.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Daily Shift">Daily Shift</span></a>
+                        <li><a class="d-flex align-items-center" href="#"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Shift">Shift Allocation</span></a>
                         </li>
                     </ul>
                 </li>
@@ -460,11 +461,11 @@
 
     <!-- BEGIN: Content-->
     <main class="py-4">
-        @if (session('status'))
+        {{-- @if (session('status'))
             <div class="alert alert-success" role="alert">
                 {{ session('status') }}
             </div>
-        @endif
+        @endif --}}
         @yield('content')
     </main>
     <!-- END: Content-->
@@ -474,7 +475,7 @@
 
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
-        <p class="clearfix mb-0"><span class="float-md-start d-block d-md-inline-block mt-25">COPYRIGHT &copy; 2021<a class="ms-25" href="https://1.envato.market/pixinvent_portfolio" target="_blank">Pixinvent</a><span class="d-none d-sm-inline-block">, All rights Reserved</span></span><span class="float-md-end d-none d-md-block">Hand-crafted & Made with<i data-feather="heart"></i></span></p>
+        <p class="clearfix mb-0"><span class="float-md-start d-block d-md-inline-block mt-25">COPYRIGHT &copy; 2023<a class="ms-25" href="https://1.envato.market/pixinvent_portfolio" target="_blank">ORYX</a><span class="d-none d-sm-inline-block">, All rights Reserved</span></span><span class="float-md-end d-none d-md-block">Hand-crafted & Made with<i data-feather="heart"></i></span></p>
     </footer>
     <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
     <!-- END: Footer-->
@@ -508,6 +509,7 @@
     <script src="{{asset('core/app-assets/js/core/app-menu.js')}}"></script>
     {{-- <script src="{{asset('core/app-assets/js/core/jquery.min.js')}}"></script> --}}
     <script src="{{asset('core/app-assets/js/core/app.js')}}"></script>
+    <script src="{{asset('core/assets/js/bootstrap.bundle.min.js')}}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->

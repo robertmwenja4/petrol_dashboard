@@ -96,7 +96,7 @@
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
-                                    
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -105,6 +105,7 @@
                                     <tr>
                                         <td>{{$i+1}}</td>
                                         <td>{{$shift->shift_name}}</td>
+                                        <td>{{ucfirst($shift->status)}}</td>
                                         
                                         <td>
                                             @include('shifts.partials.action_buttons')
