@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pump extends Model
 {
-    use HasFactory;
+    use HasFactory, PumpRelationship;
 
     protected $fillable = [
         'name', 'code', 'description'

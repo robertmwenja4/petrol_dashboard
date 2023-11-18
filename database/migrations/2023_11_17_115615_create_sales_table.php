@@ -24,6 +24,13 @@ class CreateSalesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('pump_id');
             $table->unsignedBigInteger('shift_id');
+            $table->string('lpo_no')->nullable();
+            $table->string('other_vrn_no')->nullable();
+            $table->string('other_tin_no')->nullable();
+            $table->string('driver')->nullable();
+            $table->string('driver')->nullable();
+            $table->string('vehicle_no')->nullable();
+
             $table->timestamps();
         });
     }
