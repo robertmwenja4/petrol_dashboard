@@ -16,13 +16,16 @@ class DashBoardController extends Controller
      */
     public function index()
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             $id = Auth::user()->id;
             $user = User::find($id);
             $role = $user->role ? $user->role->name : '';
-
-            return view('dashboard.index', compact('role'));
-        }else{
+            if ($user->role->name == 'admin') {
+                return view('dashboard.index', compact('role'));
+            } else {
+                return view('users_dashboard.index');
+            }
+        } else {
             return redirect()->route('login');
         }
     }

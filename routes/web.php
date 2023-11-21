@@ -1,16 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\dashboard\DashBoardController;
-use App\Http\Controllers\user\UserController;
-use App\Http\Controllers\user\UserAllocationController;
-use App\Http\Controllers\shift\ShiftController;
-use App\Http\Controllers\role\RolesController;
-use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\pump\PumpController;
-use App\Http\Controllers\product\ProductController;
-use App\Http\Controllers\product\ProductPriceController;
 use App\Http\Controllers\sale\SaleController;
+use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\role\RolesController;
+use App\Http\Controllers\shift\ShiftController;
+use App\Http\Controllers\product\ProductController;
+use App\Http\Controllers\customer\CustomerController;
+use App\Http\Controllers\dashboard\DashBoardController;
+use App\Http\Controllers\user\UserAllocationController;
+use App\Http\Controllers\product\ProductPriceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,7 +27,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::resource('dashboard', DashBoardController::class);
     Route::resource('user', UserController::class);
     Route::resource('shift', ShiftController::class);
