@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateShiftItemsTable extends Migration
 {
@@ -15,11 +16,13 @@ class CreateShiftItemsTable extends Migration
     {
         Schema::create('shift_items', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->time('start_time');
-            $table->time('end_time');
             $table->unsignedBigInteger('shift_id');
-            $table->timestamps();
+            $table->unsignedBigInteger('pump_id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamp('end_time')->nullable();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 

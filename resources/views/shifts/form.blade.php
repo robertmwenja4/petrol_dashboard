@@ -1,16 +1,19 @@
 <div class="form-group row">
     <div class="col-6">
         <label for="shift_name">Shift Name</label>
-        <input type="text" name="shift_name" value="{{@$shift->shift_name}}" id="shift_name" placeholder="Day Shift" class="form-control">
+        <input type="text" name="shift_name" value="{{ @$date }}" id="shift_name" placeholder=""
+            class="form-control" disabled>
+        <input type="text" name="shift_name" value="{{ @$date }}" id="shift_name" placeholder=""
+            class="form-control" hidden>
     </div>
 </div>
-@include('shifts.partials.add_items')
 
-<div class="row col-2">
+
+<div class="row col-2 mt-4">
 
     @if (@$shift)
-    <button type="submit" class="btn btn-primary btn-lg">Update</button>
+        <button type="submit" class="btn btn-primary btn-lg mx-2">Update</button>
     @else
-    <button type="submit" class="btn btn-primary btn-lg">Create</button>
+        <button type="submit" class="btn btn-primary btn-lg mx-2">Create</button>
     @endif
 </div>

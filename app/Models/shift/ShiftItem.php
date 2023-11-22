@@ -2,18 +2,25 @@
 
 namespace App\Models\shift;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\pump\Pump;
 use App\Models\shift\Shift;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ShiftItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'start_time','end_time','shift_id'];
+    protected $fillable = ['shift_id', 'pump_id', 'user_id', 'status'];
 
 
-    public function shift(){
+    public function shift()
+    {
         return $this->belongsTo(Shift::class, 'shift_id');
+    }
+
+    public function pump()
+    {
+        return $this->belongsTo(Pump::class, 'pump_id');
     }
 }

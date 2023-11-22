@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="text-center text-white d-flex flex-column justify-content-center align-items-center">
+    <div class="text-center text-dark d-flex flex-column justify-content-center align-items-center">
         <h1 class="mt-4">
             Welcome to
             <span>Sales Portal</span>
@@ -15,7 +15,7 @@
                     <h3 class="mt-2">Shift Management</h3>
                     <div class="card-body">
                         <h4 class="card-text">Create Shift</h4>
-                        <a href="/user_shift" class="stretched-link"></a>
+                        <a href="/shift" class="stretched-link"></a>
                     </div>
                 </div>
             </div>

@@ -2,19 +2,26 @@
 
 namespace App\Models\shift;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use App\Models\shift\ShiftItem;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Shift extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'shift_name'
+        'shift_name', 'created_by'
     ];
 
-    public function items(){
+    public function items()
+    {
         return $this->hasMany(ShiftItem::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

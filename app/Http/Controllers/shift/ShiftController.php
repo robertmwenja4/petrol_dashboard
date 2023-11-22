@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\shift;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\shift\Shift;
-use App\Models\shift\ShiftItem;
-use DB;
 use Carbon\Carbon;
+use App\Models\shift\Shift;
+use Illuminate\Http\Request;
+use App\Models\shift\ShiftItem;
+
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\pump\Pump;
+use App\Models\User;
 
 class ShiftController extends Controller
 {
@@ -18,7 +21,22 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        $shifts = Shift::get();
+        $shift = Shift::whereHas('items')
+            ->with('items.pump', 'user')
+            ->where('status', 'open')
+            ->whereDate('shift_name', '=', date('Y-m-d'))
+            ->first();
+        $users = User::whereHas('role', function ($q) {
+            $q->where('name', 'attendant');
+        })
+            ->pluck('name', 'id');
+
+        $date = date('Y-m-d');
+        if (!$shift) {
+            return $this->create($date);
+        } else {
+            return view('shifts.index', compact('shift', 'users'));
+        }
         // $shifts = $shifts->map(function($v){
         //     // dd($v);
         //     $start_time = Carbon::createFromFormat('H:i:s', $v->start_time);
@@ -28,7 +46,7 @@ class ShiftController extends Controller
         //     $v->end_time = $end_time->format('g:i A');
         //     return $v;
         // });
-        return view('shifts.index',compact('shifts'));
+
     }
 
     /**
@@ -36,9 +54,10 @@ class ShiftController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($date)
     {
-        return view('shifts.create');
+
+        return view('shifts.create', compact('date'));
     }
 
     /**
@@ -50,31 +69,31 @@ class ShiftController extends Controller
     public function store(Request $request)
     {
         $data = $request->only(['shift_name']);
-        $data_items = $request->only([
-            'name', 'start_time','end_time'
-        ]);
-        $data_items = modify_array($data_items);
-        
+
+        $data["created_by"] = 1;
+
         try {
             DB::beginTransaction();
-            $previous_shift = Shift::where('status','active')->first();
-            $previous_shift->status = 'inactive';
-            $previous_shift->update();
+            // $previous_shift = Shift::where('status', 'open')->first();
+            // $previous_shift->status = 'closed';
+            // $previous_shift->update();
             $shift = Shift::create($data);
+            // $data_items = Pump::where('status', 'active')->get(['id'])->toArray();
+            $pumps = Pump::get(['id'])->toArray();
+            $data_items = [];
+            foreach ($pumps as $pump) {
+                $data_items[] = [
+                    'shift_id' => $shift->id,
+                    'pump_id' => $pump["id"],
+                ];
+            }
 
-            // $data_items = $input['data_items'];
-            $data_items = array_map(function ($v) use($shift) {
-                return array_replace($v, [
-                    'shift_id' => $shift->id, 
-                ]);
-            }, $data_items);
-            // dd($data_items);
             ShiftItem::insert($data_items);
-            if($shift){
+            if ($shift) {
                 DB::commit();
             }
-            
-        } catch (\Throwable $th) {dd($th);
+        } catch (\Throwable $th) {
+            dd($th);
             //throw $th;
             DB::rollback();
             return redirect()->back()->with('status', 'Error Creating Shift!!');
@@ -91,7 +110,7 @@ class ShiftController extends Controller
     public function show($id)
     {
         $shift = Shift::find($id);
-         $shift_items = $shift->items->map(function($v){
+        $shift_items = $shift->items->map(function ($v) {
             // dd($v);
             $start_time = Carbon::createFromFormat('H:i:s', $v->start_time);
             $end_time = Carbon::createFromFormat('H:i:s', $v->end_time);
@@ -100,7 +119,7 @@ class ShiftController extends Controller
             $v->end_time = $end_time->format('g:i A');
             return $v;
         });
-        return view('shifts.view', compact('shift','shift_items'));
+        return view('shifts.view', compact('shift', 'shift_items'));
     }
 
     /**
@@ -128,29 +147,31 @@ class ShiftController extends Controller
         $shift = Shift::find($id);
         $data = $request->only(['shift_name']);
         $data_items = $request->only([
-            'name', 'start_time','end_time','id'
+            'name', 'start_time', 'end_time', 'id'
         ]);
         $data_items = modify_array($data_items);
-        
+
         try {
             DB::beginTransaction();
             $result = $shift->update($data);
 
-            $item_ids = array_map(function ($v) { return $v['id']; }, $data_items);
+            $item_ids = array_map(function ($v) {
+                return $v['id'];
+            }, $data_items);
             $shift->items()->whereNotIn('id', $item_ids)->delete();
 
             // create or update items
-            foreach($data_items as $item) {
+            foreach ($data_items as $item) {
                 $shift_item = ShiftItem::firstOrNew(['id' => $item['id']]);
                 $shift_item->fill(array_replace($item, ['shift_id' => $shift['id']]));
                 if (!$shift_item->id) unset($shift_item->id);
                 $shift_item->save();
             }
-            if($shift){
+            if ($shift) {
                 DB::commit();
             }
-            
-        } catch (\Throwable $th) {dd($th);
+        } catch (\Throwable $th) {
+            dd($th);
             //throw $th;
             DB::rollback();
             return redirect()->back()->with('status', 'Error Updating Shift!!');
@@ -169,13 +190,34 @@ class ShiftController extends Controller
         try {
             DB::beginTransaction();
             $shift = Shift::find($id);
-            if($shift->delete() && $shift->items->each->delete()){
+            if ($shift->delete() && $shift->items->each->delete()) {
                 DB::commit();
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('status','Shift Failed to Delete!!');
+            return redirect()->back()->with('status', 'Shift Failed to Delete!!');
         }
-        return redirect()->back()->with('status','Shift Deleted Successfully!!');
+        return redirect()->back()->with('status', 'Shift Deleted Successfully!!');
+    }
+
+
+    public function assignUser(Request $request, $shiftitem)
+    {
+        $shift = ShiftItem::find($shiftitem);
+        $user = $request->user_id;
+        $status = $request->status;
+
+        if ($user != null && $status == 'active') {
+            $user = null;
+        }
+
+        // Handle the request, update the Shift model, and return a response
+        $shift->update([
+            'user_id' => $user,
+            'status' => $user == null ? 'inactive' : 'active',
+            // Add other fields as needed
+        ]);
+
+        return response()->json(['message' => 'Assignment successful']);
     }
 }

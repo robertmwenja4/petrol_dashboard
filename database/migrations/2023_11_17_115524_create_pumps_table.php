@@ -18,6 +18,7 @@ class CreatePumpsTable extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('description')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }
