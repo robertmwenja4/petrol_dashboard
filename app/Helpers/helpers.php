@@ -11,3 +11,10 @@ function modify_array(array $input)
     }
     return $output;
 }
+
+// auto-generate a 4 digit number prefixed with a string e.g ID-0001
+function gen4tid($prefix = '', $num = 0, $count = 5)
+{
+    if ($prefix && $num) return $prefix . sprintf('%0' . $count . 'd', $num);
+    return sprintf('%0' . $count . 'd', $num);
+}

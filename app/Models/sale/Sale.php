@@ -25,11 +25,13 @@ class Sale extends Model
         'pump_id',
         'shift_id',
         'lpo_no',
-        'other_vrn_no',
-        'other_tin_no',
+        'vrn_no',
+        'tin_no',
         'customer_id',
         'driver',
         'vehicle_no',
+        'tid',
+        'mileage'
     ];
 
 

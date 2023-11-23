@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\sale;
 
-use App\Http\Controllers\Controller;
-use App\Models\customer\Customer;
+use App\Models\User;
+use App\Models\pump\Pump;
 use App\Models\sale\Sale;
 use Illuminate\Http\Request;
+use App\Models\product\Product;
+use App\Models\customer\Customer;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
-use App\Models\User;
 
 class SaleController extends Controller
 {
@@ -36,8 +39,11 @@ class SaleController extends Controller
      */
     public function create()
     {
-        $customers = Customer::all()->pluck('company', 'id');
-        return view('sales.create', compact('customers'));
+        $customers = Customer::where('customer_type', 'credit')->get()->pluck('company', 'id');
+        $products = Product::all()->pluck('name', 'id');
+
+        $pumps = Pump::where('status', 'active')->get()->pluck('name', 'id');
+        return view('sales.create', compact('customers', 'products', 'pumps'));
     }
 
     /**
@@ -46,9 +52,30 @@ class SaleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Sale $sale)
     {
-        //
+        $data = $request->except('_token');
+        $tid = $sale->max('tid');
+        $data['tid'] = $tid + 1;
+        $data['user_id'] = Auth()->user()->id;
+        $data['shift_id'] = Auth()->user()->id;
+        $data['type'] = 'credit';
+        try {
+            DB::beginTransaction();
+
+            $sale = Sale::create($data);
+
+
+            if ($sale) {
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+            //throw $th;
+            DB::rollback();
+            return redirect()->back()->with('status', 'Error Creating Sale!!');
+        }
+        return redirect()->route('sale.create')->with('status', 'Sale Created Successfully!!');
     }
 
     /**
@@ -95,18 +122,37 @@ class SaleController extends Controller
     {
         //
     }
+    public function findProduct($productid)
+    {
+        $product = Product::find($productid);
 
+        if (!$product) {
+            return response(['message' => 'Product Not Found'], 402);
+        } else {
+            return response(['message' => null, 'data' => $product], 200);
+        }
+    }
+    public function findCustomer($customerid)
+    {
+        $customer = Customer::find($customerid);
+
+        if (!$customer) {
+            return response(['message' => 'Product Not Found'], 402);
+        } else {
+            return response(['message' => null, 'data' => $customer], 200);
+        }
+    }
     public function search(Request $request)
     {
         $date_from = $request->date_from;
         $date_to = $request->date_to;
-        $sales = Sale::whereHas('shift', function($q) use($request){
+        $sales = Sale::whereHas('shift', function ($q) use ($request) {
             // dd($q);
-            $q->whereBetween('shift_name',[$request->date_from, $request->date_to]);
+            $q->whereBetween('shift_name', [$request->date_from, $request->date_to]);
         })->get();
-        $users = User::whereHas('sales', function($q) use($request){
-            $q->whereHas('shift', function($q) use($request){
-                $q->whereBetween('shift_name',[$request->date_from, $request->date_to]);
+        $users = User::whereHas('sales', function ($q) use ($request) {
+            $q->whereHas('shift', function ($q) use ($request) {
+                $q->whereBetween('shift_name', [$request->date_from, $request->date_to]);
             });
         })->get();
         $data = [

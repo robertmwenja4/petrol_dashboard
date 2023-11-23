@@ -45,6 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('sales/search', [SaleController::class, 'search'])->name('sales.search');
     Route::post('print/shift', [CloseShiftController::class, 'shift'])->name('print.shift');
     Route::resource('nozzle', NozzleController::class);
+    Route::get('sale/get-product/{product_id}', [SaleController::class, 'findProduct'])->name('sale.get_product');
+    Route::get('sale/get-customer/{customer_id}', [SaleController::class, 'findCustomer'])->name('sale.get_customer');
     Route::put('shifts/update/{shift_id}', [ShiftController::class, 'assignUser'])->name('shifts.update');
     Route::post('shifts/finalize_allocation/{shift_id}', [ShiftController::class, 'finalizeAllocation'])->name('shifts.finalize_allocation');
     Route::put('shifts/login/{shift_id}', [ShiftController::class, 'loginUser'])->name('shifts.login');

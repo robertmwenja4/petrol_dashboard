@@ -7,7 +7,7 @@ use App\Models\pump\Pump;
 use App\Models\shift\Shift;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\User;
+
 
 class ShiftItem extends Model
 {

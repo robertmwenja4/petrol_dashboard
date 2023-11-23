@@ -31,12 +31,12 @@
     @yield('extra-css')
 </head>
 
-<body>
+<body class="bg-white">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light  shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/dashboard') }}">
-                    {{ config('app.name', 'Oryx') }}
+                    Dashboard
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -90,7 +90,7 @@
             </div>
         </nav>
 
-        <main class="py-2">
+        <main class="py-2 bg-white">
             @yield('content')
         </main>
     </div>
@@ -112,8 +112,9 @@
     <script src="{{ asset('core/app-assets/vendors/js/forms/cleave/cleave.min.js') }}"></script>
     <script src="{{ asset('core/app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js') }}"></script>
     {{-- <script src="{{ asset('core/app-assets/js/core/jquery.min.js') }}"></script> --}}
-    <script src="{{ asset('js/app.js') }}"></script>
+
     @yield('extra-scripts')
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 
 
