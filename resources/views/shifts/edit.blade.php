@@ -6,7 +6,7 @@
     <div class="header-navbar-shadow"></div>
     <div class="card">
         <div class="card-header">
-            <h4>Create Shift</h4>
+            <h4>Edit Shift</h4>
             <a href="{{route('shift.index')}}" class="btn btn-primary">List</a>
         </div>
         <div class="card-body">

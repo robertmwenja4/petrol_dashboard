@@ -1,20 +1,24 @@
 <div class="form-group row">
     <div class="col-4">
         <label for="product_name">Product Name</label>
-        <input type="text" name="name" value="{{@$product->name}}" id="product_name" placeholder="eg. Super 1" class="form-control">
+        <input type="text" name="name" value="{{@$product->name}}" id="product_name" placeholder="eg. Super" class="form-control">
     </div>
     <div class="col-4">
         <label for="code">Code</label>
-        <input type="text" name="code" value="{{@$product->code}}" id="code" placeholder="eg. S1" class="form-control">
+        <input type="text" name="code" value="{{@$product->code}}" id="code" placeholder="eg. S" class="form-control">
     </div>
     <div class="col-4">
+        <label for="description">Description</label>
+        <input type="text" name="description" value="{{@$product->description}}" id="description" placeholder="eg. Tank" class="form-control">
+    </div>
+    {{-- <div class="col-4">
         <label for="pump">Search Pump</label>
         <select id="user-pump" name="pump_id" class="select2 form-select">
             @foreach ($pumps as $pump)
                 <option value="{{$pump->id}}" {{$pump->id == @$product->pump_id ? 'selected' : ''}}>{{$pump->name}}</option>
             @endforeach
         </select>
-    </div>
+    </div> --}}
 </div>
 <div class="form-group row mt-2">
     <div class="col-4">

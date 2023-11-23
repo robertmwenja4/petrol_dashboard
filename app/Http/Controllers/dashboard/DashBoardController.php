@@ -20,7 +20,7 @@ class DashBoardController extends Controller
             $id = Auth::user()->id;
             $user = User::find($id);
             $role = $user->role ? $user->role->name : '';
-            if ($user->role->name == 'admin') {
+            if ($user->role->type == 'admin') {
                 return view('dashboard.index', compact('role'));
             } else {
                 return view('users_dashboard.index');

@@ -3,6 +3,7 @@
 namespace App\Models\pump;
 
 use App\Models\product\Product;
+use App\Models\pump\Nozzle;
 
 trait PumpRelationship
 {
@@ -10,4 +11,10 @@ trait PumpRelationship
     {
         return $this->hasMany(Product::class, "pump_id");
     }
+    public function nozzles()
+    {
+        return $this->hasMany(Nozzle::class, "pump_id");
+    }
+
+    
 }

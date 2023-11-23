@@ -20,7 +20,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/charts/apexcharts.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/extensions/toastr.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/all.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/assets/css/bootstrap.min.css')}}">
+    {{-- <link rel="stylesheet" type="text/css" href="{{asset('core/assets/css/bootstrap.min.css')}}"> --}}
     <!-- END: Vendor CSS-->
 
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/forms/select/select2.min.css')}}">
@@ -422,6 +422,8 @@
                         </li>
                         <li><a class="d-flex align-items-center" href="{{route('user_allocation.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Shift">Shift Allocation</span></a>
                         </li>
+                        <li><a class="d-flex align-items-center" href="{{route('close_shift.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="CLose Shift">CLose Shift</span></a>
+                        </li>
                     </ul>
                 </li>
                 <li class=" navigation-header"><span data-i18n="Sales">Sales</span><i data-feather="more-horizontal"></i>
@@ -437,6 +439,8 @@
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Pumps">Pumps</span></a>
                     <ul class="menu-content">
                         <li><a class="d-flex align-items-center" href="{{route('pump.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
+                        </li>
+                        <li><a class="d-flex align-items-center" href="{{route('nozzle.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Nozzle">Nozzle</span></a>
                         </li>
                     </ul>
                 </li>
@@ -517,7 +521,7 @@
     <script src="{{asset('core/app-assets/js/core/app-menu.js')}}"></script>
     {{-- <script src="{{asset('core/app-assets/js/core/jquery.min.js')}}"></script> --}}
     <script src="{{asset('core/app-assets/js/core/app.js')}}"></script>
-    <script src="{{asset('core/assets/js/bootstrap.bundle.min.js')}}"></script>
+    {{-- <script src="{{asset('core/assets/js/bootstrap.bundle.min.js')}}"></script> --}}
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->

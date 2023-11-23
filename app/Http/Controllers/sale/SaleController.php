@@ -5,9 +5,18 @@ namespace App\Http\Controllers\sale;
 use App\Http\Controllers\Controller;
 use App\Models\sale\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use App\Models\User;
 
 class SaleController extends Controller
 {
+
+    protected $headers = [
+        "Content-type" => "application/pdf",
+        "Pragma" => "no-cache",
+        "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+        "Expires" => "0"
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -83,5 +92,31 @@ class SaleController extends Controller
     public function destroy(Sale $sale)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        $date_from = $request->date_from;
+        $date_to = $request->date_to;
+        $sales = Sale::whereHas('shift', function($q) use($request){
+            // dd($q);
+            $q->whereBetween('shift_name',[$request->date_from, $request->date_to]);
+        })->get();
+        $users = User::whereHas('sales', function($q) use($request){
+            $q->whereHas('shift', function($q) use($request){
+                $q->whereBetween('shift_name',[$request->date_from, $request->date_to]);
+            });
+        })->get();
+        $data = [
+            'sales' => $sales,
+            'date_from' => $date_from,
+            'date_to' => $date_to,
+            'users' => $users,
+        ];
+        $html = view('prints.print_sales_report', $data)->render();
+        $pdf = new \Mpdf\Mpdf();
+        $pdf->WriteHTML($html);
+        // dd($pdf);
+        return Response::stream($pdf->Output('sales.pdf', 'I'), 200, $this->headers);
     }
 }
