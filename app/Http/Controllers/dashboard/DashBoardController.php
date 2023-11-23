@@ -20,10 +20,15 @@ class DashBoardController extends Controller
             $id = Auth::user()->id;
             $user = User::find($id);
             $role = $user->role ? $user->role->name : '';
-            if ($user->role->name == 'admin') {
+            $roleType = $user->role ? $user->role->type : '';
+
+            if ($roleType == 'admin') {
                 return view('dashboard.index', compact('role'));
-            } else {
+            } else if ($roleType == 'user') {
                 return view('users_dashboard.index');
+            } else {
+                Auth::logout();
+                return redirect()->back()->with('flash_error', 'Login In With Common Credentials !!');
             }
         } else {
             return redirect()->route('login');

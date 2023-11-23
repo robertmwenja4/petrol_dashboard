@@ -25,7 +25,7 @@
                     <div class="card-body">
 
                         <h4 class="card-text">Make an incoive sale.</h4>
-                        <a href="/user_sale" class="stretched-link"></a>
+                        <a href="/sale/create" class="stretched-link"></a>
                     </div>
                 </div>
             </div>

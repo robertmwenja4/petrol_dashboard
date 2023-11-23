@@ -21,12 +21,12 @@
         <!-- list and filter start -->
         <div class="card">
             <div class="card-header">
-                <h2>Shift Allocation</h2>
+                <h2>Close Shift</h2>
             </div>
             <div id="message" class="my-2 px-2"></div>
             <div class="row">
                 <div class="mx-auto">
-                    {{ Form::button('Complete Shift Allocation', ['class' => 'btn btn-lg btn-danger col-3 py-2 mx-4 float-end ', 'data-shift-id' => $shift->id, 'onclick' => 'finalizeAllocation(this)']) }}
+                    {{ Form::button('Close Shift', ['class' => 'btn btn-lg btn-danger col-3 py-2 mx-4 float-end ', 'data-shift-id' => $shift->id, 'onclick' => 'closeShift(this)']) }}
                 </div>
             </div>
 
@@ -50,17 +50,15 @@
                         @foreach ($shift->items as $i => $s)
                             <tr>
                                 <td>{{ $i + 1 }}</td>
-                                <td>
-                                    {{ Form::select('user_id', $users, @$s->user_id, ['placeholder' => 'Select User...', 'class' => 'select2 form-select']) }}
+                                <td>{{ $s->user->name }}</td>
 
-                                </td>
                                 <td>{{ $s->pump->name }}</td>
 
                                 <td>{{ ucfirst($s->status) }}</td>
 
                                 <td>
                                     <!-- Add a data-shift-id attribute to store the shift ID for the current row -->
-                                    {{ Form::button($s->status == 'active' ? 'Unassign' : 'Assign', ['class' => $s->status == 'active' ? 'btn btn-md btn-warning px-4' : 'btn btn-md btn-success px-4', 'data-shift-id' => $s->id, 'data-status' => $s->status, 'onclick' => 'assignUser(this)']) }}
+                                    {{ Form::button($s->status == 'active' ? 'Logout' : 'Login', ['class' => $s->status == 'active' ? 'btn btn-md btn-success px-4' : 'btn btn-md btn-warning px-4', 'data-shift-id' => $s->id, 'data-user-id' => $s->user->id, 'data-status' => $s->status, 'onclick' => 'loginUser(this)']) }}
                                     {{-- <a class="btn btn-md btn-success px-4" data-shift-id="{{ $s->id }}"
                                         href="{{ route('shift.edit', $s->id) }}">Assign</i></a> --}}
                                 </td>
@@ -89,19 +87,20 @@
         $('#shiftsTbl').DataTable();
         $('.select2').select2();
 
-        function assignUser(button) {
-            var user_Id = $(button).closest('tr').find('select[name="user_id"]').val();
+        function loginUser(button) {
 
+
+            var userId = $(button).data('user-id');
             var shiftId = $(button).data('shift-id');
             var status = $(button).data('status');
 
-            console.log(user_Id)
+            console.log(userId)
             console.log(shiftId)
             $.ajax({
                 method: 'PUT',
-                url: 'shifts/update/' + shiftId,
+                url: 'shifts/login/' + shiftId,
                 data: {
-                    user_id: user_Id,
+                    user_id: userId,
                     status: status,
 
                     // Add other data as needed
@@ -123,14 +122,14 @@
             });
         }
 
-        function finalizeAllocation(button) {
+        function closeShift(button) {
 
 
             var shiftId = $(button).data('shift-id');
 
             $.ajax({
                 method: 'POST',
-                url: 'shifts/finalize_allocation/' + shiftId,
+                url: 'shifts/close_shift/' + shiftId,
 
                 success: function(response) {
                     // console.log(response.message);

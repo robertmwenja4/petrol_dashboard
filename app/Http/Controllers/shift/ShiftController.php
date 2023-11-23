@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\pump\Pump;
 use App\Models\User;
+use Exception;
 
 class ShiftController extends Controller
 {
@@ -22,20 +23,30 @@ class ShiftController extends Controller
     public function index()
     {
         $shift = Shift::whereHas('items')
-            ->with('items.pump', 'user')
-            ->where('status', 'open')
+            ->with('items.pump', 'items.user', 'user')
+            // ->where('status', 'open')
             ->whereDate('shift_name', '=', date('Y-m-d'))
             ->first();
         $users = User::whereHas('role', function ($q) {
-            $q->where('name', 'attendant');
+            $q->where('type', 'attendant');
         })
             ->pluck('name', 'id');
 
-        $date = date('Y-m-d');
+
+
+
         if (!$shift) {
+            $date = date('Y-m-d');
             return $this->create($date);
         } else {
-            return view('shifts.index', compact('shift', 'users'));
+            if ($shift->status == 'pending') {
+                return view('shifts.index', compact('shift', 'users'));
+            } else if ($shift->status == 'open') {
+                return view('shifts.manage', compact('shift'));
+            } else if ($shift->status == 'closed') {
+                $date = date('Y-m-d', strtotime("+1 day"));
+                return $this->create($date);
+            }
         }
         // $shifts = $shifts->map(function($v){
         //     // dd($v);
@@ -78,8 +89,8 @@ class ShiftController extends Controller
             // $previous_shift->status = 'closed';
             // $previous_shift->update();
             $shift = Shift::create($data);
-            // $data_items = Pump::where('status', 'active')->get(['id'])->toArray();
-            $pumps = Pump::get(['id'])->toArray();
+
+            $pumps = Pump::where('status', 'active')->get(['id'])->toArray();
             $data_items = [];
             foreach ($pumps as $pump) {
                 $data_items[] = [
@@ -219,5 +230,89 @@ class ShiftController extends Controller
         ]);
 
         return response()->json(['message' => 'Assignment successful']);
+    }
+
+    public function finalizeAllocation($shiftid)
+    {
+        $shiftitems = ShiftItem::where('shift_id', $shiftid)->get();
+
+        foreach ($shiftitems as $shiftitem) {
+            // Check if status is inactive
+            if ($shiftitem->status == 'inactive') {
+                return response(['message' => 'Allocate all pumps to users in order to complete allocation'], 400);
+            }
+
+            // Check for duplicated user id
+            $duplicateCount = ShiftItem::where('shift_id', $shiftid)
+                ->where('user_id', $shiftitem->user_id)
+                ->where('id', '<>', $shiftitem->id)
+                ->count();
+
+            if ($duplicateCount > 0) {
+                return response(['message' => 'Duplicated user in pumps'], 400);
+            }
+        }
+
+        $shift = Shift::where('id', $shiftid)->first();
+
+        DB::beginTransaction();
+        try {
+            $shift->update([
+                'status' => 'open'
+            ]);
+
+            DB::commit();
+            return response(['message' => 'Allocation Completed Successfully'], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function loginUser(Request $request, $shiftitem)
+    {
+        $shift = ShiftItem::find($shiftitem);
+        $user = $request->user_id;
+        $status = $request->status;
+
+        if ($user != null) {
+            $shift->update([
+                'status' => $status == 'active' ? 'inactive' : 'active',
+                'end_time' => $status == 'active' ? date('Y-m-d H:i:s') : null
+            ]);
+
+            return response(['message' => $status == 'active' ? 'Logout successful' : 'Log in successful']);
+        }
+
+        // Handle the request, update the Shift model, and return a response
+
+    }
+
+    public function closeShift($shiftid)
+    {
+        $shiftitems = ShiftItem::where('shift_id', $shiftid)->get();
+
+        foreach ($shiftitems as $shiftitem) {
+            // Check if status is active
+            if ($shiftitem->status == 'active') {
+                return response(['message' => 'Log out all users in order to close shift'], 400);
+            }
+        }
+
+        $shift = Shift::where('id', $shiftid)->first();
+
+        DB::beginTransaction();
+        try {
+            $shift->update([
+                'status' => 'closed',
+                'end_date' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
+            return response(['message' => 'Shift Closed Successfully'], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response(['message' => $e->getMessage()], 400);
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\shift;
 
+use App\Models\User;
 use App\Models\pump\Pump;
 use App\Models\shift\Shift;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ class ShiftItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['shift_id', 'pump_id', 'user_id', 'status'];
+    protected $fillable = ['shift_id', 'pump_id', 'user_id', 'status', 'end_time'];
 
 
     public function shift()
@@ -22,5 +23,9 @@ class ShiftItem extends Model
     public function pump()
     {
         return $this->belongsTo(Pump::class, 'pump_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

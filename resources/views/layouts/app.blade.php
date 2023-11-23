@@ -28,13 +28,14 @@
         href="{{ asset('core/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css') }}">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('extra-css')
 </head>
 
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light  shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/dashboard') }}">
                     {{ config('app.name', 'Oryx') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -72,7 +73,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item" href="{{ route('logout') }}"x
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
@@ -89,7 +90,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-2">
             @yield('content')
         </main>
     </div>
@@ -111,6 +112,7 @@
     <script src="{{ asset('core/app-assets/vendors/js/forms/cleave/cleave.min.js') }}"></script>
     <script src="{{ asset('core/app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js') }}"></script>
     {{-- <script src="{{ asset('core/app-assets/js/core/jquery.min.js') }}"></script> --}}
+    <script src="{{ asset('js/app.js') }}"></script>
     @yield('extra-scripts')
 </body>
 

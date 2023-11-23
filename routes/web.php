@@ -40,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('sale', SaleController::class);
     Route::post('users/update', [UserController::class, 'update_user'])->name('users.update');
     Route::put('shifts/update/{shift_id}', [ShiftController::class, 'assignUser'])->name('shifts.update');
+    Route::post('shifts/finalize_allocation/{shift_id}', [ShiftController::class, 'finalizeAllocation'])->name('shifts.finalize_allocation');
+    Route::put('shifts/login/{shift_id}', [ShiftController::class, 'loginUser'])->name('shifts.login');
+    Route::post('shifts/close_shift/{shift_id}', [ShiftController::class, 'closeShift'])->name('shifts.close_shift');
 });
 Auth::routes();
 

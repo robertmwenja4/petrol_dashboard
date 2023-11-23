@@ -20,7 +20,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/charts/apexcharts.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/extensions/toastr.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/all.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/assets/css/bootstrap.min.css')}}">
+    {{-- <link rel="stylesheet" type="text/css" href="{{asset('core/assets/css/bootstrap.min.css')}}"> --}}
     <!-- END: Vendor CSS-->
 
     <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/forms/select/select2.min.css')}}">
@@ -396,7 +396,7 @@
                 </li>
                 <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Users Information</span><i data-feather="more-horizontal"></i>
                 </li>
-               
+
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="shield"></i><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">Roles &amp; Permission</span></a>
                     <ul class="menu-content">
                         <li><a class="d-flex align-items-center" href="{{route('role.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Roles</span></a>
@@ -405,15 +405,15 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">User</span></a>
                     <ul class="menu-content">
                         <li><a class="d-flex align-items-center" href="{{route('user.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
                         </li>
-                        
+
                     </ul>
                 </li>
-                
+
                 <li class=" navigation-header"><span data-i18n="User Activities">User Activities</span><i data-feather="more-horizontal"></i>
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="Shifts">Shifts</span></a>
@@ -491,12 +491,12 @@
     <!-- BEGIN: Vendor JS-->
     <script src="{{asset('core/app-assets/vendors/js/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
-    
+
     <!-- BEGIN: Page Vendor JS-->
     <script src="{{asset('core/app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
     <script src="{{asset('core/app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
     <!-- END: Page Vendor JS-->
-    
+
     <script src="{{asset('core/app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
     <script src="{{asset('core/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('core/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js')}}"></script>
@@ -517,14 +517,14 @@
     <script src="{{asset('core/app-assets/js/core/app-menu.js')}}"></script>
     {{-- <script src="{{asset('core/app-assets/js/core/jquery.min.js')}}"></script> --}}
     <script src="{{asset('core/app-assets/js/core/app.js')}}"></script>
-    <script src="{{asset('core/assets/js/bootstrap.bundle.min.js')}}"></script>
+    {{-- <script src="{{asset('core/assets/js/bootstrap.bundle.min.js')}}"></script> --}}
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
     <script src="{{asset('core/app-assets/js/scripts/pages/dashboard-ecommerce.js')}}"></script>
     <script src="{{asset('core/app-assets/js/scripts/pages/app-user-list.js')}}"></script>
     <!-- END: Page JS-->
-    
+
     <script>
         $(window).on('load', function() {
             if (feather) {
