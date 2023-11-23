@@ -6,41 +6,35 @@
     <div class="header-navbar-shadow"></div>
     <div class="card">
         <div class="card-header">
-            <h4>View customer</h4>
-            <a href="{{route('customer.index')}}" class="btn btn-primary">List</a>
+            <h4>View nozzle</h4>
+            <a href="{{route('nozzle.index')}}" class="btn btn-primary">List</a>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-4 border-blue-grey border-lighten-5  p-1">
-                    Customer Name</div>
+                    Nozzle Name</div>
                 <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
-                    {{ $customer['company'] }}</div>
+                    {{ $nozzle['name'] }}</div>
             </div>
             <div class="row">
                 <div class="col-4 border-blue-grey border-lighten-5  p-1">
-                    Contact</div>
+                    Code</div>
                 <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
-                    {{ $customer['phone_number'] }}</div>
+                    {{ $nozzle['code'] }}</div>
             </div>
             <div class="row">
                 <div class="col-4 border-blue-grey border-lighten-5  p-1">
-                    Address</div>
+                    Pump Name</div>
                 <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
-                    {{ $customer['address'] }}</div>
+                    {{ $nozzle->pump['name'] }}</div>
             </div>
             <div class="row">
                 <div class="col-4 border-blue-grey border-lighten-5  p-1">
-                    VRN Number</div>
+                    Product</div>
                 <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
-                    {{ $customer['vrn'] }}</div>
+                    {{ $nozzle->product['name'] }}</div>
             </div>
-
-            <div class="row">
-                <div class="col-4 border-blue-grey border-lighten-5  p-1">
-                    TIN Number</div>
-                <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
-                    {{ $customer['tin'] }}</div>
-            </div>
+            
         </div>
     </div>
     

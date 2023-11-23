@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\product;
+namespace App\Http\Controllers\pump;
 
 use App\Http\Controllers\Controller;
-use App\Models\product\Product;
 use Illuminate\Http\Request;
-use DB;
+use App\Models\pump\Nozzle;
 use App\Models\pump\Pump;
+use App\Models\product\Product;
+use DB;
 
-class ProductController extends Controller
+class NozzleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $nozzles = Nozzle::all();
+        $pumps = Pump::all();
         $products = Product::all();
-        return view('products.index', compact('products'));
+        return view('nozzles.index', compact('nozzles', 'pumps','products'));
     }
 
     /**
@@ -28,8 +31,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $pumps = Pump::all();
-        return view('products.create', compact('pumps'));
+        return view('nozzles.create');
     }
 
     /**
@@ -40,88 +42,85 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $data = $request->except(['_token']);
         try {
             DB::beginTransaction();
-            $product = Product::create($data);
-            if($product){
+            $nozzle = Nozzle::create($data);
+            if($nozzle){
                 DB::commit();
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('flash_error', 'Error Creating product');
+            return redirect()->back()->with('flash_error', 'Error Creating nozzle');
         }
-        return redirect()->route('product.index')->with('flash_success', 'Product Created Successfully!!');
+        return redirect()->route('nozzle.index')->with('flash_success', 'Nozzle Created Successfully!!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\product\Product  $product
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Nozzle $nozzle)
     {
-        $product = Product::find($id);
-        return view('products.view', compact('product'));
+        // dd($nozzle);
+        return view('nozzles.view', compact('nozzle'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Nozzle $nozzle)
     {
-        $product = Product::find($id);
-        $pumps = Pump::all();
-        return view('products.edit', compact('product','pumps'));
+        return view('nozzles.edit', compact('nozzle'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Nozzle $nozzle)
     {
-        $product = Product::find($id);
+        // dd($request->all());
         $data = $request->except(['_token']);
         try {
             DB::beginTransaction();
-            $result = $product->update($data);
-            if($product){
+            $result = $nozzle->update($data);
+            if($nozzle){
                 DB::commit();
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('flash_error', 'Error Updating Product');
+            return redirect()->back()->with('flash_error', 'Error Updating nozzle');
         }
-        return redirect()->route('product.index')->with('flash_success','Product Updated Successfully!!');
+        return redirect()->route('nozzle.index')->with('flash_success','Nozzle Updated Successfully!!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Nozzle $nozzle)
     {
         try {
             DB::beginTransaction();
-            $product = Product::find($id);
-            if($product->delete()){
+            // $nozzle = nozzle::find($id);
+            if($nozzle->delete()){
                 DB::commit();
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('flash_error','product Failed to Delete!!');
+            return redirect()->back()->with('flash_error','nozzle Failed to Delete!!');
         }
-        return redirect()->back()->with('flash_success','product Deleted Successfully!!');
+        return redirect()->back()->with('flash_success','nozzle Deleted Successfully!!');
     }
 }

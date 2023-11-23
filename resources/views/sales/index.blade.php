@@ -78,17 +78,33 @@
                             {{-- <button type="button" id="btnPop" class="btn btn-primary" style="margin-right: 0;">
                             Add sale
                         </button> --}}
+                        {{-- <a href="{{route('sale.create')}}" class="btn btn-primary">Add sale</a> --}}
+                        {{-- @include('sale.partials.user_modal') --}}
+                    </div>
+                    <div class="card-body border-bottom">
                             {{-- <a href="{{route('sale.create')}}" class="btn btn-primary">Add sale</a> --}}
                             {{-- @include('sale.partials.user_modal') --}}
                         </div>
-                        {{-- <div class="card-body border-bottom">
-                        <h4 class="card-title">Search & Filter</h4>
-                        <div class="row">
-                            <div class="col-md-4 user_role"></div>
-                            <div class="col-md-4 user_plan"></div>
-                            <div class="col-md-4 user_status"></div>
+                         <div class="card-body border-bottom">
+                            <h4 class="card-title">Search & Filter</h4>
+                            <form action="{{route('sales.search')}}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-4 user_role">
+                                        <label for="date">Date From</label>
+                                        <input type="date" class="form-control" name="date_from">
+                                    </div>
+                                    <div class="col-md-4 user_plan">
+                                        <label for="date_to">Date To</label>
+                                        <input type="date" class="form-control" name="date_to">
+                                    </div>
+                                    <div class="col-md-1 user_status">
+                                        <label for="date_to">Print</label>
+                                        <button type="submit" class="btn btn-primary ">Print</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </div> --}}
                         <div class="card-datatable card-body table-responsive pt-0">
                             {{-- user-list-table --}}
                             <table class="table" id="salesTbl">
@@ -119,9 +135,9 @@
                                             <td>{{ +$sale->total_price }}</td>
                                             <td>{{ $sale->created_at }}</td>
 
-                                            {{-- <td>
-                                            @include('sales.partials.action_buttons')
-                                        </td> --}}
+                                            <td>
+                                            {{-- @include('sales.partials.action_buttons') --}}
+                                        </td>
 
                                         </tr>
                                     @endforeach

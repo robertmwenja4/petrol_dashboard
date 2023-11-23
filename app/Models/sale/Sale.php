@@ -6,6 +6,9 @@ use App\Models\User;
 use App\Models\customer\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\shift\Shift;
+use App\Models\product\Product;
+use App\Models\pump\Pump;
 
 class Sale extends Model
 {
@@ -54,5 +57,17 @@ class Sale extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class, 'shift_id');
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function pump()
+    {
+        return $this->belongsTo(Pump::class, 'pump_id');
     }
 }

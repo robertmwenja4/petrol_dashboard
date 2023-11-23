@@ -12,6 +12,8 @@ use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\dashboard\DashBoardController;
 use App\Http\Controllers\user\UserAllocationController;
 use App\Http\Controllers\product\ProductPriceController;
+use App\Http\Controllers\shift\CloseShiftController;
+use App\Http\Controllers\pump\NozzleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('dashboard', DashBoardController::class);
     Route::resource('user', UserController::class);
     Route::resource('shift', ShiftController::class);
+    Route::resource('close_shift', CloseShiftController::class);
     Route::resource('role', RolesController::class);
     Route::resource('customer', CustomerController::class);
     Route::resource('pump', PumpController::class);
@@ -39,10 +42,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('user_allocation', UserAllocationController::class);
     Route::resource('sale', SaleController::class);
     Route::post('users/update', [UserController::class, 'update_user'])->name('users.update');
+    Route::post('sales/search', [SaleController::class, 'search'])->name('sales.search');
+    Route::post('print/shift', [CloseShiftController::class, 'shift'])->name('print.shift');
+    Route::resource('nozzle', NozzleController::class);
     Route::put('shifts/update/{shift_id}', [ShiftController::class, 'assignUser'])->name('shifts.update');
     Route::post('shifts/finalize_allocation/{shift_id}', [ShiftController::class, 'finalizeAllocation'])->name('shifts.finalize_allocation');
     Route::put('shifts/login/{shift_id}', [ShiftController::class, 'loginUser'])->name('shifts.login');
     Route::post('shifts/close_shift/{shift_id}', [ShiftController::class, 'closeShift'])->name('shifts.close_shift');
+    Route::post('shifts/goods', [ShiftController::class, 'goods'])->name('shifts.goods');
 });
 Auth::routes();
 

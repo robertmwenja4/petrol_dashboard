@@ -8,15 +8,15 @@
         <div class="content-header row">
         </div>
         <div class="content-body">
-            <!-- product list start -->
+            <!-- close_shift list start -->
             <section class="app-user-list">
                 <div class="row">
                     <div class="col-lg-3 col-sm-6">
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">{{$products->count()}}</h3>
-                                    <span>Total Products</span>
+                                    <h3 class="fw-bolder mb-75">{{$close_shifts->count()}}</h3>
+                                    <span>Total Close Shifts</span>
                                 </div>
                                 <div class="avatar bg-light-primary p-50">
                                     <span class="avatar-content">
@@ -26,12 +26,12 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
                                     <h3 class="fw-bolder mb-75">4,567</h3>
-                                    <span>Paid product</span>
+                                    <span>Paid close_shift</span>
                                 </div>
                                 <div class="avatar bg-light-danger p-50">
                                     <span class="avatar-content">
@@ -46,7 +46,7 @@
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
                                     <h3 class="fw-bolder mb-75">19,860</h3>
-                                    <span>Active product</span>
+                                    <span>Active close_shift</span>
                                 </div>
                                 <div class="avatar bg-light-success p-50">
                                     <span class="avatar-content">
@@ -61,7 +61,7 @@
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
                                     <h3 class="fw-bolder mb-75">237</h3>
-                                    <span>Pending product</span>
+                                    <span>Pending close_shift</span>
                                 </div>
                                 <div class="avatar bg-light-warning p-50">
                                     <span class="avatar-content">
@@ -70,52 +70,61 @@
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
                 <!-- list and filter start -->
                 <div class="card">
                     <div class="card-header">
                         {{-- <button type="button" id="btnPop" class="btn btn-primary" style="margin-right: 0;">
-                            Add product
+                            Add close_shift
                         </button> --}}
-                        <a href="{{route('product.create')}}" class="btn btn-primary">Add product</a>
-                        {{-- @include('product.partials.user_modal') --}}
+                        <a href="{{route('close_shift.create')}}" class="btn btn-primary">Add close_shift</a>
+                        {{-- @include('close_shift.partials.user_modal') --}}
                     </div>
-                    {{-- <div class="card-body border-bottom">
+                    <div class="card-body border-bottom">
                         <h4 class="card-title">Search & Filter</h4>
-                        <div class="row">
-                            <div class="col-md-4 user_role"></div>
-                            <div class="col-md-4 user_plan"></div>
-                            <div class="col-md-4 user_status"></div>
-                        </div>
-                    </div> --}}
+                        <form action="{{route('print.shift')}}" method="post">
+                            @csrf
+                            
+                            <div class="row">
+                                <div class="col-md-4 user_role">
+                                    <label for="shift">Search Shift</label>
+                                    <select name="shift_id" id="shift" class="select2 form-select" data-placeholder="Search Shift">
+                                        <option value="">Search Shift</option>
+                                        @foreach ($shifts as $shift)
+                                            <option value="{{$shift->id}}">{{$shift->shift_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 user_plan">
+                                    <button type="submit" class="btn btn-primary btn-lg">Print</button>
+                                </div>
+                                <div class="col-md-4 user_status"></div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="card-datatable card-body table-responsive pt-0">
                         {{-- user-list-table --}}
-                        <table class="table" id="productsTbl">
+                        <table class="table" id="close_shiftsTbl">
                             <thead class="table-light">
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
-                                    <th>Code</th>
-                                    <th>Description</th>
-                                    <th>Price per Litre</th>
-                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $i => $product)
+                                @foreach ($close_shifts as $i => $close_shift)
                                     <tr>
                                         <td>{{$i+1}}</td>
-                                        <td>{{$product->name}}</td>
-                                        <td>{{$product->code}}</td>
-                                        <td>{{$product->description}}</td>
-                                        {{-- <td>{{$product->pump ? $product->pump->name : ''}}</td> --}}
-                                        <td>{{$product->price}}</td>
-                                        <td>{{$product->category}}</td>
+                                        <td>{{@$close_shift->shift->shift_name}}</td>
+                                        <td>{{$close_shift->created_at}}</td>
+                                        <td>{{@$close_shift->shift->status}}</td>
                                         
                                         <td>
-                                            @include('products.partials.action_buttons')
+                                            @include('close_shifts.partials.action_buttons')
                                         </td>
                                         
                                     </tr>
@@ -128,7 +137,7 @@
                 </div>
                 <!-- list and filter end -->
             </section>
-            <!-- products list ends -->
+            <!-- close_shifts list ends -->
 
         </div>
     </div>
@@ -138,7 +147,7 @@
 @section('extra-scripts')
     <script>
        $.ajaxSetup({headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }});
-        $('#productsTbl').DataTable();
+        $('#close_shiftsTbl').DataTable();
        
     </script>
 @endsection

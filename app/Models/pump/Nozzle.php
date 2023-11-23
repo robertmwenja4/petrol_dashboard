@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Models\product;
+namespace App\Models\pump;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\pump\Pump;
+use App\Models\product\Product;
 
-class Product extends Model
+class Nozzle extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 'code', 'description', 'price', 'category','readings'
+        'pump_id', 'name','code', 'product_id'
     ];
 
     /**
@@ -31,7 +32,12 @@ class Product extends Model
         'id'
     ];
 
-    // public function pump(){
-    //     return $this->belongsTo(Pump::class, 'pump_id');
-    // }
+    public function pump()
+    {
+        return $this->belongsTo(Pump::class, 'pump_id');
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

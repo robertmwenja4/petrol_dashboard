@@ -10,8 +10,10 @@ use App\Models\shift\ShiftItem;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\pump\Pump;
+use App\Models\pump\Nozzle;
 use App\Models\User;
 use Exception;
+use App\Models\shift\CloseShiftItem;
 
 class ShiftController extends Controller
 {
@@ -314,5 +316,70 @@ class ShiftController extends Controller
             DB::rollBack();
             return response(['message' => $e->getMessage()], 400);
         }
+    }
+
+    public function goods(Request $request)
+    {
+        $shift = Shift::find(request('shift_id'));
+        //     $shift_items = $shift->items()->get();
+
+        //     //Use relation
+        //     // $items = $shift->whereHas('items', function($q){
+        //     //     $q->with(['pump'=> function($query){
+        //     //         // dd($query->get());
+        //     //         $query->whereHas('nozzles')->get();
+        //     //     }]);
+        //     // })->get();
+        //     $nozzles = [];
+        //     foreach($shift_items as $item){
+        //         $nozzles[] = $item->pump->nozzles;
+        //         // foreach ($pumps as $pump) {
+        //         //     $nozzles[] = $pump->nozzles;
+        //         // }
+        //     }
+        //     $nozzlebb = [];
+        //    foreach($nozzles as $nozzle){
+        //     $nozzlebb[] = $nozzle->map(function($v){
+        //         // dd($v);
+        //         $v->pump = $v->pump ? $v->pump->name : '';
+        //         $v->product = $v->product ? $v->product->name : '';
+        //         return $v;
+        //     });
+        //    }
+        // $nozzles = Nozzle::whereIn('pump_id', function ($query) {
+        //     $query->select('pump_id')
+        //         ->from(with(new ShiftItem)->getTable())
+        //         ->where('shift_id', function ($query) {
+        //             $query->select('id')
+        //                     ->from(with(new Shift)->getTable());
+        //         });
+        // })->get();
+        // $nozzles = $nozzles->map(function($v){
+        //     // dd($v);
+        //     $v->pump_name = $v->pump ? $v->pump->name : '';
+        //     $v->product_name = $v->product ? $v->product->name : '';
+        //     return $v;
+        // });
+        $nozzles = Shift::with(['items' => function ($query) {
+            $query->with(['pump.nozzles']);
+        }])
+            ->with(['items.user'])
+            ->find($shift->id)
+            ->items
+            ->pluck('pump.nozzles')
+            ->flatten();
+        $nozzles = $nozzles->map(function ($v) {
+            // dd($v);
+            $v->pump_name = $v->pump ? $v->pump->name : '';
+            $v->product_name = $v->product ? $v->product->name : '';
+            $v->product_price = $v->product ? $v->product->price : '';
+            $v->category = $v->product ? $v->product->category : '';
+            $close_shift_item = CloseShiftItem::where('nozzle_id', $v->id)->latest()->first();
+            $v->opening_stock = $close_shift_item ? $close_shift_item->current_stock : 0;
+            // $v->user_name = $v->product ? $v->product->name : '';
+            return $v;
+        });
+        // dd($nozzles);
+        return response()->json($nozzles);
     }
 }

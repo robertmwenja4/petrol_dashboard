@@ -6,40 +6,40 @@
     <div class="header-navbar-shadow"></div>
     <div class="card">
         <div class="card-header">
-            <h4>View shift</h4>
-            <a href="{{route('shift.index')}}" class="btn btn-primary">List</a>
+            <h4>View product</h4>
+            <a href="{{route('product.index')}}" class="btn btn-primary">List</a>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-4 border-blue-grey border-lighten-5  p-1">
-                    Shift Name</div>
+                    Product Name</div>
                 <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
-                    {{ $shift['shift_name'] }}</div>
+                    {{ $product['name'] }}</div>
             </div>
-            <div class="table-responsive mt-3">
-                <table class="table time-center tfr my_stripe_single" id="shiftTbl">
-                    <thead>
-                        <tr class="item_header bg-gradient-directional-blue white ">
-                            <th width="15%" class="text-center">Name</th>
-                            <th width="10%" class="text-center">Clock In</th>
-                            <th width="10%" class="text-center">Clock Out</th>             
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (isset($shift))
-                            @foreach ($shift_items as $i => $item)
-                                <tr class="text-center">
-                                    <td>
-                                        {{$item->name}}
-                                    </td>
-                                    <td>{{$item->start_time}}</td> 
-                                    <td>{{$item->end_time}}</td> 
-                                    
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
+            <div class="row">
+                <div class="col-4 border-blue-grey border-lighten-5  p-1">
+                    Code</div>
+                <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
+                    {{ $product['code'] }}</div>
+            </div>
+            <div class="row">
+                <div class="col-4 border-blue-grey border-lighten-5  p-1">
+                    Description</div>
+                <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
+                    {{ $product['description'] }}</div>
+            </div>
+            <div class="row">
+                <div class="col-4 border-blue-grey border-lighten-5  p-1">
+                    Price per Litre</div>
+                <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
+                    {{ $product['price'] }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-4 border-blue-grey border-lighten-5  p-1">
+                    Product Category</div>
+                <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
+                    {{ $product['category'] }}</div>
             </div>
         </div>
     </div>
