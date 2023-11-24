@@ -34,7 +34,7 @@
                     <h3 class="mt-2">Give Cash</h3>
                     <div class="card-body ">
                         <h4 class="card-text">Record cash received</h4>
-                        <a href="/user_cash" class="stretched-link"></a>
+                        <a href="/give_cash/create" class="stretched-link"></a>
                     </div>
                 </div>
             </div>

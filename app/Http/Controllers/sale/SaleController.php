@@ -167,4 +167,13 @@ class SaleController extends Controller
         // dd($pdf);
         return Response::stream($pdf->Output('sales.pdf', 'I'), 200, $this->headers);
     }
+
+    public function fetchSale($id)
+    {
+        $sale = Sale::whereHas('product')
+            ->whereHas('user')
+            ->whereHas('pump')
+            ->where('id', $id)->first();
+        return view('sales.print_invoice', compact('sale'));
+    }
 }
