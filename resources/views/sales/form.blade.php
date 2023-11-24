@@ -160,10 +160,10 @@
     </div>
 
 </div>
-
+@include('sales.passkey_modal')
 <div class="row justify-content-center mt-5">
     <div class="col-auto">
-        {{ Form::submit('Record Sale', ['class' => 'btn btn-lg btn-success px-5 py-3']) }}
+        {{ Form::button('Record Sale', ['class' => 'btn btn-lg btn-success px-5 py-3', 'id' => 'recordSaleBtn']) }}
     </div>
 
 </div>

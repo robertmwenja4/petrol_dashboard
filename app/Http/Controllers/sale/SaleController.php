@@ -57,25 +57,45 @@ class SaleController extends Controller
         $data = $request->except('_token');
         $tid = $sale->max('tid');
         $data['tid'] = $tid + 1;
-        $data['user_id'] = Auth()->user()->id;
         $data['shift_id'] = Auth()->user()->id;
         $data['type'] = 'credit';
-        try {
-            DB::beginTransaction();
-
-            $sale = Sale::create($data);
-
-
-            if ($sale) {
-                DB::commit();
-            }
-        } catch (\Throwable $th) {
-            dd($th);
-            //throw $th;
-            DB::rollback();
-            return redirect()->back()->with('status', 'Error Creating Sale!!');
+        $validate = true;
+        $checkuser = verifyUser($data['pass_key']);
+        if (!$checkuser['status']) {
+            $validate = false;
+            $output = [
+                'success' => false,
+                'msg' => 'Invalid Pass Key',
+                'data' => null
+            ];
         }
-        return redirect()->route('sale.create')->with('status', 'Sale Created Successfully!!');
+        if ($validate) {
+            try {
+                DB::beginTransaction();
+                $data['user_id'] = $checkuser['user_id'];
+                $sale = Sale::create($data);
+
+
+                if ($sale) {
+                    DB::commit();
+                    $output = [
+                        'success' => true,
+                        'msg' => 'Sale Created Successfully',
+                        'data' => $sale
+                    ];
+                }
+            } catch (\Throwable $th) {
+
+                DB::rollback();
+                $output = [
+                    'success' => false,
+                    'msg' => 'Error Creating Sale',
+                    'data' => null
+                ];
+            }
+        }
+
+        return $output;
     }
 
     /**
@@ -168,12 +188,14 @@ class SaleController extends Controller
         return Response::stream($pdf->Output('sales.pdf', 'I'), 200, $this->headers);
     }
 
-    public function fetchSale($id)
+    public function fetchSale(Request $request)
     {
+        $id = $request->id;
         $sale = Sale::whereHas('product')
             ->whereHas('user')
             ->whereHas('pump')
             ->where('id', $id)->first();
+        // dd($sale);
         return view('sales.print_invoice', compact('sale'));
     }
 }

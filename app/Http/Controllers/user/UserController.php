@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $users = User::all();
-        return view('users.index', compact('roles','users'));
+        return view('users.index', compact('roles', 'users'));
     }
 
     /**
@@ -69,7 +69,7 @@ class UserController extends Controller
             'role_id' => $request->input('role_id'),
             'password' => Hash::make($predefined_password),
         ]);
-        return redirect()->back()->with('flash_success','User Created Successfully!!');
+        return redirect()->back()->with('flash_success', 'User Created Successfully!!');
     }
 
     /**
@@ -110,14 +110,13 @@ class UserController extends Controller
     {
         // dd($request->all());
         $data = $request->only([
-            'fullname','email','phone_number','code','status','role_id','id'
+            'fullname', 'email', 'phone_number', 'code', 'status', 'role_id', 'id'
         ]);
         $data['name'] = $data['fullname'];
         $user = User::find($data['id']);
         unset($data['fullname'], $data['id']);
         $user->update($data);
-        return redirect()->back()->with('status','User Updated Successfully!!');
-
+        return redirect()->back()->with('status', 'User Updated Successfully!!');
     }
 
     /**
@@ -130,6 +129,26 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect()->back()->with('status','User Deleted Successfully!!');
+        return redirect()->back()->with('status', 'User Deleted Successfully!!');
+    }
+
+    public function verifyUser($passkey)
+    {
+        $users = User::where('status', 'active')->get();
+        $valid = false;
+        $user_id = null;
+        foreach ($users as $user) {
+
+            if ($user && Hash::check($passkey, $user->password)) {
+                $valid = true;
+                $user_id = $user->id;
+                break;
+            }
+        }
+        if ($valid) {
+            return response(['message' => null, 'data' => $user_id], 200);
+        } else {
+            return response(['data' => null, 'message' => 'User does not exist'], 402);
+        }
     }
 }

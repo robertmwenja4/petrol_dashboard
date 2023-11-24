@@ -55,7 +55,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('shifts/close_shift/{shift_id}', [ShiftController::class, 'closeShift'])->name('shifts.close_shift');
     Route::post('shifts/goods', [ShiftController::class, 'goods'])->name('shifts.goods');
 
-    Route::get('sale/print_invoice/{sale_id}', [SaleController::class, 'fetchSale'])->name('sale.print_invoice');
+    Route::get('print_invoice', [SaleController::class, 'fetchSale'])->name('print_invoice');
+    Route::get('user_verify/{pass_key}', [UserController::class, 'verifyUser'])->name('user.verify');
 });
 Auth::routes();
 

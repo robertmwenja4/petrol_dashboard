@@ -111,6 +111,7 @@
     <script src="{{ asset('core/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('core/app-assets/vendors/js/forms/cleave/cleave.min.js') }}"></script>
     <script src="{{ asset('core/app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
     {{-- <script src="{{ asset('core/app-assets/js/core/jquery.min.js') }}"></script> --}}
 
     @yield('extra-scripts')

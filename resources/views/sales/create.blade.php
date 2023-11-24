@@ -44,7 +44,7 @@
 @endsection
 @section('content')
     <div class="container-fluid bg-white">
-        {{ Form::open(['route' => 'sale.store']) }}
+        {{ Form::open(['route' => 'sale.store', 'id' => 'salesForm']) }}
 
         @include('sales.form')
 
@@ -63,7 +63,44 @@
         };
 
         $('.select2').select2();
+        // open modal
+        $('#recordSaleBtn').click(function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
 
+            if (validateForm()) {
+                $('#passKeyModal').modal('show');
+            } else {
+                alert('Please fill out all required fields.');
+            }
+        });
+        //validate form before opening modal
+        function validateForm() {
+            var customerSelect = $('#customerSelect');
+            var lpoNumber = $('#lpoNumber');
+            var vehicleNumber = $('#vehicleNumber');
+            var driverName = $('#driverName');
+            var productSelect = $('#productSelect');
+            var quantityInput = $('#quantityInput');
+            var productPriceInput = $('#productPriceInput');
+            var totalPriceInput = $('#totalPriceInput');
+
+            // Perform your validation logic here
+            if (
+                customerSelect.val().trim() === '' ||
+                lpoNumber.val().trim() === '' ||
+                vehicleNumber.val().trim() === '' ||
+                driverName.val().trim() === '' ||
+                productSelect.val().trim() === '' ||
+                quantityInput.val().trim() === '' ||
+                productPriceInput.val().trim() === '' ||
+                totalPriceInput.val().trim() === ''
+            ) {
+                return false; // Validation failed
+            }
+
+            return true; // Validation passed
+        }
+        //fetch product details on product selected
         $('#productSelect').change(function() {
             var productId = $(this).val();
 
@@ -83,6 +120,7 @@
                 }
             });
         });
+        //fetch customer details on customer selected
         $('#customerSelect').change(function() {
             var customerId = $(this).val();
 
@@ -112,7 +150,7 @@
                 }
             });
         });
-
+        //on change type(cash quantity)
         $('input[name="input_type"]').change(function() {
             var selectedOption = $(this).val();
 
@@ -140,11 +178,11 @@
             }
 
         });
-
+        //on input change
         $('#quantityInput, #totalPriceInput').on('input', function() {
             updateTotalPrice();
         });
-
+        //calculate quantity / cash
         function updateTotalPrice() {
             var paymentType = $('input[name="input_type"]:checked').val();
 
@@ -168,5 +206,65 @@
                 $('#qty').val(prodQuantity.toFixed(8));
             }
         }
+
+        $('#salesForm').on('submit', function(e) {
+
+            e.preventDefault();
+
+            var data = $(this).serialize();
+            // $("#spinner").show();
+            $("#modalButton").hide();
+            $.ajax({
+                method: "post",
+                url: $(this).attr("action"),
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(result) {
+                    if (result.success == true) {
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: result.msg,
+                            showConfirmButton: false,
+                            timer: 1500,
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        });
+
+                        var url = "{{ route('print_invoice') }}?id=" + result.data.id;
+                        window.open(url, "Receipt", "width=500,height=600");
+                        location.reload();
+                    } else {
+                        $("#modalButton").show();
+                        // $("#spinner").hide();
+
+
+                        Swal.fire({
+                            position: 'top-end',
+                            title: 'Error!',
+                            text: result.msg,
+                            icon: 'error',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        });
+
+                    }
+                }
+            });
+
+
+
+
+
+            newUserSidebar.modal('hide');
+
+        });
     </script>
 @endsection
