@@ -263,7 +263,7 @@
 
 
 
-            newUserSidebar.modal('hide');
+            // newUserSidebar.modal('hide');
 
         });
     </script>

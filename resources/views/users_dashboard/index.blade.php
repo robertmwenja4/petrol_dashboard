@@ -15,7 +15,7 @@
                     <h3 class="mt-2">Shift Management</h3>
                     <div class="card-body">
                         <h4 class="card-text">Create Shift</h4>
-                        <a href="/shift" class="stretched-link"></a>
+                        <a href="{{ route('shift.index') }}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                     <div class="card-body">
 
                         <h4 class="card-text">Make an incoive sale.</h4>
-                        <a href="/sale/create" class="stretched-link"></a>
+                        <a href="{{ route('sale.create') }}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <h3 class="mt-2">Give Cash</h3>
                     <div class="card-body ">
                         <h4 class="card-text">Record cash received</h4>
-                        <a href="/give_cash/create" class="stretched-link"></a>
+                        <a href="{{ route('give_cash.create') }}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>

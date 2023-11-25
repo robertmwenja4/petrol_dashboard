@@ -8,12 +8,7 @@
     </div>
 </div>
 
-
+@include('sales.passkey_modal')
 <div class="row col-2 mt-4">
-
-    @if (@$shift)
-        <button type="submit" class="btn btn-primary btn-lg mx-2">Update</button>
-    @else
-        <button type="submit" class="btn btn-primary btn-lg mx-2">Create</button>
-    @endif
+    <button id="createShiftBtn" type="button" class="btn btn-primary btn-lg mx-2">Create</button>
 </div>

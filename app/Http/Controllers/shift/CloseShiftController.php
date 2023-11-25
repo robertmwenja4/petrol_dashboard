@@ -20,10 +20,9 @@ class CloseShiftController extends Controller
     public function index()
     {
         $close_shifts = CloseShift::all();
-        $shifts = Shift::where('is_readings','yes')->get();
-        return view('close_shifts.index',compact('close_shifts','shifts'));
+        $shifts = Shift::where('is_readings', 'yes')->get();
+        return view('close_shifts.index', compact('close_shifts', 'shifts'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -31,10 +30,9 @@ class CloseShiftController extends Controller
      */
     public function create()
     {
-        $shifts = Shift::where('is_readings','no')->get();
+        $shifts = Shift::where('is_readings', 'no')->get();
         return view('close_shifts.create', compact('shifts'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -46,41 +44,37 @@ class CloseShiftController extends Controller
         // dd($request->all());
         $data = $request->only(['shift_id',]);
         $data_items = $request->only([
-            'user_id','pump_id','product_id','nozzle_id','product_price','balance','amount',
-            'open_stock','category',
+            'user_id', 'pump_id', 'product_id', 'nozzle_id', 'product_price', 'balance', 'amount',
+            'open_stock', 'category',
             'current_stock',
         ]);
         $data_items = modify_array($data_items);
-        
         try {
             DB::beginTransaction();
             $running_shift = Shift::find($data['shift_id']);
             $running_shift->is_readings = 'yes';
             $running_shift->update();
-            
             $shift = CloseShift::create($data);
-
             // $data_items = $input['data_items'];
-            $data_items = array_map(function ($v) use($shift) {
+            $data_items = array_map(function ($v) use ($shift) {
                 return array_replace($v, [
-                    'close_shift_id' => $shift->id, 
+                    'close_shift_id' => $shift->id,
                     'user_id' => auth()->user()->id,
                 ]);
             }, $data_items);
             // dd($data_items);
             CloseShiftItem::insert($data_items);
-            if($shift){
+            if ($shift) {
                 DB::commit();
             }
-            
-        } catch (\Throwable $th) {dd($th);
+        } catch (\Throwable $th) {
+            dd($th);
             //throw $th;
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Creating Closing Shift!!');
         }
         return redirect()->route('close_shift.index')->with('flash_success', 'Shift Close Created Successfully!!');
     }
-
     /**
      * Display the specified resource.
      *
@@ -92,7 +86,6 @@ class CloseShiftController extends Controller
         // $close_shift = CloseShift::find($id);
         return view('close_shifts.view', compact('close_shift'));
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -102,10 +95,9 @@ class CloseShiftController extends Controller
     public function edit(CloseShift $close_shift)
     {
         // $close_shift = CloseShift::find($id);
-        $shifts = Shift::where('is_readings','no')->get();
-        return view('close_shifts.edit', compact('close_shift','shifts'));
+        $shifts = Shift::where('is_readings', 'no')->get();
+        return view('close_shifts.edit', compact('close_shift', 'shifts'));
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -119,38 +111,36 @@ class CloseShiftController extends Controller
         // $close_shift = CloseShift::find($id);
         // $data = $request->only(['shift_id',]);
         $data_items = $request->only([
-            'user_id','pump_id','product_id','nozzle_id','product_price','balance','amount',
-            'open_stock','category',
-            'current_stock','id'
+            'user_id', 'pump_id', 'product_id', 'nozzle_id', 'product_price', 'balance', 'amount',
+            'open_stock', 'category',
+            'current_stock', 'id'
         ]);
         $data_items = modify_array($data_items);
-        
         try {
             DB::beginTransaction();
             // $result = $close_shift->update($data);
-
-            $item_ids = array_map(function ($v) { return $v['id']; }, $data_items);
+            $item_ids = array_map(function ($v) {
+                return $v['id'];
+            }, $data_items);
             $close_shift->close_shift_items()->whereNotIn('id', $item_ids)->delete();
-
             // create or update items
-            foreach($data_items as $item) {
+            foreach ($data_items as $item) {
                 $close_shift_item = CloseShiftItem::firstOrNew(['id' => $item['id']]);
                 $close_shift_item->fill(array_replace($item, ['close_shift_id' => $close_shift['id']]));
                 if (!$close_shift_item->id) unset($close_shift_item->id);
                 $close_shift_item->save();
             }
-            if($close_shift){
+            if ($close_shift) {
                 DB::commit();
             }
-            
-        } catch (\Throwable $th) {dd($th);
+        } catch (\Throwable $th) {
+            dd($th);
             //throw $th;
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Updating Closing Shift!!');
         }
         return redirect()->route('close_shift.index')->with('flash_success', 'Shift Close Updated Successfully!!');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -163,29 +153,27 @@ class CloseShiftController extends Controller
         try {
             DB::beginTransaction();
             $close_shift = CloseShift::find($id);
-            if($close_shift->shift){
+            if ($close_shift->shift) {
                 $close_shift->shift->is_readings = 'no';
                 $close_shift->shift->update();
             }
-            if($close_shift->delete() && $close_shift->close_shift_items->each->delete()){
+            if ($close_shift->delete() && $close_shift->close_shift_items->each->delete()) {
                 DB::commit();
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('flash_error','Close Shift Failed to Delete!!');
+            return redirect()->back()->with('flash_error', 'Close Shift Failed to Delete!!');
         }
-        return redirect()->back()->with('flash_success','Shift Close Deleted Successfully!!');
+        return redirect()->back()->with('flash_success', 'Shift Close Deleted Successfully!!');
     }
-
     public function shift(Request $request)
     {
-        $shift = Shift::with(['close_shift.close_shift_items'=> function($q){
-            $q->where('category','diesel');
+        $shift = Shift::with(['close_shift.close_shift_items' => function ($q) {
+            $q->where('category', 'diesel');
         }])->find($request->shift_id);
-        $close_shift_item_diesel = $shift->close_shift->close_shift_items()->where('category','diesel')->get();
-        $close_shift_item_petrol = $shift->close_shift->close_shift_items()->where('category','petrol')->get();
+        $close_shift_item_diesel = $shift->close_shift->close_shift_items()->where('category', 'diesel')->get();
+        $close_shift_item_petrol = $shift->close_shift->close_shift_items()->where('category', 'petrol')->get();
         // dd($shift->close_shift->close_shift_items);
-     
         $data = [
             'close_shift_item_diesel' => $close_shift_item_diesel,
             'close_shift_item_petrol' => $close_shift_item_petrol,

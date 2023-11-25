@@ -24,18 +24,20 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        $shift = Shift::whereHas('items')
-            ->with('items.pump', 'items.user', 'user')
-            // ->where('status', 'open')
-            ->whereDate('shift_name', '=', date('Y-m-d'))
-            ->first();
-        $users = User::whereHas('role', function ($q) {
-            $q->where('type', 'attendant');
-        })
-            ->pluck('name', 'id');
+        // $shift = Shift::whereHas('items')
+        //     ->with('items.pump', 'items.user', 'user')
+        //     // ->where('status', 'open')
+        //     ->whereDate('shift_name', '=', date('Y-m-d'))
+        //     ->first();
+        // $users = User::whereHas('role', function ($q) {
+        //     $q->where('type', 'attendant');
+        // })
+        //     ->pluck('name', 'id');
 
 
-
+        $data = checkShift();
+        $shift = $data["shift"];
+        $users = $data["users"];
 
         if (!$shift) {
             $date = date('Y-m-d');
@@ -50,16 +52,6 @@ class ShiftController extends Controller
                 return $this->create($date);
             }
         }
-        // $shifts = $shifts->map(function($v){
-        //     // dd($v);
-        //     $start_time = Carbon::createFromFormat('H:i:s', $v->start_time);
-        //     $end_time = Carbon::createFromFormat('H:i:s', $v->end_time);
-
-        //     $v->start_time = $start_time->format('g:i A');
-        //     $v->end_time = $end_time->format('g:i A');
-        //     return $v;
-        // });
-
     }
 
     /**
@@ -81,37 +73,52 @@ class ShiftController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->only(['shift_name']);
+        $data = $request->only(['shift_name', 'pass_key']);
+        $validate = true;
+        $checkuser = verifyUser($data['pass_key']);
+        if (!$checkuser['status']) {
+            $validate = false;
+            $output = [
+                'success' => false,
+                'msg' => 'Invalid Pass Key',
+                'data' => null
+            ];
+        }
+        if ($validate) {
+            try {
+                DB::beginTransaction();
+                $data['created_by'] = $checkuser['user_id'];
+                $shift = Shift::create($data);
 
-        $data["created_by"] = 1;
+                $pumps = Pump::where('status', 'active')->get(['id'])->toArray();
+                $data_items = [];
+                foreach ($pumps as $pump) {
+                    $data_items[] = [
+                        'shift_id' => $shift->id,
+                        'pump_id' => $pump["id"],
+                    ];
+                }
 
-        try {
-            DB::beginTransaction();
-            // $previous_shift = Shift::where('status', 'open')->first();
-            // $previous_shift->status = 'closed';
-            // $previous_shift->update();
-            $shift = Shift::create($data);
+                ShiftItem::insert($data_items);
+                if ($shift) {
+                    DB::commit();
+                    $output = [
+                        'success' => true,
+                        'msg' => 'Shift Created Successfully',
+                        'data' => $shift
+                    ];
+                }
+            } catch (\Throwable $th) {
 
-            $pumps = Pump::where('status', 'active')->get(['id'])->toArray();
-            $data_items = [];
-            foreach ($pumps as $pump) {
-                $data_items[] = [
-                    'shift_id' => $shift->id,
-                    'pump_id' => $pump["id"],
+                DB::rollback();
+                $output = [
+                    'success' => false,
+                    'msg' => 'Error Creating Shift',
+                    'data' => null
                 ];
             }
-
-            ShiftItem::insert($data_items);
-            if ($shift) {
-                DB::commit();
-            }
-        } catch (\Throwable $th) {
-            dd($th);
-            //throw $th;
-            DB::rollback();
-            return redirect()->back()->with('status', 'Error Creating Shift!!');
         }
-        return redirect()->route('shift.index')->with('status', 'Shift Created Successfully!!');
+        return $output;
     }
 
     /**
@@ -234,14 +241,24 @@ class ShiftController extends Controller
         return response()->json(['message' => 'Assignment successful']);
     }
 
-    public function finalizeAllocation($shiftid)
+    public function finalizeAllocation(Request $request)
     {
+        $shiftid = $request->shift_id;
+        $passkey = $request->pass_key;
         $shiftitems = ShiftItem::where('shift_id', $shiftid)->get();
 
+        $allusersactive = true;
+        $output = [];
         foreach ($shiftitems as $shiftitem) {
             // Check if status is inactive
             if ($shiftitem->status == 'inactive') {
-                return response(['message' => 'Allocate all pumps to users in order to complete allocation'], 400);
+                $allusersactive = false;
+                $output = [
+                    'success' => false,
+                    'msg' => 'Allocate all users to their respective pumps',
+                    'data' => null
+                ];
+                break;
             }
 
             // Check for duplicated user id
@@ -251,24 +268,58 @@ class ShiftController extends Controller
                 ->count();
 
             if ($duplicateCount > 0) {
-                return response(['message' => 'Duplicated user in pumps'], 400);
+                $allusersactive = false;
+                $output = [
+                    'success' => false,
+                    'msg' => 'Duplicated user in pumps',
+                    'data' => null
+                ];
+                break;
             }
         }
 
-        $shift = Shift::where('id', $shiftid)->first();
+        if ($allusersactive) {
+            $validate = true;
+            $checkuser = verifyUser($passkey);
 
-        DB::beginTransaction();
-        try {
-            $shift->update([
-                'status' => 'open'
-            ]);
+            if (!$checkuser['status']) {
+                $validate = false;
+                $output = [
+                    'success' => false,
+                    'msg' => 'Invalid Pass Key',
+                    'data' => null
+                ];
+            }
+            if ($validate) {
+                $shift = Shift::where('id', $shiftid)->first();
 
-            DB::commit();
-            return response(['message' => 'Allocation Completed Successfully'], 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response(['message' => $e->getMessage()], 400);
+                DB::beginTransaction();
+                try {
+                    $shift->update([
+                        'status' => 'open',
+                        'allocated_by' => $checkuser['user_id']
+                    ]);
+
+                    DB::commit();
+                    $output = [
+                        'success' => true,
+                        'msg' => 'Allocation Completed Successfully',
+                        'data' => $shift
+                    ];
+                    // return response(['message' => 'Allocation Completed Successfully'], 200);
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    $output = [
+                        'success' => false,
+                        'msg' => 'Error Creating Shift',
+                        'data' => null
+                    ];
+                    // return response(['message' => $e->getMessage()], 400);
+                }
+            }
         }
+
+        return $output;
     }
 
     public function loginUser(Request $request, $shiftitem)
@@ -290,32 +341,67 @@ class ShiftController extends Controller
 
     }
 
-    public function closeShift($shiftid)
+    public function closeShift(Request $request)
     {
+        $shiftid = $request->shift_id;
+        $passkey = $request->pass_key;
         $shiftitems = ShiftItem::where('shift_id', $shiftid)->get();
-
+        $allusersinactive = true;
+        $output = [];
         foreach ($shiftitems as $shiftitem) {
             // Check if status is active
             if ($shiftitem->status == 'active') {
-                return response(['message' => 'Log out all users in order to close shift'], 400);
+                $allusersinactive = false;
+                $output = [
+                    'success' => false,
+                    'msg' => 'Log out all users in order to close shift',
+                    'data' => null
+                ];
+                break;
             }
         }
 
-        $shift = Shift::where('id', $shiftid)->first();
+        if ($allusersinactive) {
+            $validate = true;
+            $checkuser = verifyUser($passkey);
 
-        DB::beginTransaction();
-        try {
-            $shift->update([
-                'status' => 'closed',
-                'end_date' => date('Y-m-d H:i:s')
-            ]);
+            if (!$checkuser['status']) {
+                $validate = false;
+                $output = [
+                    'success' => false,
+                    'msg' => 'Invalid Pass Key',
+                    'data' => null
+                ];
+            }
+            if ($validate) {
 
-            DB::commit();
-            return response(['message' => 'Shift Closed Successfully'], 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response(['message' => $e->getMessage()], 400);
+                $shift = Shift::where('id', $shiftid)->first();
+
+                DB::beginTransaction();
+                try {
+                    $shift->update([
+                        'status' => 'closed',
+                        'end_date' => date('Y-m-d H:i:s'),
+                        'closed_by' => $checkuser['user_id']
+                    ]);
+
+                    DB::commit();
+                    $output = [
+                        'success' => true,
+                        'msg' => 'Shift Closed Successfully',
+                        'data' => $shift
+                    ];
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    $output = [
+                        'success' => false,
+                        'msg' => 'Error Creating Shift',
+                        'data' => null
+                    ];
+                }
+            }
         }
+        return $output;
     }
 
     public function goods(Request $request)

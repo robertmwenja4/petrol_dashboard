@@ -47,12 +47,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('sales/search', [SaleController::class, 'search'])->name('sales.search');
     Route::post('print/shift', [CloseShiftController::class, 'shift'])->name('print.shift');
     Route::resource('nozzle', NozzleController::class);
+    //sales
     Route::get('sale/get-product/{product_id}', [SaleController::class, 'findProduct'])->name('sale.get_product');
     Route::get('sale/get-customer/{customer_id}', [SaleController::class, 'findCustomer'])->name('sale.get_customer');
+    //user shift management
     Route::put('shifts/update/{shift_id}', [ShiftController::class, 'assignUser'])->name('shifts.update');
-    Route::post('shifts/finalize_allocation/{shift_id}', [ShiftController::class, 'finalizeAllocation'])->name('shifts.finalize_allocation');
+    Route::post('shifts/finalize_allocation', [ShiftController::class, 'finalizeAllocation'])->name('shift.finalize_allocation');
     Route::put('shifts/login/{shift_id}', [ShiftController::class, 'loginUser'])->name('shifts.login');
-    Route::post('shifts/close_shift/{shift_id}', [ShiftController::class, 'closeShift'])->name('shifts.close_shift');
+    Route::post('shifts/close_shift', [ShiftController::class, 'closeShift'])->name('shift.close_shift');
+
+    //admin shift
     Route::post('shifts/goods', [ShiftController::class, 'goods'])->name('shifts.goods');
 
     Route::get('print_invoice', [SaleController::class, 'fetchSale'])->name('print_invoice');

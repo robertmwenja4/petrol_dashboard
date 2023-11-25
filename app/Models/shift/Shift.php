@@ -14,7 +14,7 @@ class Shift extends Model
     use HasFactory;
 
     protected $fillable = [
-        'shift_name', 'created_by', 'status', 'end_date'
+        'shift_name', 'created_by', 'status', 'end_date', 'allocated_by', 'closed_by'
     ];
 
     public function items()

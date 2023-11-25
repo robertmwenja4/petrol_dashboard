@@ -11,6 +11,7 @@
                 <h4>Shift Name : {{ $shift->shift_name }}</h4>
                 <h4>Created By : {{ $shift->user->name }}</h4>
 
+
             </div>
         </div>
     </div>
@@ -24,15 +25,19 @@
                 <h2>Shift Allocation</h2>
             </div>
             <div id="message" class="my-2 px-2"></div>
-            <div class="row">
-                <div class="mx-auto">
-                    {{ Form::button('Complete Shift Allocation', ['class' => 'btn btn-lg btn-danger col-3 py-2 mx-4 float-end ', 'data-shift-id' => $shift->id, 'onclick' => 'finalizeAllocation(this)']) }}
+            <form id="allocateForm" action="{{ route('shift.finalize_allocation') }}" method="POST">
+                @csrf
+                @include('sales.passkey_modal')
+                <div class="row">
+                    {{ Form::hidden('shift_id', $shift->id) }}
+                    <div class="mx-auto">
+                        {{ Form::button('Complete Shift Allocation', ['class' => 'btn btn-lg btn-danger col-3 py-2 mx-4 float-end ', 'id' => 'finalizeShiftBtn']) }}
+                    </div>
                 </div>
-            </div>
 
 
 
-
+            </form>
             <div class="card-body table-responsive">
                 {{-- user-list-table --}}
                 <table class="table table-bordered" id="shiftsTbl">
@@ -71,10 +76,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- Modal to add new user starts-->
-            @include('shifts.partials.shift_modal')
-            @include('shifts.partials.shift_edit_modal')
-            <!-- Modal to add new user Ends-->
+
         </div>
     </div>
 @endsection
@@ -123,33 +125,63 @@
             });
         }
 
-        function finalizeAllocation(button) {
+        $('#finalizeShiftBtn').click(function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            $('#passKeyModal').modal('show');
+        });
+        $('#allocateForm').on('submit', function(e) {
 
+            e.preventDefault();
 
-            var shiftId = $(button).data('shift-id');
-
+            var data = $(this).serialize();
+            // $("#spinner").show();
+            $("#modalButton").hide();
             $.ajax({
-                method: 'POST',
-                url: 'shifts/finalize_allocation/' + shiftId,
+                method: "post",
+                url: $(this).attr("action"),
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(result) {
+                    if (result.success == true) {
 
-                success: function(response) {
-                    // console.log(response.message);
-                    // Optionally update the UI or perform other actions on success
-                    // Show a success message to the user
-                    showMessage(response.message, "success");
-                    setTimeout(function() {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: result.msg,
+                            showConfirmButton: false,
+                            timer: 1500,
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        });
+
+                        // var url = "{{ route('print_invoice') }}?id=" + result.data.id;
+                        // window.open(url, "Receipt", "width=500,height=600");
                         location.reload();
-                    }, 2000);
+                    } else {
+                        $("#modalButton").show();
+                        // $("#spinner").hide();
 
-                },
-                error: function(error) {
-                    console.log(error);
-                    showMessage(error.responseJSON.message, "danger");
 
-                    // Handle errors or display error messages
+                        Swal.fire({
+                            position: 'top-end',
+                            title: 'Error!',
+                            text: result.msg,
+                            icon: 'error',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        });
+
+                    }
                 }
             });
-        }
+
+        });
 
 
         function showMessage(message, color) {

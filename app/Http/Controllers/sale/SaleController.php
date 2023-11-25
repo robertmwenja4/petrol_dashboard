@@ -5,6 +5,7 @@ namespace App\Http\Controllers\sale;
 use App\Models\User;
 use App\Models\pump\Pump;
 use App\Models\sale\Sale;
+use App\Models\shift\Shift;
 use Illuminate\Http\Request;
 use App\Models\product\Product;
 use App\Models\customer\Customer;
@@ -43,7 +44,26 @@ class SaleController extends Controller
         $products = Product::all()->pluck('name', 'id');
 
         $pumps = Pump::where('status', 'active')->get()->pluck('name', 'id');
-        return view('sales.create', compact('customers', 'products', 'pumps'));
+        $data = checkShift();
+        $shift = $data["shift"];
+
+
+        if (!$shift) {
+            $date = date('Y-m-d');
+            // Instead of view, return the route with parameters
+            return route('shift.create', compact('date'));
+        } else {
+            if ($shift->status == 'pending') {
+                return redirect()->route('shift.index');
+                // return view('shifts.index', compact('shift', 'users'));
+            } else if ($shift->status == 'open') {
+                return view('sales.create', compact('customers', 'products', 'pumps', 'shift'));
+            } else if ($shift->status == 'closed') {
+                $date = date('Y-m-d', strtotime("+1 day"));
+
+                return redirect()->route('shift.index');
+            }
+        }
     }
 
     /**
@@ -57,7 +77,6 @@ class SaleController extends Controller
         $data = $request->except('_token');
         $tid = $sale->max('tid');
         $data['tid'] = $tid + 1;
-        $data['shift_id'] = Auth()->user()->id;
         $data['type'] = 'credit';
         $validate = true;
         $checkuser = verifyUser($data['pass_key']);

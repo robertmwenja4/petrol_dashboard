@@ -96,6 +96,7 @@
         <div class="card-body">
             <div class="row">
                 <h5 class="mb-3"><u>Sales details</u> </h5>
+                {{ Form::hidden('shift_id', $shift->id) }}
             </div>
             <div class="row align-items-center mb-3">
                 <label class="col-md-3 col-sm-12" for="product">Pump</label>

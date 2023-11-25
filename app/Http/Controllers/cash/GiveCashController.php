@@ -29,8 +29,27 @@ class GiveCashController extends Controller
     public function create()
     {
         $pumps = Pump::where('status', 'active')->get()->pluck('name', 'id');
+        $data = checkShift();
+        $shift = $data["shift"];
 
-        return view('give_cash.create', compact('pumps'));
+
+        if (!$shift) {
+            $date = date('Y-m-d');
+            // Instead of view, return the route with parameters
+            return route('shift.create', compact('date'));
+        } else {
+            if ($shift->status == 'pending') {
+                return redirect()->route('shift.index');
+                // return view('shifts.index', compact('shift', 'users'));
+            } else if ($shift->status == 'open') {
+                return view('give_cash.create', compact('pumps', 'shift'));
+            } else if ($shift->status == 'closed') {
+                $date = date('Y-m-d', strtotime("+1 day"));
+
+                return redirect()->route('shift.index');
+            }
+        }
+        // return view('give_cash.create', compact('pumps'));
     }
 
     /**
@@ -44,25 +63,46 @@ class GiveCashController extends Controller
         $data = $request->except('_token');
         $tid = $giveCash->max('tid');
         $data['tid'] = $tid + 1;
-        $data['user_id'] = Auth()->user()->id;
-        $data['shift_id'] = Auth()->user()->id;
-
-        try {
-            DB::beginTransaction();
-
-            $sale = GiveCash::create($data);
-
-
-            if ($sale) {
-                DB::commit();
-            }
-        } catch (\Throwable $th) {
-            dd($th);
-            //throw $th;
-            DB::rollback();
-            return redirect()->back()->with('status', 'Error Creating Cash Issuance!!');
+        $validate = true;
+        $checkuser = verifyUser($data['pass_key']);
+        if (!$checkuser['status']) {
+            $validate = false;
+            $output = [
+                'success' => false,
+                'msg' => 'Invalid Pass Key',
+                'data' => null
+            ];
         }
-        return redirect()->route('give_cash.create')->with('status', 'Cash issuance Created Successfully!!');
+        if ($validate) {
+
+            try {
+                DB::beginTransaction();
+
+                $data['user_id'] = $checkuser['user_id'];
+
+                $sale = GiveCash::create($data);
+
+
+                if ($sale) {
+                    DB::commit();
+                    $output = [
+                        'success' => true,
+                        'msg' => 'Cash Record Created Successfully',
+                        'data' => $sale
+                    ];
+                }
+            } catch (\Exception $e) {
+
+                DB::rollback();
+                $output = [
+                    'success' => false,
+                    'msg' => 'Error Creating Cash Record ',
+                    'data' => null
+                ];
+            }
+        }
+
+        return $output;
     }
 
     /**

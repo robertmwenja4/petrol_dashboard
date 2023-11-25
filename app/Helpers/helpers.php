@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\shift\Shift;
 use Illuminate\Support\Facades\Hash;
 
 // modify input array
@@ -41,4 +42,21 @@ function verifyUser($passkey)
     $ouput = ['status' => $valid, 'user_id' => $user_id];
 
     return $ouput;
+}
+
+function checkShift()
+{
+    $shift = Shift::whereHas('items')
+        ->with('items.pump', 'items.user', 'user')
+        ->whereDate('shift_name', '=', date('Y-m-d'))
+        ->orWhereDate('shift_name', '=', date('Y-m-d', strtotime("+1 day")))
+        ->orderBy('id', 'desc')
+        ->first();
+
+    $users = User::whereHas('role', function ($q) {
+        $q->where('type', 'attendant');
+    })
+        ->pluck('name', 'id');
+
+    return ["shift" => $shift, "users" => $users];
 }
