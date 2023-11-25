@@ -17,6 +17,7 @@ class Sale extends Model
     protected $fillable = [
         'type',
         'product_id',
+        'nozzle_id',
         'rate',
         'qty',
         'total_price',

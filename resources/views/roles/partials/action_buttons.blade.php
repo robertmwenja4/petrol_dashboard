@@ -1,5 +1,6 @@
 <a class="btn btn-sm btn-primary" href="{{route('role.show', $role->id)}}"><i data-feather="eye"></i></a>
-<a class="btn btn-sm btn-secondary btnEdit" data-toggle="modal" data-target="#editModal" data-role-id="{{ $role->id }}" href="javascript:"><i data-feather="edit"></i></a>
+<a class="btn btn-sm btn-secondary btnEdit" data-toggle="modal" data-target="#editModal{{ $role->id }}" data-role-id="{{ $role->id }}" href="javascript:"><i data-feather="edit"></i></a>
+{{-- <a class="btn btn-sm btn-secondary btnEdit" data-toggle="modal" data-target="#editModal" data-role-id="{{ $role->id }}" href="javascript:"><i data-feather="edit"></i></a> --}}
 <form action="{{ route('role.destroy', ['role' => $role->id]) }}" method="POST">
     @csrf
     @method('DELETE')

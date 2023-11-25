@@ -179,7 +179,7 @@
                                                     </div>
                                                     <div class="mb-1">
                                                         <label class="form-label" for="user-role">User Role</label>
-                                                        <select id="role" name="role_id" class="select2 form-select">
+                                                        <select id="role" name="role_id" class="form-select">
                                                             @foreach ($roles as $role)
                                                                 <option value="{{$role->id}}" {{$role->id == @$user->role_id ? 'selected' : ''}}>{{$role->name}}</option>
                                                             @endforeach
@@ -187,9 +187,9 @@
                                                     </div>
                                                     <div class="mb-1">
                                                         <label class="form-label" for="status">User Status</label>
-                                                        <select id="status" name="status" class="select2 form-select">
+                                                        <select id="status" name="status" class="form-select">
                                                             @foreach (['pending','active','inactive'] as $status)
-                                                                <option value="{{$status}}">{{ucfirst($status)}}</option>
+                                                                <option value="{{$status}}" {{$status == $user->status ? 'selected': ''}}>{{ucfirst($status)}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>

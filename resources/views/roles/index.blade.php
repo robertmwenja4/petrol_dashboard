@@ -122,17 +122,52 @@
                                         <td>{{$role->name}}</td>
                                         <td>{{$role->created_at}}</td>
                                         <td>
-                                            @include('roles.partials.action_buttons')
+                                            {{-- @include('roles.partials.action_buttons') --}}
+                                            <a class="btn btn-sm btn-primary" href="{{route('role.show', $role->id)}}"><i data-feather="eye"></i></a>
+                                            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{$role->id}}">
+                                                <i data-feather="edit"></i>
+                                              </button>
+                                            <form action="{{ route('role.destroy', ['role' => $role->id]) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger" type="submit"><i data-feather="trash"></i></button>
+
+                                            </form>
+
                                         </td>
                                         
                                     </tr>
+                                    <div class="modal fade" id="exampleModal{{$role->id}}" tabindex="0" aria-labelledby="exampleModalLabel{{$role->id}}" aria-hidden="false">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="exampleModalLabel{{$role->id}}">Edit role</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{route('role.update', ['role' => $role->id])}}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="mb-1">
+                                                        <label class="form-label" for="basic-icon-default-name">Role Name</label>
+                                                        <input type="text" class="form-control dt-shift-name" value="{{$role->name}}" id="name" placeholder="eg. Admin" name="name" />
+                                                    </div>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </form>
+                                            </div>
+                                            
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <!-- Modal to add new user starts-->
+                    <!-- Modal to add new role starts-->
                     @include('roles.partials.role_modal')
-                    @include('roles.partials.role_edit_modal')
+                    {{-- @include('roles.partials.role_edit_modal') --}}
                     <!-- Modal to add new user Ends-->
                 </div>
                 <!-- list and filter end -->
@@ -164,7 +199,7 @@
             // Populate the modal with role data
             $('#editname').val(selectedrole.name);
             $('#editroleId').val(selectedrole.id);
-            $('#editModal').modal('show');
+            $('#exampleModal').modal('show');
         });
 
         $("#editForm").submit(function (e) {
@@ -179,7 +214,7 @@
                 data: formData,
                 success: function (data) {
                     // Handle success, e.g., close the modal or update the table
-                    $("#editModal").modal("hide");
+                    $("#exampleModal").modal("hide");
                     // Update the table or perform any other necessary actions
                 },
                 error: function (error) {

@@ -9,6 +9,7 @@ use App\Models\shift\CloseShiftItem;
 use DB;
 use App\Models\shift\Shift;
 use Illuminate\Support\Facades\Response;
+use App\Models\User;
 
 class CloseShiftController extends Controller
 {
@@ -102,7 +103,7 @@ class CloseShiftController extends Controller
     public function edit(CloseShift $close_shift)
     {
         // $close_shift = CloseShift::find($id);
-        $shifts = Shift::where('is_readings','no')->get();
+        $shifts = Shift::get();
         return view('close_shifts.edit', compact('close_shift','shifts'));
     }
 
@@ -185,10 +186,88 @@ class CloseShiftController extends Controller
         $close_shift_item_diesel = $shift->close_shift->close_shift_items()->where('category','diesel')->get();
         $close_shift_item_petrol = $shift->close_shift->close_shift_items()->where('category','petrol')->get();
         // dd($shift->close_shift->close_shift_items);
-     
+
+        $shift_item = Shift::where('id',$request->shift_id )->with([
+            'close_shift.close_shift_items',
+            'sales',
+            'sales.user',
+            'cash',
+        ])->get();
+        // Accessing the connected data
+        // $userFromSales = $shift_item->sales ? $shift_item->sales->user :'';
+        // dd($shift_item);
+        // $pumpAllocated = $shift_item->closeShift->closeShiftItems->first()->pump_allocated;
+        // $totalAmountFromSales = $shift_item->sales->sum('amount');
+        // $amountRecordedFromCloseShiftItem = $shift_item->closeShift->closeShiftItems->sum('amount_recorded');
+        // $cashCollected = $shift_item->cash->amount_collected;
+        // $shift_item = $shift_item->sales()
+        // dd($shift_item);
+        $sales = [];
+        foreach($shift_item as $item){
+            $sales[] = $item->sales->groupBy('user_id')->map(function($q) use($item){
+                // dd($q->first()->pump_id);
+                // dd($item->cash->where('user_id', $q->first()->user_id)->sum('amount'));
+                $q->user_name = $q->first()->user->name;
+                $q->price = $q->sum('total_price');
+                $q->pump_name = $item->close_shift->close_shift_items->where('pump_id', $q->first()->pump_id)->first()->pump->name;
+                $q->amount = $item->close_shift->close_shift_items->where('pump_id', $q->first()->pump_id)->first()->amount;
+                $q->give_cash = $item->cash->where('user_id', $q->first()->user_id)->sum('amount');
+                return $q;
+            });
+        }
+        // dd($sales);
+        $users = User::with(['sales'=> function($q) use($request){
+            $q->with(['shift'=> function($q) use($request){
+                $q->where('id',$request->shift_id);
+                $q->with('close_shift.close_shift_items');
+            }]);
+        }])->get();
+        $user_sales = [];
+        // dd($users);
+        foreach ($users as $user) {
+            if(count($user->sales) > 0){
+            //    dd($user);
+            $user_sales[] = $user->sales->groupBy('product_id')->map(function($q){
+                $q->user_name = $q->first()->user->name;
+                $q->pump_name = $q->first()->pump->code;
+                $q->product_name = $q->first()->product->description;
+                $q->sales_date = @$q->first()->shift->shift_name;
+                $q->sales_type = $q->first()->type;
+                $q->qty = $q->sum('qty');
+                $q->amount = $q->sum('total_price');
+                // dd($q->first()->shift->close_shift->close_shift_items->sum('balance'));
+                $q->actual_qty = @$q->first()->shift->close_shift->close_shift_items->sum('balance')?: 0;
+                $q->actual_amount = @$q->first()->shift->close_shift->close_shift_items->sum('amount');
+                if($q->actual_qty > $q->qty){
+
+                    $q->qty_diff =  $q->actual_qty - $q->qty;
+                    $q->amt_diff =  $q->actual_amount - $q->amount;
+                }else{
+                    $q->qty_diff =  $q->actual_qty;
+                    $q->amt_diff =  $q->actual_amount;
+                }
+                if($q->first()->product->category == 'super'){
+                    //user Diff
+                }
+                return $q;
+            });
+           }
+        }
+        // dd($user_sales);
+        // foreach ($user_sales as $sale) {
+        //     foreach($sale as $s){
+
+        //         dd($s);
+        //     }
+        // }
         $data = [
             'close_shift_item_diesel' => $close_shift_item_diesel,
             'close_shift_item_petrol' => $close_shift_item_petrol,
+            'shifts' => $shift_item,
+            'sales' => $sales,
+            'user_sales' => $user_sales,
+            'shift' => $shift,
+
         ];
         $html = view('prints.print_shift_report', $data)->render();
         $pdf = new \Mpdf\Mpdf();

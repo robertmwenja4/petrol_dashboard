@@ -21,6 +21,7 @@ class CreateGiveCashesTable extends Migration
             $table->unsignedBigInteger('shift_id');
             $table->decimal('amount', 16, 4);
             $table->enum('status', ['pending', 'approved','rejected'])->default('pending');
+            $table->string('approve_note')->nullable();
             $table->timestamps();
         });
     }

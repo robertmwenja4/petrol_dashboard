@@ -218,7 +218,7 @@
                 <tr>
                     <td>{{ @$sale->pump->name }}</td>
                     <td>{{ $sale->created_at }}</td>
-                    <td>{{ $sale->product->description }}</td>
+                    <td>{{ @$sale->product->description }}</td>
                     <td>{{ @$sale->product->name }}</td>
                     <td>{{ $sale->qty }}</td>
                     <td>{{ $sale->total_price }}</td>

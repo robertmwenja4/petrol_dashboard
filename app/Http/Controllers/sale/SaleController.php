@@ -59,7 +59,7 @@ class SaleController extends Controller
         $data['tid'] = $tid + 1;
         $data['user_id'] = Auth()->user()->id;
         $data['shift_id'] = Auth()->user()->id;
-        $data['type'] = 'credit';
+        $data['type'] = 'invoice';
         try {
             DB::beginTransaction();
 

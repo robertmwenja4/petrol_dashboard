@@ -102,9 +102,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        dd($request->all());
+        // dd($request->all(),$user);
+        $data = $request->only([
+            'fullname','email','phone_number','code','status','role_id'
+        ]);
+        $data['name'] = $data['fullname'];
+        // $user = User::find($data['id']);
+        unset($data['fullname']);
+        $user->update($data);
+        return redirect()->back()->with('flash_success','User Updated Successfully!!');
     }
     public function update_user(Request $request)
     {
