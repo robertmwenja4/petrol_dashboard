@@ -16,8 +16,10 @@ class CreateShiftsTable extends Migration
         Schema::create('shifts', function (Blueprint $table) {
             $table->id();
             $table->date('shift_name');
-            $table->enum('status', ['open', 'closed'])->default('open');
+            $table->enum('status', ['open', 'closed', 'pending'])->default('pending');
             $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('allocated_by')->nullable();
+            $table->unsignedBigInteger('closed_by')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->timestamps();
         });
