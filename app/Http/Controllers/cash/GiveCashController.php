@@ -208,4 +208,14 @@ class GiveCashController extends Controller
         }
         return redirect()->route('give_cash.index')->with('flash_success', 'Approved Successfully!!');
     }
+
+    public function fetchCashGiven(Request $request)
+    {
+        $id = $request->id;
+        $cash = GiveCash::whereHas('user')
+            ->whereHas('pump')
+            ->where('id', $id)->first();
+        // dd($sale);
+        return view('prints.print_cash_receipt', compact('cash'));
+    }
 }

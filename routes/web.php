@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('give_cash/approve', [GiveCashController::class, 'approve'])->name('give_cash.approve');
 
     Route::get('print_invoice', [SaleController::class, 'fetchSale'])->name('print_invoice');
+    Route::get('print_cash_receipt', [GiveCashController::class, 'fetchCashGiven'])->name('print_cash_receipt');
     Route::get('user_verify/{pass_key}', [UserController::class, 'verifyUser'])->name('user.verify');
 });
 Auth::routes();

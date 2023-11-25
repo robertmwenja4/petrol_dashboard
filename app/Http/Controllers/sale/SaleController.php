@@ -215,6 +215,6 @@ class SaleController extends Controller
             ->whereHas('pump')
             ->where('id', $id)->first();
         // dd($sale);
-        return view('sales.print_invoice', compact('sale'));
+        return view('prints.print_invoice', compact('sale'));
     }
 }

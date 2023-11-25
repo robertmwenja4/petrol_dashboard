@@ -75,8 +75,8 @@
                             buttonsStyling: false
                         });
 
-                        // var url = "{{ route('print_invoice') }}?id=" + result.data.id;
-                        // window.open(url, "Receipt", "width=500,height=600");
+                        var url = "{{ route('print_cash_receipt') }}?id=" + result.data.id;
+                        window.open(url, "Receipt", "width=500,height=600");
                         location.reload();
                     } else {
                         $("#modalButton").show();
