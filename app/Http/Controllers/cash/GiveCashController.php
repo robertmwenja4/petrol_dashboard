@@ -8,6 +8,8 @@ use App\Models\cash\GiveCash;
 use App\Models\product\Product;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\shift\Shift;
+use App\Models\User;
 
 class GiveCashController extends Controller
 {
@@ -18,7 +20,8 @@ class GiveCashController extends Controller
      */
     public function index()
     {
-        //
+        $give_cashs = GiveCash::all();
+        return view('give_cash.index', compact('give_cashs'));
     }
 
     /**
@@ -111,9 +114,9 @@ class GiveCashController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(GiveCash $give_cash)
     {
-        //
+        return view('give_cash.view', compact('give_cash'));
     }
 
     /**
@@ -122,9 +125,12 @@ class GiveCashController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(GiveCash $give_cash)
     {
-        //
+        $pumps = Pump::where('status', 'active')->get(['id', 'name']);
+        $shifts = Shift::all();
+        $users = User::all();
+        return view('give_cash.edit', compact('give_cash', 'users', 'shifts', 'pumps'));
     }
 
     /**
@@ -134,9 +140,26 @@ class GiveCashController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, GiveCash $give_cash)
     {
-        //
+        $data = $request->except('_token');
+        // dd($data);
+        try {
+            DB::beginTransaction();
+
+            $give_cash->update($data);
+
+
+            if ($give_cash) {
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+            //throw $th;
+            DB::rollback();
+            return redirect()->back()->with('flash_error', 'Error Updating Cash Issuance!!');
+        }
+        return redirect()->route('give_cash.index')->with('flash_success', 'Cash issuance Updated Successfully!!');
     }
 
     /**
@@ -145,8 +168,44 @@ class GiveCashController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(GiveCash $give_cash)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+
+            if ($give_cash->delete()) {
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+            //throw $th;
+            DB::rollback();
+            return redirect()->back()->with('flash_error', 'Error Deleting Cash Issuance!!');
+        }
+        return redirect()->route('give_cash.index')->with('flash_success', 'Cash issuance Deleted Successfully!!');
+    }
+
+    public function approve(Request $request)
+    {
+        // dd($request->all());
+        $data = $request->only(['status', 'approve_note']);
+        $give_cash = GiveCash::find($request->id);
+        try {
+            DB::beginTransaction();
+
+            $give_cash->update($data);
+
+
+            if ($give_cash) {
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+            //throw $th;
+            DB::rollback();
+            return redirect()->back()->with('flash_error', 'Error Approving Failed!!');
+        }
+        return redirect()->route('give_cash.index')->with('flash_success', 'Approved Successfully!!');
     }
 }

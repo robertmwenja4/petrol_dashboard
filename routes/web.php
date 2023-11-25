@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
 
     //admin shift
     Route::post('shifts/goods', [ShiftController::class, 'goods'])->name('shifts.goods');
+    Route::post('give_cash/approve', [GiveCashController::class, 'approve'])->name('give_cash.approve');
 
     Route::get('print_invoice', [SaleController::class, 'fetchSale'])->name('print_invoice');
     Route::get('user_verify/{pass_key}', [UserController::class, 'verifyUser'])->name('user.verify');

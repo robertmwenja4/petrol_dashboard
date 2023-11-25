@@ -26,7 +26,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
+                    {{-- <div class="col-lg-3 col-sm-6">
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <!-- list and filter start -->
                 <div class="card">
@@ -78,7 +78,7 @@
                         {{-- <button type="button" id="btnPop" class="btn btn-primary" style="margin-right: 0;">
                             Add close_shift
                         </button> --}}
-                        <a href="{{route('close_shift.create')}}" class="btn btn-primary">Add close_shift</a>
+                        <a href="{{route('close_shift.create')}}" class="btn btn-primary">Create CloseShift</a>
                         {{-- @include('close_shift.partials.user_modal') --}}
                     </div>
                     <div class="card-body border-bottom">
@@ -88,8 +88,8 @@
                             
                             <div class="row">
                                 <div class="col-md-4 user_role">
-                                    <label for="shift">Search Shift</label>
-                                    <select name="shift_id" id="shift" class="select2 form-select" data-placeholder="Search Shift">
+                                    {{-- <label for="shift">Search Shift</label> --}}
+                                    <select name="shift_id" id="shift" class="select2 form-select" data-placeholder="Search Shift" required>
                                         <option value="">Search Shift</option>
                                         @foreach ($shifts as $shift)
                                             <option value="{{$shift->id}}">{{$shift->shift_name}}</option>
@@ -97,6 +97,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4 user_plan">
+
                                     <button type="submit" class="btn btn-primary btn-lg">Print</button>
                                 </div>
                                 <div class="col-md-4 user_status"></div>

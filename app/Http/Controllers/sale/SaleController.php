@@ -77,7 +77,7 @@ class SaleController extends Controller
         $data = $request->except('_token');
         $tid = $sale->max('tid');
         $data['tid'] = $tid + 1;
-        $data['type'] = 'credit';
+        $data['type'] = 'invoice';
         $validate = true;
         $checkuser = verifyUser($data['pass_key']);
         if (!$checkuser['status']) {

@@ -73,9 +73,11 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $data = $request->all();
+        $role->update($data);
+        return redirect()->back()->with('flash_success','Role Updated Successfully!!');
     }
 
     /**
@@ -94,8 +96,8 @@ class RolesController extends Controller
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('status','Role Failed to Delete!!');
+            return redirect()->back()->with('flash_error','Role Failed to Delete!!');
         }
-        return redirect()->back()->with('status','Role Deleted Successfully!!');
+        return redirect()->back()->with('flash_success','Role Deleted Successfully!!');
     }
 }

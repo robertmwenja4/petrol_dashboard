@@ -6,7 +6,7 @@
     <div class="header-navbar-shadow"></div>
     <div class="card">
         <div class="card-header">
-            <h4>Create close_shift</h4>
+            <h4>Edit Close Shift</h4>
             <a href="{{route('close_shift.index')}}" class="btn btn-primary">List</a>
         </div>
         <div class="card-body">

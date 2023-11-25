@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\pump\Pump;
 use App\Models\shift\CloseShift;
+use App\Models\cash\GiveCash;
+use App\Models\sale\Sale;
 
 class Shift extends Model
 {
@@ -33,5 +35,17 @@ class Shift extends Model
     public function pump()
     {
         return $this->belongsTo(Pump::class, 'pump_id');
+    }
+    public function cash()
+    {
+        return $this->hasMany(GiveCash::class);
+    }
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+    public function sales_report()
+    {
+        return $this->hasMany(Sale::class)->groupBy('user_id');
     }
 }
