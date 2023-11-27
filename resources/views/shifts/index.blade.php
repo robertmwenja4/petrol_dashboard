@@ -147,7 +147,7 @@
                     if (result.success == true) {
 
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'top',
                             icon: 'success',
                             title: result.msg,
                             showConfirmButton: false,
@@ -167,7 +167,7 @@
 
 
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'top',
                             title: 'Error!',
                             text: result.msg,
                             icon: 'error',

@@ -70,7 +70,16 @@
             if (validateForm()) {
                 $('#passKeyModal').modal('show');
             } else {
-                alert('Please fill out all required fields.');
+                Swal.fire({
+                    position: 'top',
+                    title: 'Error!',
+                    text: 'Please fill out all required fields.',
+                    icon: 'error',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
             }
         });
         //validate form before opening modal
