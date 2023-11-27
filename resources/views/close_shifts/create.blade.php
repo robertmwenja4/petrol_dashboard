@@ -4,9 +4,27 @@
 <div class="app-content content ">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
+    <div class="content-header row">
+        @if(session('flash_success'))
+            <div class="alert bg-success alert-dismissible m-1" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <strong>Success!</strong> {!!session('flash_success')!!}
+            </div>
+        @endif
+        @if(session('flash_error'))
+            <div class="alert bg-danger alert-dismissible m-1" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <strong>Error!</strong> {!!session('flash_error')!!}
+            </div>
+        @endif
+    </div>
     <div class="card">
         <div class="card-header">
-            <h4>Create close_shift</h4>
+            <h4>Create Close Shift</h4>
             <a href="{{route('close_shift.index')}}" class="btn btn-primary">List</a>
         </div>
         <div class="card-body">
@@ -77,18 +95,19 @@
         productRow(v,i) {
             return `
                 <tr>
-                    <td>${i+1}</td>    
+                    <td>${v.user_name}</td>    
                     <td>${v.pump_name}</td>    
                     <td>${v.code}</td>    
                     <td>${v.product_name}</td>    
-                    <td><input name="open_stock[]" id="open_stock" class="form-control open_stock" value="${v.opening_stock}" readonly></td> 
-                    <td><input name="current_stock[]" id="current_stock" class="form-control current_stock" ></td>
-                    <td><input name="balance[]" id="balance" class="form-control balance" readonly></td>
+                    <td width="30%"><input name="open_stock[]" id="open_stock" class="form-control open_stock" value="${v.opening_stock}" readonly></td> 
+                    <td width="30%"><input name="current_stock[]" id="current_stock" class="form-control current_stock" ></td>
+                    <td width="30%"><input name="balance[]" id="balance" class="form-control balance" readonly></td>
                     <td width="30%"><input name="amount[]" id="amount" class="form-control amount" readonly></td>
                     <input type="hidden" name="product_id[]" id="product_id" value="${v.product_id}">
                     <input type="hidden" name="product_price[]" class="product_price" id="product_price" value="${v.product_price}">
                     <input type="hidden" name="category[]" class="category" id="category" value="${v.category}">
                     <input type="hidden" name="pump_id[]" id="pump_id" value="${v.pump_id}">
+                    <input type="hidden" name="user_id[]" id="user_id" value="${v.user_id}">
                     <input type="hidden" name="nozzle_id[]" id="nozzle_id" value="${v.id}">
                 </tr>
             `;

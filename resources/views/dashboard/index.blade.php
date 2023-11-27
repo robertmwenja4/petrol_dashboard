@@ -15,12 +15,13 @@
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="card card-congratulation-medal">
                                 <div class="card-body">
-                                    <h5>Congratulations 🎉 John!</h5>
-                                    <p class="card-text font-small-3">You have won gold medal</p>
+                                    <h5>Congratulations 🎉 </h5>
+                                    {{-- <p class="card-text font-small-3">You have won gold medal</p> --}}
                                     <h3 class="mb-75 mt-2 pt-50">
-                                        <a href="#">$48.9k</a>
+                                        <a href="#">{{number_format($sales->sum('total_price'), '3')}}</a>
                                     </h3>
-                                    <button type="button" class="btn btn-primary">View Sales</button>
+                                    {{-- <button type="button" class="btn btn-primary">View Sales</button> --}}
+                                    <a class="btn btn-primary" href="{{route('sale.index')}}">View Sales</a>
                                     <img src="{{asset('core/app-assets/images/illustration/badge.svg')}}" class="congratulation-medal" alt="Medal Pic" />
                                 </div>
                             </div>
@@ -46,7 +47,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="my-auto">
-                                                    <h4 class="fw-bolder mb-0">230k</h4>
+                                                    <h4 class="fw-bolder mb-0">{{$sales->count()}}</h4>
                                                     <p class="card-text font-small-3 mb-0">Sales</p>
                                                 </div>
                                             </div>
@@ -59,7 +60,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="my-auto">
-                                                    <h4 class="fw-bolder mb-0">8.549k</h4>
+                                                    <h4 class="fw-bolder mb-0">{{$customers->count()}}</h4>
                                                     <p class="card-text font-small-3 mb-0">Customers</p>
                                                 </div>
                                             </div>
@@ -72,7 +73,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="my-auto">
-                                                    <h4 class="fw-bolder mb-0">1.423k</h4>
+                                                    <h4 class="fw-bolder mb-0">{{$products->count()}}</h4>
                                                     <p class="card-text font-small-3 mb-0">Products</p>
                                                 </div>
                                             </div>
@@ -85,8 +86,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="my-auto">
-                                                    <h4 class="fw-bolder mb-0">$9745</h4>
-                                                    <p class="card-text font-small-3 mb-0">Revenue</p>
+                                                    <h4 class="fw-bolder mb-0">{{$pumps->count()}}</h4>
+                                                    <p class="card-text font-small-3 mb-0">Pumps</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -97,7 +98,7 @@
                         <!--/ Statistics Card -->
                     </div>
 
-                    <div class="row match-height">
+                    {{-- <div class="row match-height">
                         <div class="col-lg-4 col-12">
                             <div class="row match-height">
                                 <!-- Bar Chart - Orders -->
@@ -191,291 +192,65 @@
                             </div>
                         </div>
                         <!--/ Revenue Report Card -->
-                    </div>
+                    </div> --}}
 
                     <div class="row match-height">
                         <!-- Company Table Card -->
-                        <div class="col-lg-8 col-12">
+                        <div class="col-lg-12 col-12">
+                            <h4>Sales Per Pump</h4>
                             <div class="card card-company-table">
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Company</th>
-                                                    <th>Category</th>
-                                                    <th>Views</th>
-                                                    <th>Revenue</th>
-                                                    <th>Sales</th>
+                                                    <th>Pump</th>
+                                                    <th>Code</th>
+                                                    <th>Quantity</th>
+                                                    <th>Amount</th>
+                                                    {{-- <th>Sales</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                               @foreach ($pumps as $pump)
+                                                   <tr>
+                                                        <td>{{$pump->name}}</td>
+                                                        <td>{{$pump->code}}</td>
+                                                        <td>{{@$pump->sale->sum('qty')}}</td>
+                                                        <td>{{number_format(@$pump->sale->sum('total_price'), '3')}}</td>
+                                                   </tr>
+                                               @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-12">
+                            <h4>Cash Given Per User</h4>
+                            <div class="card card-company-table">
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
                                                 <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar rounded">
-                                                                <div class="avatar-content">
-                                                                    <img src="{{asset('core/app-assets/images/icons/toolbox.svg')}}" alt="Toolbar svg" />
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bolder">Dixons</div>
-                                                                <div class="font-small-2 text-muted">meguc@ruj.io</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar bg-light-primary me-1">
-                                                                <div class="avatar-content">
-                                                                    <i data-feather="monitor" class="font-medium-3"></i>
-                                                                </div>
-                                                            </div>
-                                                            <span>Technology</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-nowrap">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fw-bolder mb-25">23.4k</span>
-                                                            <span class="font-small-2 text-muted">in 24 hours</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>$891.2</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="fw-bolder me-1">68%</span>
-                                                            <i data-feather="trending-down" class="text-danger font-medium-1"></i>
-                                                        </div>
-                                                    </td>
+                                                    {{-- <th>Receipt</th> --}}
+                                                    <th>User</th>
+                                                    {{-- <th>Pump</th> --}}
+                                                    {{-- <th>Quantity</th> --}}
+                                                    <th>Amount</th>
+                                                    {{-- <th>Sales</th> --}}
                                                 </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar rounded">
-                                                                <div class="avatar-content">
-                                                                    <img src="{{asset('core/app-assets/images/icons/parachute.svg')}}" alt="Parachute svg" />
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bolder">Motels</div>
-                                                                <div class="font-small-2 text-muted">vecav@hodzi.co.uk</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar bg-light-success me-1">
-                                                                <div class="avatar-content">
-                                                                    <i data-feather="coffee" class="font-medium-3"></i>
-                                                                </div>
-                                                            </div>
-                                                            <span>Grocery</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-nowrap">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fw-bolder mb-25">78k</span>
-                                                            <span class="font-small-2 text-muted">in 2 days</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>$668.51</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="fw-bolder me-1">97%</span>
-                                                            <i data-feather="trending-up" class="text-success font-medium-1"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar rounded">
-                                                                <div class="avatar-content">
-                                                                    <img src="{{asset('core/app-assets/images/icons/brush.svg')}}" alt="Brush svg" />
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bolder">Zipcar</div>
-                                                                <div class="font-small-2 text-muted">davcilse@is.gov</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar bg-light-warning me-1">
-                                                                <div class="avatar-content">
-                                                                    <i data-feather="watch" class="font-medium-3"></i>
-                                                                </div>
-                                                            </div>
-                                                            <span>Fashion</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-nowrap">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fw-bolder mb-25">162</span>
-                                                            <span class="font-small-2 text-muted">in 5 days</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>$522.29</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="fw-bolder me-1">62%</span>
-                                                            <i data-feather="trending-up" class="text-success font-medium-1"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar rounded">
-                                                                <div class="avatar-content">
-                                                                    <img src="{{asset('core/app-assets/images/icons/star.svg')}}" alt="Star svg" />
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bolder">Owning</div>
-                                                                <div class="font-small-2 text-muted">us@cuhil.gov</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar bg-light-primary me-1">
-                                                                <div class="avatar-content">
-                                                                    <i data-feather="monitor" class="font-medium-3"></i>
-                                                                </div>
-                                                            </div>
-                                                            <span>Technology</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-nowrap">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fw-bolder mb-25">214</span>
-                                                            <span class="font-small-2 text-muted">in 24 hours</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>$291.01</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="fw-bolder me-1">88%</span>
-                                                            <i data-feather="trending-up" class="text-success font-medium-1"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar rounded">
-                                                                <div class="avatar-content">
-                                                                    <img src="{{asset('core/app-assets/images/icons/book.svg')}}" alt="Book svg" />
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bolder">Cafés</div>
-                                                                <div class="font-small-2 text-muted">pudais@jife.com</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar bg-light-success me-1">
-                                                                <div class="avatar-content">
-                                                                    <i data-feather="coffee" class="font-medium-3"></i>
-                                                                </div>
-                                                            </div>
-                                                            <span>Grocery</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-nowrap">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fw-bolder mb-25">208</span>
-                                                            <span class="font-small-2 text-muted">in 1 week</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>$783.93</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="fw-bolder me-1">16%</span>
-                                                            <i data-feather="trending-down" class="text-danger font-medium-1"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar rounded">
-                                                                <div class="avatar-content">
-                                                                    <img src="{{asset('core/app-assets/images/icons/rocket.svg')}}" alt="Rocket svg" />
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bolder">Kmart</div>
-                                                                <div class="font-small-2 text-muted">bipri@cawiw.com</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar bg-light-warning me-1">
-                                                                <div class="avatar-content">
-                                                                    <i data-feather="watch" class="font-medium-3"></i>
-                                                                </div>
-                                                            </div>
-                                                            <span>Fashion</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-nowrap">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fw-bolder mb-25">990</span>
-                                                            <span class="font-small-2 text-muted">in 1 month</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>$780.05</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="fw-bolder me-1">78%</span>
-                                                            <i data-feather="trending-up" class="text-success font-medium-1"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar rounded">
-                                                                <div class="avatar-content">
-                                                                    <img src="{{asset('core/app-assets/images/icons/speaker.svg')}}" alt="Speaker svg" />
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bolder">Payers</div>
-                                                                <div class="font-small-2 text-muted">luk@izug.io</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar bg-light-warning me-1">
-                                                                <div class="avatar-content">
-                                                                    <i data-feather="watch" class="font-medium-3"></i>
-                                                                </div>
-                                                            </div>
-                                                            <span>Fashion</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-nowrap">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fw-bolder mb-25">12.9k</span>
-                                                            <span class="font-small-2 text-muted">in 12 hours</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>$531.49</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="fw-bolder me-1">42%</span>
-                                                            <i data-feather="trending-up" class="text-success font-medium-1"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                               @foreach ($users as $user)
+                                                   <tr>
+                                                        {{-- <td>{{$user->cash->tid}}</td> --}}
+                                                        <td>{{$user->name}}</td>
+                                                        {{-- <td>{{$user->cash->groupBy('pump_id')->first()}}</td> --}}
+                                                        <td>{{number_format(@$user->cash->sum('amount'), '3')}}</td>
+                                                   </tr>
+                                               @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -485,7 +260,7 @@
                         <!--/ Company Table Card -->
 
                         <!-- Developer Meetup Card -->
-                        <div class="col-lg-4 col-md-6 col-12">
+                        {{-- <div class="col-lg-4 col-md-6 col-12">
                             <div class="card card-developer-meetup">
                                 <div class="meetup-img-wrapper rounded-top text-center">
                                     <img src="{{asset('core/app-assets/images/illustration/email.svg')}}" alt="Meeting Pic" height="170" />
@@ -543,11 +318,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!--/ Developer Meetup Card -->
 
                         <!-- Browser States Card -->
-                        <div class="col-lg-4 col-md-6 col-12">
+                        {{-- <div class="col-lg-4 col-md-6 col-12">
                             <div class="card card-browser-states">
                                 <div class="card-header">
                                     <div>
@@ -616,11 +391,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!--/ Browser States Card -->
 
                         <!-- Goal Overview Card -->
-                        <div class="col-lg-4 col-md-6 col-12">
+                        {{-- <div class="col-lg-4 col-md-6 col-12">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h4 class="card-title">Goal Overview</h4>
@@ -640,11 +415,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!--/ Goal Overview Card -->
 
                         <!-- Transaction Card -->
-                        <div class="col-lg-4 col-md-6 col-12">
+                        {{-- <div class="col-lg-4 col-md-6 col-12">
                             <div class="card card-transaction">
                                 <div class="card-header">
                                     <h4 class="card-title">Transactions</h4>
@@ -730,7 +505,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!--/ Transaction Card -->
                     </div>
                 </section>

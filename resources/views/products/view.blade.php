@@ -32,7 +32,7 @@
                 <div class="col-4 border-blue-grey border-lighten-5  p-1">
                     Price per Litre</div>
                 <div class="col border-blue-grey border-lighten-5  p-1 font-weight-bold">
-                    {{ $product['price'] }}</div>
+                    {{ number_format($product->price, '3') }}</div>
             </div>
 
             <div class="row">

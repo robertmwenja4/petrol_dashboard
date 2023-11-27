@@ -61,7 +61,7 @@ class CloseShiftController extends Controller
             $data_items = array_map(function ($v) use ($shift) {
                 return array_replace($v, [
                     'close_shift_id' => $shift->id,
-                    'user_id' => auth()->user()->id,
+                    // 'user_id' => auth()->user()->id,
                 ]);
             }, $data_items);
             // dd($data_items);
@@ -201,7 +201,7 @@ class CloseShiftController extends Controller
                 $q->price = $q->sum('total_price');
                 $q->pump_name = $item->close_shift->close_shift_items->where('pump_id', $q->first()->pump_id)->first()->pump->name;
                 $q->amount = $item->close_shift->close_shift_items->where('pump_id', $q->first()->pump_id)->first()->amount;
-                $q->give_cash = $item->cash->where('user_id', $q->first()->user_id)->sum('amount');
+                $q->give_cash = $item->cash->where('user_id', $q->first()->user_id)->where('status','approved')->sum('amount');
                 return $q;
             });
         }
@@ -211,12 +211,14 @@ class CloseShiftController extends Controller
                 $q->where('id', $request->shift_id);
                 $q->with('close_shift.close_shift_items');
             }]);
-        }])->get();
+        }])->whereHas('role',function($q){
+            $q->where('type','attendant');
+        })->get();
         $user_sales = [];
         // dd($users);
         foreach ($users as $user) {
             if (count($user->sales) > 0) {
-                //    dd($user);
+                //    dd($user->sales);
                 $user_sales[] = $user->sales->groupBy('product_id')->map(function ($q) {
                     $q->user_name = $q->first()->user->name;
                     $q->pump_name = $q->first()->pump->code;
@@ -225,9 +227,20 @@ class CloseShiftController extends Controller
                     $q->sales_type = $q->first()->type;
                     $q->qty = $q->sum('qty');
                     $q->amount = $q->sum('total_price');
+                    $q->actual_qty = 0;
+                    $q->actual_amount = 0;
+                    if($q->first()->shift){
+                        if($q->first()->shift->close_shift){
+                            if($q->first()->shift->close_shift->close_shift_items){
+                                $q->actual_qty = $q->first()->shift->close_shift->close_shift_items->sum('balance');
+                                $q->actual_amount = $q->first()->shift->close_shift->close_shift_items->sum('amount');
+                            }
+
+                        }
+                    }
+                    // $q->actual_qty = $q->first()->shift->close_shift->close_shift_items->sum('balance') ?: 0;
+                    // $q->actual_amount = $q->first()->shift->close_shift->close_shift_items->sum('amount') ?: 0;
                     // dd($q->first()->shift->close_shift->close_shift_items->sum('balance'));
-                    $q->actual_qty = @$q->first()->shift->close_shift->close_shift_items->sum('balance') ?: 0;
-                    $q->actual_amount = @$q->first()->shift->close_shift->close_shift_items->sum('amount');
                     if ($q->actual_qty > $q->qty) {
 
                         $q->qty_diff =  $q->actual_qty - $q->qty;

@@ -97,7 +97,7 @@
         </tbody>
     </table>
     <br>
-    <h4 class="align_c">Shift Ends at <span>{{$shift->close_shift->created_at}}</span></h4>
+    <h4 class="align_c">Shift Ends at <span>{{date('d/m/Y',strtotime($shift->close_shift->created_at) )}}</span><span> {{date('h:i A', strtotime($shift->close_shift->created_at))}}</span></h4>
     <table class="items">
         <thead>
             <tr>
@@ -188,7 +188,7 @@
                 <th width="15%">Given Cash</th>
                 <th width="20%">Total Sale(A)</th>
                 <th width="20%">Sale By Meter(B)</th>
-                <th width="10%">Diff(B-A)</th>
+                <th width="15%">Diff(B-A)</th>
                 <th width="15%">Paid Amt</th>
                 <th width="15%">Outstanding Amt</th>
                 <th width="20%">Comment</th>
@@ -218,14 +218,17 @@
                        $credit_sale += $selling->price;
                        $balance += $diff;
                        $total_cash += $selling->give_cash;
+                       $t_sale = $selling->price+$selling->give_cash;
+                       $t_amount = number_format($selling->amount, '3');
+                       $t_diff = $selling->amount-($selling->price+$selling->give_cash);
                     @endphp
                         <td>{{$selling->pump_name}}</td>
                         <td>{{$selling->user_name}}</td>
-                        <td>{{$selling->price}}</td>
-                        <td>{{$selling->give_cash}}</td>
-                        <td>{{$selling->price+$selling->give_cash}}</td>
-                        <td>{{$selling->amount}}</td>
-                        <td>{{$selling->amount-($selling->price+$selling->give_cash)}}</td>
+                        <td>{{number_format($selling->price, '3')}}</td>
+                        <td>{{number_format($selling->give_cash, '3')}}</td>
+                        <td>{{number_format($t_sale, '3')}}</td>
+                        <td>{{$t_amount}}</td>
+                        <td>{{number_format($t_diff, '3')}}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -240,15 +243,15 @@
             <tr>
 
                 <th>Grand Total Sales as per Meter</th>
-                <th><em>{{$total_sales_by_meter}}</em></th>
+                <th><em>{{number_format($total_sales_by_meter, '3')}}</em></th>
                 <th>Diff(Total)</th>
-                <th>{{$balance}}</th>
+                <th>{{number_format($balance, '3')}}</th>
             </tr>
             <tr>
                 <th>Credit Totals</th>
-                <th><em>{{$credit_sale}}</em></th>
+                <th><em>{{number_format($credit_sale, '3')}}</em></th>
                 <th>CASH TOTALS</th>
-                <th><em>{{$total_cash}}</em></th>
+                <th><em>{{number_format($total_cash, '3')}}</em></th>
             </tr>
         </thead>
     </table>
@@ -271,23 +274,23 @@
                 <tr>
                     <td>{{$sale->user_name}}</td>
                     <td>{{$sale->pump_name}}</td>
-                    <td>{{$sale->sales_date}}</td>
+                    <td>{{date('d/m/Y', strtotime($sale->sales_date)) ?:''}}</td>
                     <td>{{$sale->product_name}}</td>
                     <td>{{ucfirst($sale->sales_type)}}</td>
                     <td>{{$sale->qty}}</td>
-                    <td>{{$sale->amount}}</td>
+                    <td>{{number_format($sale->amount, '3')}}</td>
                    </tr>
                    <tr>
                     <td colspan="4"></td>
                     <td>Actual</td>
                     <td>{{$sale->actual_qty}}</td>
-                    <td>{{$sale->actual_amount}}</td>
+                    <td>{{number_format($sale->actual_amount, '3')}}</td>
                    </tr>
                    <tr class="item">
                     <td colspan="4"></td>
                     <td>Diff</td>
                     <td>{{$sale->qty_diff}}</td>
-                    <td>{{$sale->amt_diff}}</td>
+                    <td>{{number_format($sale->amt_diff, '3')}}</td>
                    </tr>
                 @endforeach
             @endforeach

@@ -6,6 +6,22 @@
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper container-xxl p-0">
         <div class="content-header row">
+            @if(session('flash_success'))
+                <div class="alert bg-success alert-dismissible m-1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Success!</strong> {!!session('flash_success')!!}
+                </div>
+            @endif
+            @if(session('flash_error'))
+                <div class="alert bg-danger alert-dismissible m-1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Error!</strong> {!!session('flash_error')!!}
+                </div>
+            @endif
         </div>
         <div class="content-body">
             <!-- give_cash list start -->
@@ -53,9 +69,9 @@
                                         <td>{{gen4tid('RC-',$give_cash->tid)}}</td>
                                         <td>{{$give_cash->pump ? $give_cash->pump->name : ''}}</td>
                                         <td>{{$give_cash->user ? $give_cash->user->name : ''}}</td>
-                                        <td>{{$give_cash->shift ? $give_cash->shift->shift_name : ''}}</td>
+                                        <td>{{$give_cash->shift ? date('d/m/Y', strtotime($give_cash->shift->shift_name)) : ''}}</td>
                                         <td>{{ucfirst($give_cash->status)}}</td>
-                                        <td>{{$give_cash->amount}}</td>
+                                        <td>{{number_format($give_cash->amount, '3')}}</td>
                                         
                                         <td>
                                             @include('give_cash.partials.action_buttons')

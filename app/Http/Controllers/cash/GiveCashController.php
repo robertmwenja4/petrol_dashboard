@@ -110,7 +110,9 @@ class GiveCashController extends Controller
     {
         $pumps = Pump::where('status', 'active')->get(['id', 'name']);
         $shifts = Shift::all();
-        $users = User::all();
+        $users = User::whereHas('role', function($q){
+            $q->where('type','attendant');
+        })->get();
         return view('give_cash.edit', compact('give_cash', 'users', 'shifts', 'pumps'));
     }
     /**

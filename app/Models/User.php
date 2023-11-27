@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\role\Role;
 use App\Models\sale\Sale;
 use App\Models\shift\ShiftItem;
+use App\Models\cash\GiveCash;
 
 class User extends Authenticatable
 {
@@ -59,5 +60,9 @@ class User extends Authenticatable
     public function shift_items()
     {
         return $this->hasMany(ShiftItem::class, 'user_id');
+    }
+    public function cash()
+    {
+        return $this->hasMany(GiveCash::class);
     }
 }

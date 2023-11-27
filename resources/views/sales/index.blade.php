@@ -132,10 +132,11 @@
                                             <td>{{ $sale->customer ? $sale->customer->company : '' }}</td>
                                             <td>{{ $sale->lpo_no ? $sale->lpo_no : '' }}</td>
                                             <td>{{ $sale->user ? $sale->user->name : '' }}</td>
-                                            <td>{{ +$sale->qty }}</td>
-                                            <td>{{ +$sale->rate }}</td>
-                                            <td>{{ +$sale->total_price }}</td>
-                                            <td>{{ $sale->created_at }}</td>
+                                            <td>{{ $sale->qty }}</td>
+                                            {{-- <td>{{ +$sale->rate }}</td> --}}
+                                            <td>{{ number_format($sale->rate, '3') }}</td>
+                                            <td>{{ number_format($sale->total_price, '3') }}</td>
+                                            <td> {{date('d/m/Y', strtotime($sale->created_at)) }}--{{ date('h:m A', strtotime($sale->created_at))}}</td>
 
                                             <td>
                                             @include('sales.partials.action_buttons')

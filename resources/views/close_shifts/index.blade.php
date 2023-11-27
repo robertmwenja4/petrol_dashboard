@@ -6,6 +6,22 @@
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper container-xxl p-0">
         <div class="content-header row">
+            @if(session('flash_success'))
+                <div class="alert bg-success alert-dismissible m-1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Success!</strong> {!!session('flash_success')!!}
+                </div>
+            @endif
+            @if(session('flash_error'))
+                <div class="alert bg-danger alert-dismissible m-1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Error!</strong> {!!session('flash_error')!!}
+                </div>
+            @endif
         </div>
         <div class="content-body">
             <!-- close_shift list start -->
@@ -92,7 +108,7 @@
                                     <select name="shift_id" id="shift" class="select2 form-select" data-placeholder="Search Shift" required>
                                         <option value="">Search Shift</option>
                                         @foreach ($shifts as $shift)
-                                            <option value="{{$shift->id}}">{{$shift->shift_name}}</option>
+                                            <option value="{{$shift->id}}">{{date('d/m/Y',strtotime($shift->shift_name))}}</option>
                                         @endforeach
                                     </select>
                                 </div>

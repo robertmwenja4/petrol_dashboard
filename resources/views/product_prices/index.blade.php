@@ -107,10 +107,10 @@
                                     <tr>
                                         <td>{{$i+1}}</td>
                                         <td>{{ucfirst($product_price->category)}}</td>
-                                        <td>{{$product_price->from_date}}</td>
-                                        <td>{{$product_price->end_date}}</td>
-                                        <td>{{$product_price->status}}</td>
-                                        <td>{{$product_price->price}}</td>
+                                        <td>{{date('d/m/Y', strtotime($product_price->from_date))}}</td>
+                                        <td>{{$product_price->end_date ? date('d/m/Y', strtotime($product_price->end_date)) : ''}}</td>
+                                        <td>{{ucfirst($product_price->status)}}</td>
+                                        <td>{{number_format($product_price->price, '3')}}</td>
                                         <td>
                                             @include('product_prices.partials.action_buttons')
                                         </td>

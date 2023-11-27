@@ -42,7 +42,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $predefined_password = $request->input('code');
+        $predefined_password = rand(1000,10000);
         // Validation rules
         $rules = [
             'name' => 'required|string|max:255',
@@ -57,7 +57,7 @@ class UserController extends Controller
         ];
 
         // Validate the request
-        // dd($request->all(), $rules);
+        // dd($predefined_password);
         // $request->validate($rules);
         // Create user
         $user = User::create([
@@ -69,7 +69,7 @@ class UserController extends Controller
             'role_id' => $request->input('role_id'),
             'password' => Hash::make($predefined_password),
         ]);
-        return redirect()->back()->with('flash_success', 'User Created Successfully!!');
+        return redirect()->back()->with('flash_success', 'User Created Successfully!!'.'--'.'Your Code is: '.$predefined_password);
     }
 
     /**
@@ -109,6 +109,9 @@ class UserController extends Controller
             'fullname','email','phone_number','code','status','role_id'
         ]);
         $data['name'] = $data['fullname'];
+        // if($data['code'] != $user->code){
+        //     $data['password'] = Hash::make($data['code']);
+        // }
         // $user = User::find($data['id']);
         unset($data['fullname']);
         $user->update($data);
@@ -117,14 +120,17 @@ class UserController extends Controller
     public function update_user(Request $request)
     {
         // dd($request->all());
-        $data = $request->only([
-            'fullname', 'email', 'phone_number', 'code', 'status', 'role_id', 'id'
-        ]);
-        $data['name'] = $data['fullname'];
-        $user = User::find($data['id']);
-        unset($data['fullname'], $data['id']);
-        $user->update($data);
-        return redirect()->back()->with('status', 'User Updated Successfully!!');
+        $user = User::find($request->id);
+        $passkey = rand(1000,10000);
+        if(Hash::check($passkey, $user->password)){
+            // $passkey = rand(1000,10000);
+            return redirect()->back()->with('flash_error', 'Try Again!!');
+        }else{
+            $user->password = Hash::make($passkey);
+            $user->update();
+        }
+       
+        return redirect()->back()->with('flash_success', 'Code Generated Successfully '.'--'.'which is '.$passkey);
     }
 
     /**

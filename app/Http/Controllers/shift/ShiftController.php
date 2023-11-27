@@ -225,9 +225,9 @@ class ShiftController extends Controller
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('status', 'Shift Failed to Delete!!');
+            return redirect()->back()->with('flash_error', 'Shift Failed to Delete!!');
         }
-        return redirect()->back()->with('status', 'Shift Deleted Successfully!!');
+        return redirect()->back()->with('flash_success', 'Shift Deleted Successfully!!');
     }
 
 
@@ -464,7 +464,8 @@ class ShiftController extends Controller
             ->items
             ->pluck('pump.nozzles')
             ->flatten();
-        $nozzles = $nozzles->map(function ($v) {
+            // dd($nozzles);
+        $nozzles = $nozzles->map(function ($v) use($shift) {
             // dd($v);
             $v->pump_name = $v->pump ? $v->pump->name : '';
             $v->product_name = $v->product ? $v->product->name : '';
@@ -472,6 +473,16 @@ class ShiftController extends Controller
             $v->category = $v->product ? $v->product->category : '';
             $close_shift_item = CloseShiftItem::where('nozzle_id', $v->id)->latest()->first();
             $v->opening_stock = $close_shift_item ? $close_shift_item->current_stock : 0;
+            $v->user_id = 0;
+            $v->user_name = '';
+            if($v->pump){
+                if($v->pump->shift_items){
+                    $item = $v->pump->shift_items->where('shift_id',$shift->id)->first();
+                    $v->user_id = $item->user_id;
+                    $v->user_name = $item->user->name;
+                    // dd($item);
+                }
+            }
             // $v->user_name = $v->product ? $v->product->name : '';
             return $v;
         });

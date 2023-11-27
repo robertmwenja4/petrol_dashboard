@@ -4,8 +4,31 @@
 <div class="app-content content ">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
+    <div class="content-header row">
+        @if(session('flash_success'))
+            <div class="alert bg-success alert-dismissible m-1" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <strong>Success!</strong> {!!session('flash_success')!!}
+            </div>
+        @endif
+        @if(session('flash_error'))
+            <div class="alert bg-danger alert-dismissible m-1" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <strong>Error!</strong> {!!session('flash_error')!!}
+            </div>
+        @endif
+    </div>
     <div class="card">
         <div class="card-header">
+            <form action="{{route('users.update')}}" method="POST">
+                @csrf
+                <input type="hidden" name="id" value="{{$user->id}}" id="">
+                <button type="submit" class="btn btn-danger">Change Code</button>
+            </form>
             <h4>View User</h4>
             <a href="{{route('user.index')}}" class="btn btn-primary">List</a>
         </div>

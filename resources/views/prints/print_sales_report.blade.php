@@ -3,7 +3,7 @@
 	<title>
 		{{'Sales Report'}}
 	</title>
-	<style>
+	{{-- <style>
 		body {
 			font-family: "Times New Roman", Times, serif;
 			font-size: 10pt;
@@ -132,6 +132,39 @@
 		table, th, td {
             border: 0.5px solid;
         }
+	</style> --}}
+	<style>
+		body {
+			font-family: "Times New Roman", Times, serif;
+			font-size: 10pt;
+            margin: 0;
+		}
+	
+		table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        .item{
+            background: grey;
+        }
+        .align_c{
+            align-items: center;
+            text-align: center;
+        }
+        .no_border{
+            border: none;
+        }
 	</style>
 </head>
 <body>
@@ -143,16 +176,14 @@
 	<sethtmlpagefooter name="myfooter" value="on" />
 	<table class="header-table">
 		<tr>
-			<td>
-				{{-- <img src="{{ Storage::disk('public')->url('app/public/img/company/' . $company->logo) }}" style="object-fit:contain" width="100%"/> --}}
-			</td>
+			<td class="no_border"><img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="object-fit:contain" width="100%"/></td>
 		</tr>
 	</table>
-	<table class="doc-table">
+	<table class="align_c no_border">
 		<tr>
-			<td class="doc-title-td">
-				<span class='doc-title'>
-					<b>Fuel Sales Day Book from {{$date_from .' to '. $date_to}}</b>
+			<td class="align_c no_border">
+				<span class='align_c'>
+					<b>Fuel Sales Day Book from {{date('d/m/Y',strtotime($date_from)) .' to '. date('d/m/Y',strtotime($date_to))}}</b>
 				</span>				
 			</td>
 		</tr>

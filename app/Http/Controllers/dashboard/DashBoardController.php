@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\customer\Customer;
+use App\Models\sale\Sale;
+use App\Models\product\Product;
+use App\Models\pump\Pump;
 
 class DashBoardController extends Controller
 {
@@ -19,11 +23,35 @@ class DashBoardController extends Controller
         if (Auth::check()) {
             $id = Auth::user()->id;
             $user = User::find($id);
+            $sales = Sale::all();
+            $customers = Customer::all();
+            $products = Product::all();
+            $pumps = Pump::all();
+            $users = User::whereHas('role',function($q){
+                $q->where('type','attendant');
+            })
+            ->whereHas('cash',function($q){
+                $q->where('status','approved');
+            })
+            ->where('status','active')->get();
+            // $user_cash = [];
+            // foreach ($users as $user) {
+            //     $user_cash[] = $user->cash->groupBy('pump_id')->map(function($q){
+            //         $q->pump = $q->first()->pump ? $q->first()->pump->name :'';
+            //         $q->amount = $q->sum('amount');
+            //         return $q;
+            //     });
+            //     # code...
+            // }
+            // foreach (collect($user_cash) as $cash) {
+            //     dd($cash);
+            //     # code...
+            // }
             $role = $user->role ? $user->role->name : '';
             $roleType = $user->role ? $user->role->type : '';
 
             if ($roleType == 'admin') {
-                return view('dashboard.index', compact('role'));
+                return view('dashboard.index', compact('role','customers','sales','products','pumps','users'));
             } else if ($roleType == 'user') {
                 return view('users_dashboard.index');
             } else {

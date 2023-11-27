@@ -6,6 +6,22 @@
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper container-xxl p-0">
         <div class="content-header row">
+            @if(session('flash_success'))
+                <div class="alert bg-success alert-dismissible m-1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Success!</strong> {!!session('flash_success')!!}
+                </div>
+            @endif
+            @if(session('flash_error'))
+                <div class="alert bg-danger alert-dismissible m-1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Error!</strong> {!!session('flash_error')!!}
+                </div>
+            @endif
         </div>
         <div class="content-body">
             <!-- shift list start -->
@@ -101,8 +117,8 @@
                                 @foreach ($shifts as $i => $shift)
                                     <tr>
                                         <td>{{$i+1}}</td>
-                                        <td>{{@$shift->shift_name}}</td>
-                                        <td>{{$shift->created_at}}</td>
+                                        <td>{{date('d/m/Y', strtotime($shift->shift_name))}}</td>
+                                        <td>{{date('d/m/Y', strtotime($shift->created_at)) }}--{{ date('h:m A', strtotime($shift->created_at))}}</td>
                                         <td>{{@$shift->status}}</td>
                                         
                                         <td>

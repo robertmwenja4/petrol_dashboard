@@ -19,7 +19,8 @@
             @if (isset($close_shift))
                 @foreach ($close_shift->close_shift_items as $i => $item)
                 <tr>
-                    <td>{{$i+1}}</td>    
+                    {{-- <td>{{$i+1}}</td>     --}}
+                    <td>{{$item->user ? $item->user->name : ''}}</td>    
                     <td>{{$item->pump ? $item->pump->name : ''}}</td>    
                     <td>{{$item->nozzle ? $item->nozzle->code : ''}}</td>    
                     <td>{{$item->product ? $item->product->name : ''}}</td>      
@@ -31,6 +32,7 @@
                     <input type="hidden" name="product_price[]" class="product_price" id="product_price" value="{{$item->product_price}}">
                     <input type="hidden" name="category[]" class="category" id="category" value="{{$item->category}}">
                     <input type="hidden" name="pump_id[]" id="pump_id" value="{{$item->pump_id}}">
+                    <input type="hidden" name="user_id[]" id="user_id" value="{{$item->user_id}}">
                     <input type="hidden" name="nozzle_id[]" id="nozzle_id" value="{{$item->nozzle_id}}">
                     <input type="hidden" name="id[]" id="id" value="{{$item->id}}">
                 </tr>

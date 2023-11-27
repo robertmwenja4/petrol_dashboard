@@ -112,7 +112,7 @@
                                     <th></th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Code</th>
+                                    {{-- <th>Code</th> --}}
                                     <th>Role</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -124,7 +124,7 @@
                                         <td>{{$i+1}}</td>
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
-                                        <td>{{$user->code}}</td>
+                                        {{-- <td>{{$user->code}}</td> --}}
                                         <td>{{@$user->role->name}}</td>
                                         <td>
                                             @php
