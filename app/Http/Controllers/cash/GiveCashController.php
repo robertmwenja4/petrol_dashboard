@@ -23,7 +23,6 @@ class GiveCashController extends Controller
         $give_cashs = GiveCash::all();
         return view('give_cash.index', compact('give_cashs'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -34,27 +33,18 @@ class GiveCashController extends Controller
         $pumps = Pump::where('status', 'active')->get()->pluck('name', 'id');
         $data = checkShift();
         $shift = $data["shift"];
-
-
         if (!$shift) {
-            $date = date('Y-m-d');
-            // Instead of view, return the route with parameters
-            return route('shift.create', compact('date'));
+            return redirect()->route('shift.index');
         } else {
             if ($shift->status == 'pending') {
                 return redirect()->route('shift.index');
-                // return view('shifts.index', compact('shift', 'users'));
             } else if ($shift->status == 'open') {
                 return view('give_cash.create', compact('pumps', 'shift'));
             } else if ($shift->status == 'closed') {
-                $date = date('Y-m-d', strtotime("+1 day"));
-
                 return redirect()->route('shift.index');
             }
         }
-        // return view('give_cash.create', compact('pumps'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -77,15 +67,10 @@ class GiveCashController extends Controller
             ];
         }
         if ($validate) {
-
             try {
                 DB::beginTransaction();
-
                 $data['user_id'] = $checkuser['user_id'];
-
                 $sale = GiveCash::create($data);
-
-
                 if ($sale) {
                     DB::commit();
                     $output = [
@@ -95,7 +80,6 @@ class GiveCashController extends Controller
                     ];
                 }
             } catch (\Exception $e) {
-
                 DB::rollback();
                 $output = [
                     'success' => false,
@@ -104,10 +88,8 @@ class GiveCashController extends Controller
                 ];
             }
         }
-
         return $output;
     }
-
     /**
      * Display the specified resource.
      *
@@ -118,7 +100,6 @@ class GiveCashController extends Controller
     {
         return view('give_cash.view', compact('give_cash'));
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -132,7 +113,6 @@ class GiveCashController extends Controller
         $users = User::all();
         return view('give_cash.edit', compact('give_cash', 'users', 'shifts', 'pumps'));
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -146,22 +126,16 @@ class GiveCashController extends Controller
         // dd($data);
         try {
             DB::beginTransaction();
-
             $give_cash->update($data);
-
-
             if ($give_cash) {
                 DB::commit();
             }
         } catch (\Throwable $th) {
-            dd($th);
-            //throw $th;
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Updating Cash Issuance!!');
         }
         return redirect()->route('give_cash.index')->with('flash_success', 'Cash issuance Updated Successfully!!');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -172,20 +146,15 @@ class GiveCashController extends Controller
     {
         try {
             DB::beginTransaction();
-
-
             if ($give_cash->delete()) {
                 DB::commit();
             }
         } catch (\Throwable $th) {
-            dd($th);
-            //throw $th;
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Deleting Cash Issuance!!');
         }
         return redirect()->route('give_cash.index')->with('flash_success', 'Cash issuance Deleted Successfully!!');
     }
-
     public function approve(Request $request)
     {
         // dd($request->all());
@@ -193,10 +162,7 @@ class GiveCashController extends Controller
         $give_cash = GiveCash::find($request->id);
         try {
             DB::beginTransaction();
-
             $give_cash->update($data);
-
-
             if ($give_cash) {
                 DB::commit();
             }
@@ -208,7 +174,6 @@ class GiveCashController extends Controller
         }
         return redirect()->route('give_cash.index')->with('flash_success', 'Approved Successfully!!');
     }
-
     public function fetchCashGiven(Request $request)
     {
         $id = $request->id;

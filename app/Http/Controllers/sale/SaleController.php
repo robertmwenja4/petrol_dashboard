@@ -49,17 +49,14 @@ class SaleController extends Controller
 
 
         if (!$shift) {
-            $date = date('Y-m-d');
-            // Instead of view, return the route with parameters
-            return route('shift.create', compact('date'));
+
+            return redirect()->route('shift.index');
         } else {
             if ($shift->status == 'pending') {
                 return redirect()->route('shift.index');
-                // return view('shifts.index', compact('shift', 'users'));
             } else if ($shift->status == 'open') {
                 return view('sales.create', compact('customers', 'products', 'pumps', 'shift'));
             } else if ($shift->status == 'closed') {
-                $date = date('Y-m-d', strtotime("+1 day"));
 
                 return redirect()->route('shift.index');
             }

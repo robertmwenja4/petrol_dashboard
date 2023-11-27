@@ -24,16 +24,6 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        // $shift = Shift::whereHas('items')
-        //     ->with('items.pump', 'items.user', 'user')
-        //     // ->where('status', 'open')
-        //     ->whereDate('shift_name', '=', date('Y-m-d'))
-        //     ->first();
-        // $users = User::whereHas('role', function ($q) {
-        //     $q->where('type', 'attendant');
-        // })
-        //     ->pluck('name', 'id');
-
 
         $data = checkShift();
         $shift = $data["shift"];
@@ -85,42 +75,54 @@ class ShiftController extends Controller
             $validate = false;
             $output = [
                 'success' => false,
-                'msg' => 'Invalid Pass Key',
+                'msg' => 'Invalid Pass Key or User is Inactive',
                 'data' => null
             ];
         }
+
         if ($validate) {
-            try {
-                DB::beginTransaction();
-                $data['created_by'] = $checkuser['user_id'];
-                $shift = Shift::create($data);
-
-                $pumps = Pump::where('status', 'active')->get(['id'])->toArray();
-                $data_items = [];
-                foreach ($pumps as $pump) {
-                    $data_items[] = [
-                        'shift_id' => $shift->id,
-                        'pump_id' => $pump["id"],
-                    ];
-                }
-
-                ShiftItem::insert($data_items);
-                if ($shift) {
-                    DB::commit();
-                    $output = [
-                        'success' => true,
-                        'msg' => 'Shift Created Successfully',
-                        'data' => $shift
-                    ];
-                }
-            } catch (\Throwable $th) {
-
-                DB::rollback();
+            $pumpsavailable = true;
+            $pumps = Pump::where('status', 'active')->get(['id'])->toArray();
+            if (count($pumps) == 0) {
+                $pumpsavailable = false;
                 $output = [
                     'success' => false,
-                    'msg' => 'Error Creating Shift',
+                    'msg' => 'No active pump found. Inform administration and try again',
                     'data' => null
                 ];
+            }
+
+            if ($pumpsavailable) {
+                try {
+                    DB::beginTransaction();
+                    $data['created_by'] = $checkuser['user_id'];
+                    $shift = Shift::create($data);
+                    $data_items = [];
+                    foreach ($pumps as $pump) {
+                        $data_items[] = [
+                            'shift_id' => $shift->id,
+                            'pump_id' => $pump["id"],
+                        ];
+                    }
+
+                    ShiftItem::insert($data_items);
+                    if ($shift) {
+                        DB::commit();
+                        $output = [
+                            'success' => true,
+                            'msg' => 'Shift Created Successfully',
+                            'data' => $shift
+                        ];
+                    }
+                } catch (\Throwable $th) {
+
+                    DB::rollback();
+                    $output = [
+                        'success' => false,
+                        'msg' => 'Error Creating Shift',
+                        'data' => null
+                    ];
+                }
             }
         }
         return $output;
