@@ -42,7 +42,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $predefined_password = '12345678';
+        $predefined_password = $request->input('code');
         // Validation rules
         $rules = [
             'name' => 'required|string|max:255',

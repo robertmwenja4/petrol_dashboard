@@ -13,7 +13,7 @@
             <form action="{{route('shift.update', $shift->id)}}" method="POST">
                 @csrf
                 @method("PATCH")
-                @include('shifts.form')
+                @include('shifts.edit_form')
             </form>
         </div>
     </div>
@@ -28,41 +28,15 @@
     };
 
     const Form = {
-        shifts: @json(@$shift),
-        shift_item: @json(@$shift->items),
-        rowIds: 0,
-        tableRow: $('#shiftTbl tbody tr:first').html(),
 
         init() {
             $.ajaxSetup(config.ajax);
-            
-            if (this.shifts) {
-                this.rowIds = this.shift_item.length;
-                // console.log(this.shift_item.length);
-                const request = this.shifts;
-                $('#shiftTbl tbody tr:first').remove();
-            } else {
-
-            }
-            
-            
-            
-            $('#addstock').click(this.addItem);
-            $('#shiftTbl').on('click', '.remove', this.removeRow);
+            // $('#user_id').select2();
+        
             
             
         },
-        addItem() {
-            Form.rowIds++;
-            let i = Form.rowIds;
-            const html = Form.tableRow.replace(/-0/g, '-'+i);
-            $('#shiftTbl tbody').append('<tr>' + html + '</tr>');
-           // $('#shiftTbl').on('change','.deduct', deduct);
-        },
-        removeRow() {
-            const $tr = $(this).parents('tr:first');
-            $tr.remove();
-        }
+        
        
     };
 

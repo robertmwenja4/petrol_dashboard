@@ -10,6 +10,7 @@ use DB;
 use App\Models\shift\Shift;
 use Illuminate\Support\Facades\Response;
 use App\Models\User;
+use App\Models\company\Company;
 
 class CloseShiftController extends Controller
 {
@@ -242,6 +243,7 @@ class CloseShiftController extends Controller
                 });
             }
         }
+        $company = Company::find(1);
         // dd($user_sales);
         // foreach ($user_sales as $sale) {
         //     foreach($sale as $s){
@@ -256,6 +258,7 @@ class CloseShiftController extends Controller
             'sales' => $sales,
             'user_sales' => $user_sales,
             'shift' => $shift,
+            'company' => $company,
 
         ];
         $html = view('prints.print_shift_report', $data)->render();

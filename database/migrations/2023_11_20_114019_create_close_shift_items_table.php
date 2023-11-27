@@ -29,7 +29,7 @@ class CreateCloseShiftItemsTable extends Migration
             $table->unsignedDecimal('product_price', 16, 4);
             $table->unsignedDecimal('balance', 16, 4);
             $table->unsignedDecimal('amount', 16, 4);
-            $table->enum('category', ['petrol', 'diesel','kerosine'])->default('');
+            $table->enum('category', ['petrol', 'diesel','kerosine']);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

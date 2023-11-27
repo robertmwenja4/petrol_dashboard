@@ -21,6 +21,7 @@ class CreateShiftsTable extends Migration
             $table->unsignedBigInteger('allocated_by')->nullable();
             $table->unsignedBigInteger('closed_by')->nullable();
             $table->dateTime('end_date')->nullable();
+            $table->enum('is_readings', ['yes','no'])->default('no');
             $table->timestamps();
         });
     }

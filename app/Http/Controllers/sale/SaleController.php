@@ -125,7 +125,7 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-        //
+        return view('sales.view', compact('sale'));
     }
 
     /**
@@ -136,7 +136,10 @@ class SaleController extends Controller
      */
     public function edit(Sale $sale)
     {
-        //
+        $customers = Customer::all();
+        $pumps = Pump::where('status','active')->get();
+        $products = Product::all();
+        return view('sales.edit', compact('sale','pumps','customers','products'));
     }
 
     /**
@@ -148,7 +151,19 @@ class SaleController extends Controller
      */
     public function update(Request $request, Sale $sale)
     {
-        //
+        // dd($request->all(), $sale);
+        $data = $request->except(['_token','type_id']);
+        try {
+            DB::beginTransaction();
+            $sale->update($data);
+            if($sale){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('flash_error', 'Failed to Update Sale!');
+        }
+        return redirect()->route('sale.index')->with('flash_success', 'Sale Updated Successfully!');
     }
 
     /**
@@ -159,7 +174,16 @@ class SaleController extends Controller
      */
     public function destroy(Sale $sale)
     {
-        //
+        try {
+            DB::beginTransaction();
+            if ($sale->delete()) {
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('flash_error', 'Sale Failed to Delete!!');
+        }
+        return redirect()->back()->with('flash_success', 'Sale Deleted Successfully!!');
     }
     public function findProduct($productid)
     {

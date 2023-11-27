@@ -7,6 +7,7 @@
 		body {
 			font-family: "Times New Roman", Times, serif;
 			font-size: 10pt;
+            margin: 0;
 		}
 	
 		table {
@@ -31,6 +32,9 @@
             align-items: center;
             text-align: center;
         }
+        .no_border{
+            border: none;
+        }
 	</style>
 </head>
 <body>
@@ -40,13 +44,59 @@
 		</div>
 	</htmlpagefooter>
 	<sethtmlpagefooter name="myfooter" value="on" />
-	<table class="header-table">
+	{{-- <table class="header-table">
 		<tr>
 			<td>
 				<img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="object-fit:contain" width="100%"/>
 			</td>
 		</tr>
-	</table>
+	</table> --}}
+    <table>
+        <tbody>
+        <tr>
+        <td width="20%" class="no_border">
+            <table class="no_border">
+                <tbody>
+                    <tr class="no_border">
+                        <td class="no_border">VRN: {{$company->vrn_no}}</td>
+                    </tr>
+                    <tr>
+                        <td class="no_border">TIN NO: {{$company->tin_no}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td width="60%" class="no_border">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="no_border"><img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="object-fit:contain" width="100%"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td width="20%" class="no_border">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="no_border"> {{$company->address}}</td>
+                    </tr>
+                    <tr>
+                        <td class="no_border">Phone: {{$company->phone_number}}</td>
+                    </tr>
+                    <tr>
+                        <td class="no_border">Email: {{$company->email}}</td>
+                    </tr>
+                    <tr>
+                        <td class="no_border">Fax: {{$company->fax}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
     <h4 class="align_c">Shift Ends at <span>{{$shift->close_shift->created_at}}</span></h4>
     <table class="items">
         <thead>

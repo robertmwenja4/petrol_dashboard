@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('shifts/finalize_allocation', [ShiftController::class, 'finalizeAllocation'])->name('shift.finalize_allocation');
     Route::put('shifts/login/{shift_id}', [ShiftController::class, 'loginUser'])->name('shifts.login');
     Route::post('shifts/close_shift', [ShiftController::class, 'closeShift'])->name('shift.close_shift');
+    Route::get('shifts/get', [ShiftController::class, 'shifts_admin'])->name('shift.shifts_admin');
 
     //admin shift
     Route::post('shifts/goods', [ShiftController::class, 'goods'])->name('shifts.goods');

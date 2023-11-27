@@ -111,6 +111,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th></th>
+                                        <th>Delivery Note</th>
                                         <th>Sale Type</th>
                                         <th>Customer</th>
                                         <th>LPO No.</th>
@@ -119,13 +120,14 @@
                                         <th>Rate</th>
                                         <th>Total Price</th>
                                         <th>Date & Time</th>
-                                        {{-- <th>Actions</th> --}}
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($sales as $i => $sale)
                                         <tr>
                                             <td>{{ $i + 1 }}</td>
+                                            <td>{{ gen4tid('DN-',$sale->tid) }}</td>
                                             <td>{{ $sale->type }}</td>
                                             <td>{{ $sale->customer ? $sale->customer->company : '' }}</td>
                                             <td>{{ $sale->lpo_no ? $sale->lpo_no : '' }}</td>
@@ -136,7 +138,7 @@
                                             <td>{{ $sale->created_at }}</td>
 
                                             <td>
-                                            {{-- @include('sales.partials.action_buttons') --}}
+                                            @include('sales.partials.action_buttons')
                                         </td>
 
                                         </tr>

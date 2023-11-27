@@ -54,6 +54,11 @@ class ShiftController extends Controller
         }
     }
 
+    public function shifts_admin(){
+        $shifts = Shift::all();
+        return view('shifts.admin_index', compact('shifts'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -127,19 +132,19 @@ class ShiftController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Shift $shift)
     {
-        $shift = Shift::find($id);
-        $shift_items = $shift->items->map(function ($v) {
-            // dd($v);
-            $start_time = Carbon::createFromFormat('H:i:s', $v->start_time);
-            $end_time = Carbon::createFromFormat('H:i:s', $v->end_time);
+        // $shift = Shift::find($id);
+        // $shift_items = $shift->items->map(function ($v) {
+        //     // dd($v);
+        //     $start_time = Carbon::createFromFormat('H:i:s', $v->start_time);
+        //     $end_time = Carbon::createFromFormat('H:i:s', $v->end_time);
 
-            $v->start_time = $start_time->format('g:i A');
-            $v->end_time = $end_time->format('g:i A');
-            return $v;
-        });
-        return view('shifts.view', compact('shift', 'shift_items'));
+        //     $v->start_time = $start_time->format('g:i A');
+        //     $v->end_time = $end_time->format('g:i A');
+        //     return $v;
+        // });
+        return view('shifts.view', compact('shift'));
     }
 
     /**
@@ -148,10 +153,13 @@ class ShiftController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Shift $shift)
     {
-        $shift = Shift::find($id);
-        return view('shifts.edit', compact('shift'));
+        // $shift = Shift::find($id);
+        $users =  $users = User::whereHas('role', function ($q) {
+            $q->where('type', 'attendant');
+        })->get(['id','name']);
+        return view('shifts.edit', compact('shift', 'users'));
     }
 
     /**
@@ -161,19 +169,19 @@ class ShiftController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Shift $shift)
     {
         // dd($request->all(), $id);
-        $shift = Shift::find($id);
-        $data = $request->only(['shift_name']);
+        // $shift = Shift::find($id);
+        // $data = $request->only(['shift_name']);
         $data_items = $request->only([
-            'name', 'start_time', 'end_time', 'id'
+            'user_id', 'id'
         ]);
         $data_items = modify_array($data_items);
 
         try {
             DB::beginTransaction();
-            $result = $shift->update($data);
+            // $result = $shift->update($data);
 
             $item_ids = array_map(function ($v) {
                 return $v['id'];
@@ -194,9 +202,9 @@ class ShiftController extends Controller
             dd($th);
             //throw $th;
             DB::rollback();
-            return redirect()->back()->with('status', 'Error Updating Shift!!');
+            return redirect()->back()->with('flash_error', 'Error Updating Shift!!');
         }
-        return redirect()->route('shift.index')->with('status', 'Shift Updated Successfully!!');
+        return redirect()->route('shift.shifts_admin')->with('flash_success', 'Shift Updated Successfully!!');
     }
 
     /**

@@ -418,7 +418,7 @@
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="Shifts">Shifts</span></a>
                     <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('shift.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
+                        <li><a class="d-flex align-items-center" href="{{route('shift.shifts_admin')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
                         </li>
                         {{-- <li><a class="d-flex align-items-center" href="{{route('user_allocation.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Shift">Shift Allocation</span></a>
                         </li> --}}

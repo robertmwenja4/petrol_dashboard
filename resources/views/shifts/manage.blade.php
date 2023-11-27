@@ -54,9 +54,9 @@
                         @foreach ($shift->items as $i => $s)
                             <tr>
                                 <td>{{ $i + 1 }}</td>
-                                <td>{{ $s->user->name }}</td>
+                                <td>{{ @$s->user->name }}</td>
 
-                                <td>{{ $s->pump->name }}</td>
+                                <td>{{ $s->pump ? $s->pump->name : '' }}</td>
 
                                 <td>{{ ucfirst($s->status) }}</td>
 
