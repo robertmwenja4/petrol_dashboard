@@ -49,6 +49,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function hasRole($role)
+    {
+        return $this->role->type === $role; // Adjust this based on how roles are stored in your database
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');

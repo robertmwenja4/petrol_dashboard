@@ -29,9 +29,12 @@ use App\Http\Controllers\pump\NozzleController;
 Route::get('/', function () {
     return view('auth.login');
 });
-Route::middleware(['auth'])->group(function () {
+Auth::routes();
+
+Route::middleware(['auth','role'])->group(function () {
 
     Route::resource('dashboard', DashBoardController::class);
+    // Route::get('dashboard/user', [DashBoardController::class, 'user_dashboard'])->name('dashboard.user');
     Route::resource('user', UserController::class);
     Route::resource('shift', ShiftController::class);
     Route::resource('close_shift', CloseShiftController::class);
@@ -65,6 +68,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('print_cash_receipt', [GiveCashController::class, 'fetchCashGiven'])->name('print_cash_receipt');
     Route::get('user_verify/{pass_key}', [UserController::class, 'verifyUser'])->name('user.verify');
 });
-Auth::routes();
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

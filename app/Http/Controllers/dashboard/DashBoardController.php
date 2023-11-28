@@ -50,17 +50,22 @@ class DashBoardController extends Controller
             $role = $user->role ? $user->role->name : '';
             $roleType = $user->role ? $user->role->type : '';
 
-            if ($roleType == 'admin') {
-                return view('dashboard.index', compact('role','customers','sales','products','pumps','users'));
-            } else if ($roleType == 'user') {
-                return view('users_dashboard.index');
-            } else {
-                Auth::logout();
-                return redirect()->back()->with('flash_error', 'Login In With Common Credentials !!');
-            }
+            // if ($roleType == 'admin') {
+            //     return view('dashboard.index', compact('role','customers','sales','products','pumps','users'));
+            // } else if ($roleType == 'user') {
+            //     return view('users_dashboard.index');
+            // } else {
+            //     Auth::logout();
+            //     return redirect()->back()->with('flash_error', 'Login In With Common Credentials !!');
+            // }
+            return view('dashboard.index', compact('role','customers','sales','products','pumps','users'));
         } else {
             return redirect()->route('login');
         }
+    }
+
+    public function user_dashboard(){
+        return view('users_dashboard.index');
     }
 
     /**
@@ -70,7 +75,7 @@ class DashBoardController extends Controller
      */
     public function create()
     {
-        //
+        return view('users_dashboard.index');
     }
 
     /**
