@@ -221,9 +221,10 @@ class SaleController extends Controller
         $id = $request->id;
         $sale = Sale::whereHas('product')
             ->whereHas('user')
+            ->whereHas('sold_usr')
             ->whereHas('pump')
             ->where('id', $id)->first();
-        // dd($sale);
+
         return view('prints.print_invoice', compact('sale'));
     }
 }

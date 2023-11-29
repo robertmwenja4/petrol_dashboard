@@ -281,7 +281,7 @@
         <div id="bot">
             <div id="legalcopy">
                 <p class="start descrip">
-                    Attendant - {{ strtoupper($sale->user->name) }} <span
+                    Attendant - {{ strtoupper($sale->sold_usr->name) }} <span
                         class="pump">{{ $sale->pump->code }}</span> <br />
                     THANK YOU - PLEASE COME AGAIN
                 </p>
