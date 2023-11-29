@@ -22,6 +22,7 @@ class CreateSalesTable extends Migration
             $table->unsignedDecimal('total_price', 16, 4);
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('sold_by');
             $table->unsignedBigInteger('pump_id');
             $table->unsignedBigInteger('shift_id');
             $table->string('lpo_no')->nullable();

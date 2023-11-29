@@ -23,6 +23,7 @@ class Sale extends Model
         'total_price',
         'customer_id',
         'user_id',
+        'sold_by',
         'pump_id',
         'shift_id',
         'lpo_no',

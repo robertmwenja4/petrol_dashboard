@@ -11,6 +11,7 @@ use App\Models\product\Product;
 use App\Models\customer\Customer;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\shift\ShiftItem;
 use Illuminate\Support\Facades\Response;
 
 class SaleController extends Controller
@@ -75,6 +76,7 @@ class SaleController extends Controller
         $tid = $sale->max('tid');
         $data['tid'] = $tid + 1;
         $data['type'] = 'invoice';
+
         $validate = true;
         $checkuser = verifyUser($data['pass_key']);
         if (!$checkuser['status']) {
@@ -85,10 +87,20 @@ class SaleController extends Controller
                 'data' => null
             ];
         }
+
+        $pump = $data["pump_id"];
+        $shift = $data["shift_id"];
+
+        $shiftitem = ShiftItem::where([
+            "pump_id" => $pump,
+            "shift_id" => $shift
+        ])->first();
         if ($validate) {
             try {
                 DB::beginTransaction();
-                $data['user_id'] = $checkuser['user_id'];
+                $data['sold_by'] = $checkuser['user_id'];
+                $data['user_id'] = $shiftitem->user_id;
+
                 $sale = Sale::create($data);
 
 
