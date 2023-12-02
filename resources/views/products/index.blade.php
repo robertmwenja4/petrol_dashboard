@@ -114,6 +114,7 @@
                                     <th>Name</th>
                                     <th>Code</th>
                                     <th>Description</th>
+                                    <th>QTY</th>
                                     <th>Price per Litre</th>
                                     <th>Category</th>
                                     <th>Actions</th>
@@ -126,6 +127,7 @@
                                         <td>{{$product->name}}</td>
                                         <td>{{$product->code}}</td>
                                         <td>{{$product->description}}</td>
+                                        <td>{{$product->readings}}</td>
                                         {{-- <td>{{$product->pump ? $product->pump->name : ''}}</td> --}}
                                         <td>{{number_format($product->price, '3')}}</td>
                                         <td>{{$product->category}}</td>

@@ -11,6 +11,9 @@ use App\Models\shift\Shift;
 use Illuminate\Support\Facades\Response;
 use App\Models\User;
 use App\Models\company\Company;
+use App\Models\product\Product;
+use App\Models\product\ProductPrice;
+use App\Models\product_bin\ProductBin;
 
 class CloseShiftController extends Controller
 {
@@ -54,6 +57,9 @@ class CloseShiftController extends Controller
         try {
             DB::beginTransaction();
             $running_shift = Shift::find($data['shift_id']);
+            if($running_shift->status == 'open'){
+                return redirect()->back()->with('flash_error', 'Log out all users First!!');
+            }
             $running_shift->is_readings = 'yes';
             $running_shift->update();
             $shift = CloseShift::create($data);
@@ -66,6 +72,22 @@ class CloseShiftController extends Controller
             }, $data_items);
             // dd($data_items);
             CloseShiftItem::insert($data_items);
+            $main_shift = $shift->shift->id;
+            $products = Product::all();
+            foreach($products as $product){
+
+                $close_shift_stock_out = $shift->close_shift_items->where('product_id', $product->id)->sum('balance');
+                $close_shift_sum = $shift->close_shift_items->where('product_id', $product->id)->sum('current_stock');
+                $product_bins = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $main_shift,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bins->stock_out = $close_shift_stock_out;
+                $product_bins->closing_stock = $close_shift_sum;
+                $product_bins->update();
+            }
             if ($shift) {
                 DB::commit();
             }
@@ -131,6 +153,23 @@ class CloseShiftController extends Controller
                 $close_shift_item->fill(array_replace($item, ['close_shift_id' => $close_shift['id']]));
                 if (!$close_shift_item->id) unset($close_shift_item->id);
                 $close_shift_item->save();
+            }
+            $main_shift = $close_shift->shift->id;
+            $products = Product::all();
+            foreach($products as $product){
+
+                $close_shift_stock_out = $close_shift->close_shift_items->where('product_id', $product->id)->sum('balance');
+                    $close_shift_sum = $close_shift->close_shift_items->where('product_id', $product->id)->sum('current_stock');
+                    $product_bins = ProductBin::where([
+                        'type'=>'stock_movement',
+                        'shift_id'=> $main_shift,
+                        'product_id' => $product->id
+                        
+                    ])->first();
+                    // dd($product_bins, $close_shift_stock_out, $close_shift_sum);
+                    $product_bins->stock_out = $close_shift_stock_out;
+                    $product_bins->closing_stock = $close_shift_sum;
+                    $product_bins->update();
             }
             if ($close_shift) {
                 DB::commit();
@@ -264,6 +303,11 @@ class CloseShiftController extends Controller
         //         dd($s);
         //     }
         // }
+        $product_bin = ProductBin::where([
+            'shift_id' => $request->shift_id
+        ])->get();
+        $fuel_prices = ProductPrice::where('status', 'active')->get();
+        if($shift->readings == 'no') return;
         $data = [
             'close_shift_item_diesel' => $close_shift_item_diesel,
             'close_shift_item_petrol' => $close_shift_item_petrol,
@@ -272,11 +316,15 @@ class CloseShiftController extends Controller
             'user_sales' => $user_sales,
             'shift' => $shift,
             'company' => $company,
+            'product_bin' => $product_bin,
+            'fuel_prices' => $fuel_prices,
 
         ];
         $html = view('prints.print_shift_report', $data)->render();
         $pdf = new \Mpdf\Mpdf();
         $pdf->WriteHTML($html);
+        $pdf->WriteHTML('<div style="page: break;"></div>');
+        // $pdf->WriteHTML($html);
         // dd($pdf);
         return Response::stream($pdf->Output('sales.pdf', 'I'), 200, $this->headers);
     }

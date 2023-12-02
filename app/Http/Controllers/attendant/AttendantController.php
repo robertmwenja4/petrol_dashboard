@@ -17,6 +17,7 @@ use App\Models\customer\Customer;
 use App\Models\sale\Sale;
 use App\Models\product\Product;
 use App\Models\cash\GiveCash;
+use App\Models\product_bin\ProductBin;
 
 
 
@@ -85,6 +86,19 @@ class AttendantController extends Controller
                     DB::beginTransaction();
                     $data['created_by'] = $checkuser['user_id'];
                     $shift = Shift::create($data);
+                    $products = Product::all();
+                    foreach($products as $product){
+                        ProductBin::create([
+                            'product_id' => $product->id,
+                            'shift_id' => $shift->id,
+                            'transaction_id' => 0,
+                            'type' => 'stock_movement',
+                            'opening_stock' => $product->readings,
+                            'closing_stock' => 0,
+                            'stock_in' => 0,
+                            'stock_out' => 0
+                        ]);
+                    }
                     $data_items = [];
                     foreach ($pumps as $pump) {
                         $data_items[] = [

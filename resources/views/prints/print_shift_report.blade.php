@@ -201,20 +201,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>DIESEL TANK</td>
-                            <td>20000</td>
-                            <td>200</td>
-                            <td>700</td>
-                            <td>19100</td>
-                        </tr>
-                        <tr>
+                        
+                            @foreach ($product_bin as $item)
+                                <tr>
+                                    <td>{{$item->product ? $item->product->description : ''}}</td>
+                                    <td>{{$item->opening_stock}}</td>
+                                    <td>{{$item->stock_in}}</td>
+                                    <td>{{$item->stock_out}}</td>
+                                    <td>{{$item->closing_stock}}</td>
+                                    
+                                </tr>
+                            @endforeach
+                       
+                        {{-- <tr>
                             <td>SUPER TANK</td>
                             <td>10000</td>
                             <td>200</td>
                             <td>700</td>
                             <td>9100</td>
-                        </tr>
+                        </tr> --}}
                     </tbody>
                 </table>
             </td>
@@ -224,14 +229,14 @@
                 </p><br />
                 <table border="1">
                     <tbody>
-                        <tr>
-                            <td>DIESEL</td>
-                            <td>3532</td>
-                        </tr>
-                        <tr>
-                            <td>SUPER</td>
-                            <td>3332</td>
-                        </tr>
+                        @foreach ($fuel_prices as $price)
+                            
+                            <tr>
+                                <td>{{$price->product ? $price->product->name : ''}}</td>
+                                <td>{{$price->price}}</td>
+                            </tr>
+                        @endforeach
+                       
                     </tbody>
                 </table>
             </td>
@@ -292,6 +297,7 @@
         </tbody>
     </table><br>
     {{-- {{dd($total_sales_by_meter)}} --}}
+    <div style="page: break;"></div>
     <table>
         <thead>
             <tr>

@@ -21,9 +21,9 @@
     </div> --}}
 </div>
 <div class="form-group row mt-2">
-    <div class="col-4 d-none">
+    <div class="col-4">
         <label for="readings">Readings</label>
-        <input type="text" name="readings" value="{{@$product->readings?:0}}" id="readings" placeholder="0.00" class="form-control">
+        <input type="text" name="readings" value="{{@$product->readings}}" readonly id="readings" placeholder="0.00" class="form-control">
     </div>
     <div class="col-4">
         <label for="price">Prices per Litre</label>

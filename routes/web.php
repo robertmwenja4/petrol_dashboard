@@ -17,6 +17,8 @@ use App\Http\Controllers\shift\CloseShiftController;
 use App\Http\Controllers\pump\NozzleController;
 use App\Http\Controllers\attendant\AttendantController;
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\purchase\PurchaseController;
+use App\Http\Controllers\product\StockAdjustmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,30 +58,34 @@ Route::middleware(['auth', 'admin_role'])->group(function () {
     //admin shift
     Route::post('shifts/goods', [ShiftController::class, 'goods'])->name('shifts.goods');
     Route::post('give_cash/approve', [GiveCashController::class, 'approve'])->name('give_cash.approve');
+    Route::resource('purchase', PurchaseController::class);
+    Route::resource('stock_adjustment', StockAdjustmentController::class);
+    Route::get('stock_adjustment/stock_adjust/{id}', [StockAdjustmentController::class, 'stock_adjust'])->name('stock_adjust');
+    
 });
 Route::middleware(['auth', 'user_role'])->group(function () {
     //dashboard.create, shift.create
-    Route::get('attendant/dashboard', [AttendantController::class, 'user_dashboard'])->name('attendant.dashboard');
-    Route::get('shifts/create_shift', [AttendantController::class, 'create_shift'])->name('shifts.create_shift');
-    Route::get('shifts/index_shift', [AttendantController::class, 'index_shift'])->name('shifts.index_shift');
-    Route::post('shifts/store_shift', [AttendantController::class, 'store_shift'])->name('shifts.store_shift');
-    Route::put('/shifts/update_shift/{shift_id}', [AttendantController::class, 'assignUser'])->name('shifts_save.update_shift');
-    Route::get('sales/create_sales', [AttendantController::class, 'create_sales'])->name('sales.create_sales');
-    Route::post('sales/store_sales', [AttendantController::class, 'store_sales'])->name('sales.store_sales');
-    Route::get('cash_give/create_cash_give', [AttendantController::class, 'create_cash_give'])->name('cash_give.create_cash_give');
-    Route::post('cash_give/store_cash_give', [AttendantController::class, 'store_cash_give'])->name('cash_give.store_cash_give');
-    //sales
-    Route::get('sale/get-product/{product_id}', [SaleController::class, 'findProduct'])->name('sale.get_product');
-    Route::get('sale/get-customer/{customer_id}', [SaleController::class, 'findCustomer'])->name('sale.get_customer');
-    //user shift management
-    // Route::put('shifts/update/{shift_id}', [ShiftController::class, 'assignUser'])->name('shifts.update');
-    Route::post('shifts/finalize_allocation', [ShiftController::class, 'finalizeAllocation'])->name('shift.finalize_allocation');
-    Route::put('/shifts/shifts/login/{shift_id}', [ShiftController::class, 'loginUser'])->name('shifts.login');
-    Route::post('shifts/close_shift', [ShiftController::class, 'closeShift'])->name('shift.close_shift');
-    Route::get('shifts/get', [ShiftController::class, 'shifts_admin'])->name('shift.shifts_admin');
-    Route::get('print_invoice', [SaleController::class, 'fetchSale'])->name('print_invoice');
-    Route::get('print_cash_receipt', [GiveCashController::class, 'fetchCashGiven'])->name('print_cash_receipt');
-    Route::get('user_verify/{pass_key}', [UserController::class, 'verifyUser'])->name('user.verify');
+Route::get('attendant/dashboard', [AttendantController::class, 'user_dashboard'])->name('attendant.dashboard');
+Route::get('shifts/create_shift', [AttendantController::class, 'create_shift'])->name('shifts.create_shift');
+Route::get('shifts/index_shift', [AttendantController::class, 'index_shift'])->name('shifts.index_shift');
+Route::post('shifts/store_shift', [AttendantController::class, 'store_shift'])->name('shifts.store_shift');
+Route::put('/shifts/update_shift/{shift_id}', [AttendantController::class, 'assignUser'])->name('shifts_save.update_shift');
+Route::get('sales/create_sales', [AttendantController::class, 'create_sales'])->name('sales.create_sales');
+Route::post('sales/store_sales', [AttendantController::class, 'store_sales'])->name('sales.store_sales');
+Route::get('cash_give/create_cash_give', [AttendantController::class, 'create_cash_give'])->name('cash_give.create_cash_give');
+Route::post('cash_give/store_cash_give', [AttendantController::class, 'store_cash_give'])->name('cash_give.store_cash_give');
+//sales
+Route::get('sale/get-product/{product_id}', [SaleController::class, 'findProduct'])->name('sale.get_product');
+Route::get('sale/get-customer/{customer_id}', [SaleController::class, 'findCustomer'])->name('sale.get_customer');
+//user shift management
+// Route::put('shifts/update/{shift_id}', [ShiftController::class, 'assignUser'])->name('shifts.update');
+Route::post('shifts/finalize_allocation', [ShiftController::class, 'finalizeAllocation'])->name('shift.finalize_allocation');
+Route::put('shifts/shifts/login/{shift_id}', [ShiftController::class, 'loginUser'])->name('shifts.login');
+Route::post('shifts/close_shift', [ShiftController::class, 'closeShift'])->name('shift.close_shift');
+Route::get('shifts/get', [ShiftController::class, 'shifts_admin'])->name('shift.shifts_admin');
+Route::get('print_invoice', [SaleController::class, 'fetchSale'])->name('print_invoice');
+Route::get('print_cash_receipt', [GiveCashController::class, 'fetchCashGiven'])->name('print_cash_receipt');
+Route::get('user_verify/{pass_key}', [UserController::class, 'verifyUser'])->name('user.verify');
 });
 
 
