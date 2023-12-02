@@ -19,6 +19,7 @@ class CreateGiveCashesTable extends Migration
             $table->unsignedBigInteger('pump_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('shift_id');
+            $table->unsignedBigInteger('cash_given_by');
             $table->decimal('amount', 16, 4);
             $table->enum('status', ['pending', 'approved','rejected'])->default('pending');
             $table->string('approve_note')->nullable();

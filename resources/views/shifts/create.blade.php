@@ -9,7 +9,7 @@
 
             </div>
             <div class="card-body">
-                <form id="shiftForm" action="{{ route('shift.store') }}" method="POST">
+                <form id="shiftForm" action="{{ route('shifts.store_shift') }}" method="POST">
                     @csrf
                     @include('shifts.form')
                 </form>

@@ -144,7 +144,7 @@
         <div id="top">
             <!-- <div class="logo"></div> -->
             <div class="info">
-                <p>DELIVERY NOTE NO : {{ $sale->tid }}</p>
+                <p>DELIVERY NOTE NO : {{ gent4tid('DN-',$sale->tid) }}</p>
             </div>
             <!-- End Info -->
         </div>

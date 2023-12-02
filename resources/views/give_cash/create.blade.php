@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid bg-white">
-        {{ Form::open(['route' => 'give_cash.store', 'id' => 'giveCashForm']) }}
+        {{ Form::open(['route' => 'cash_give.store_cash_give', 'id' => 'giveCashForm']) }}
 
         @include('give_cash.form')
 

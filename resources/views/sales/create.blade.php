@@ -44,7 +44,7 @@
 @endsection
 @section('content')
     <div class="container-fluid bg-white">
-        {{ Form::open(['route' => 'sale.store', 'id' => 'salesForm']) }}
+        {{ Form::open(['route' => 'sales.store_sales', 'id' => 'salesForm']) }}
 
         @include('sales.form')
 
