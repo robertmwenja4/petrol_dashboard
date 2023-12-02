@@ -56,6 +56,7 @@ Route::middleware(['auth', 'admin_role'])->group(function () {
     //admin shift
     Route::post('shifts/goods', [ShiftController::class, 'goods'])->name('shifts.goods');
     Route::post('give_cash/approve', [GiveCashController::class, 'approve'])->name('give_cash.approve');
+    Route::get('shifts/get', [ShiftController::class, 'shifts_admin'])->name('shift.shifts_admin');
 });
 Route::middleware(['auth', 'user_role'])->group(function () {
     //dashboard.create, shift.create
@@ -76,7 +77,7 @@ Route::middleware(['auth', 'user_role'])->group(function () {
     Route::post('shifts/finalize_allocation', [ShiftController::class, 'finalizeAllocation'])->name('shift.finalize_allocation');
     Route::put('/shifts/shifts/login/{shift_id}', [ShiftController::class, 'loginUser'])->name('shifts.login');
     Route::post('shifts/close_shift', [ShiftController::class, 'closeShift'])->name('shift.close_shift');
-    Route::get('shifts/get', [ShiftController::class, 'shifts_admin'])->name('shift.shifts_admin');
+
     Route::get('print_invoice', [SaleController::class, 'fetchSale'])->name('print_invoice');
     Route::get('print_cash_receipt', [GiveCashController::class, 'fetchCashGiven'])->name('print_cash_receipt');
     Route::get('user_verify/{pass_key}', [UserController::class, 'verifyUser'])->name('user.verify');
