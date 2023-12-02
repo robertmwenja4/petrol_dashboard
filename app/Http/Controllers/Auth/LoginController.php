@@ -46,7 +46,7 @@ class LoginController extends Controller
         if ($user->hasRole('admin')) {
             return redirect()->route('dashboard.index');
         } elseif ($user->hasRole('user')) {
-            return redirect()->route('dashboard.create');
+            return redirect()->route('attendant.dashboard');
         } else {
             return redirect($this->redirectTo);
         }

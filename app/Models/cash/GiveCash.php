@@ -14,7 +14,7 @@ class GiveCash extends Model
 
 
     protected $fillable = [
-        'user_id','pump_id',
+        'user_id','pump_id','cash_given_by',
         'shift_id','amount','tid','approve_note','status'
     ];
 
@@ -26,6 +26,10 @@ class GiveCash extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function given_by()
+    {
+        return $this->belongsTo(User::class, 'cash_given_by');
     }
     public function shift()
     {

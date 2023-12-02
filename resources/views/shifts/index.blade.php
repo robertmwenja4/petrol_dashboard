@@ -101,7 +101,7 @@
             console.log(shiftId)
             $.ajax({
                 method: 'PUT',
-                url: 'shifts/update/' + shiftId,
+                url: '/shifts/update_shift/' + shiftId,
                 data: {
                     user_id: user_Id,
                     status: status,

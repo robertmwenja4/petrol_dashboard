@@ -56,6 +56,7 @@
                                     <th>Reference No.</th>
                                     <th>Pump</th>
                                     <th>User</th>
+                                    <th>Cash Given By</th>
                                     <th>Shift</th>
                                     <th>Status</th>
                                     <th>Amount</th>
@@ -69,6 +70,7 @@
                                         <td>{{gen4tid('RC-',$give_cash->tid)}}</td>
                                         <td>{{$give_cash->pump ? $give_cash->pump->name : ''}}</td>
                                         <td>{{$give_cash->user ? $give_cash->user->name : ''}}</td>
+                                        <td>{{$give_cash->given_by ? $give_cash->given_by->name : ''}}</td>
                                         <td>{{$give_cash->shift ? date('d/m/Y', strtotime($give_cash->shift->shift_name)) : ''}}</td>
                                         <td>{{ucfirst($give_cash->status)}}</td>
                                         <td>{{number_format($give_cash->amount, '3')}}</td>
