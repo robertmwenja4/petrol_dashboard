@@ -187,68 +187,71 @@
             </tr>
         </tbody>
     </table><br>
-    <div class="row">
-        <div class="col-8">
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th width="40%">Tank</th>
-                        <th width="20%">B/F BALANCE</th>
-                        <th width="10%">IN</th>
-                        <th width="10%">OUT</th>
-                        <th width="20%">C/F BALANCE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>DIESEL TANK</th>
-                        <th>20000</th>
-                        <th>200</th>
-                        <th>700</th>
-                        <th>19100</th>
-                    </tr>
-                    <tr>
-                        <th>SUPER TANK</th>
-                        <th>10000</th>
-                        <th>200</th>
-                        <th>700</th>
-                        <th>9100</th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-4">
-            <p>Fuel Prices</p>
-            <br>
-            <table border="1">
-                <tbody>
-                    <tr>
-                        <th>DIESEL</th>
-                        <th>3532</th>
-                    </tr>
-                    <tr>
-                        <th>SUPER</th>
-                        <th>3332</th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <table border="1">
-        <thead>
-            <tr>
-                <th width="10%">Pump</th>
-                <th width="15%">User</th>
-                <th width="15%">Credit Sale</th>
-                <th width="15%">Given Cash</th>
-                <th width="20%">Total Sale(A)</th>
-                <th width="20%">Sale By Meter(B)</th>
-                <th width="15%">Diff(B-A)</th>
-                <th width="15%">Paid Amt</th>
-                <th width="15%">Outstanding Amt</th>
-                <th width="20%">Comment</th>
-            </tr>
-        </thead>
+    <table>
+        <tr>
+            <td width="60%" class="no_border" style="padding:0 px">
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th width="40%">Tank</th>
+                            <th width="20%">B/F BALANCE</th>
+                            <th width="10%">IN</th>
+                            <th width="10%">OUT</th>
+                            <th width="20%">C/F BALANCE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>DIESEL TANK</td>
+                            <td>20000</td>
+                            <td>200</td>
+                            <td>700</td>
+                            <td>19100</td>
+                        </tr>
+                        <tr>
+                            <td>SUPER TANK</td>
+                            <td>10000</td>
+                            <td>200</td>
+                            <td>700</td>
+                            <td>9100</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td width="40%" class="no_border">
+                <p style="color: blue">
+                    <b><i>Fuel Prices</i></b>
+                </p><br />
+                <table border="1">
+                    <tbody>
+                        <tr>
+                            <td>DIESEL</td>
+                            <td>3532</td>
+                        </tr>
+                        <tr>
+                            <td>SUPER</td>
+                            <td>3332</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table width="100%">
+        <tr>
+            <th rowspan="2">Pump</th>
+            <th rowspan="2">User</th>
+            <th>Credit Sale</th>
+            <th rowspan="2">Total Sales (A)</th>
+            <th rowspan="2">Sales By Metre (B)</th>
+            <th rowspan="2">Diff (A-B)</th>
+            <th>Paid Amount</th>
+            <th rowspan="2">Comment</th>
+        </tr>
+        <tr>
+            <th>Real Cash Sale</th>
+            <th>Outstanding </th>
+        </tr>
         <tbody>
             @php
                 $total_sales_by_meter = 0;
@@ -258,34 +261,30 @@
             @endphp
             @foreach (collect($sales) as $sale)
                 @foreach (collect($sale) as $selling)
-                    {{-- {{dd($selling)}} --}}
-                    {{-- <tr>
-                        <td>{{ $sale->user->name }}</td>
-                        <td>{{ $shift->close_shift->close_shift_items->where('pump_id', $sale->pump_id)->first()->pump->name }}</td>
-                        <td>{{ $sale->price }}</td>
-                        <td>{{ $shift->close_shift->close_shift_items->where('pump_id', $sale->pump_id)->first()->amount }}</td>
-                        <td>{{ $shift->cash->where('user_id', $sale->user_id)->sum('amount') }}</td>
-                    </tr> --}}
+                    @php
+                        $diff = $selling->amount - ($selling->price + $selling->give_cash);
+                        $total_sales_by_meter += $selling->amount;
+                        $credit_sale += $selling->price;
+                        $balance += $diff;
+                        $total_cash += $selling->give_cash;
+                        $t_sale = $selling->price + $selling->give_cash;
+                        $t_amount = number_format($selling->amount, '3');
+                        $t_diff = $selling->amount - ($selling->price + $selling->give_cash);
+                    @endphp
                     <tr>
-                        @php
-                            $diff = $selling->amount - ($selling->price + $selling->give_cash);
-                            $total_sales_by_meter += $selling->amount;
-                            $credit_sale += $selling->price;
-                            $balance += $diff;
-                            $total_cash += $selling->give_cash;
-                            $t_sale = $selling->price + $selling->give_cash;
-                            $t_amount = number_format($selling->amount, '3');
-                            $t_diff = $selling->amount - ($selling->price + $selling->give_cash);
-                        @endphp
-                        <td>{{ $selling->pump_name }}</td>
-                        <td>{{ $selling->user_name }}</td>
+
+                        <td rowspan="2">{{ $selling->pump_name }}</td>
+                        <td rowspan="2">{{ $selling->user_name }}</td>
                         <td>{{ number_format($selling->price, '3') }}</td>
+                        <td rowspan="2">{{ number_format($t_sale, '3') }}</td>
+                        <td rowspan="2">{{ $t_amount }}</td>
+                        <td rowspan="2">{{ number_format($t_diff, '3') }}</td>
+                        <td></td>
+                        <td rowspan="2"></td>
+                    </tr>
+                    <tr>
+
                         <td>{{ number_format($selling->give_cash, '3') }}</td>
-                        <td>{{ number_format($t_sale, '3') }}</td>
-                        <td>{{ $t_amount }}</td>
-                        <td>{{ number_format($t_diff, '3') }}</td>
-                        <td></td>
-                        <td></td>
                         <td></td>
                     </tr>
                 @endforeach
@@ -296,7 +295,6 @@
     <table>
         <thead>
             <tr>
-
                 <th>Grand Total Sales as per Meter</th>
                 <th><em>{{ number_format($total_sales_by_meter, '3') }}</em></th>
                 <th>Diff(Total)</th>
@@ -351,8 +349,6 @@
             @endforeach
         </tbody>
     </table><br>
-
-
 </body>
 
 </html>
