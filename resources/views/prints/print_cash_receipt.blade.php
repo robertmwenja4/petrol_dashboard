@@ -155,9 +155,6 @@
                 <p class="descrip">
                     Clock Tower Service Station Ltd<br />
                     P.O. Box 391, Arusha, Tanzania<br />
-                    Phone : 2503789/2503228 Fax 2548745<br />
-                    Email : virjee@cybernet.co.tz<br />
-                    VRN : 11-005976-K TIN 100-169-819<br />
                 </p>
             </div>
         </div>
