@@ -124,14 +124,14 @@
             <tr>
                 <td>Closing</td>
                 @foreach ($close_shift_item_diesel as $item)
-                    <th>{{ @$item->current_stock }}</th>
+                    <td>{{ @$item->current_stock }}</td>
                 @endforeach
                 <td></td>
             </tr>
             <tr>
                 <td>Opening</td>
                 @foreach ($close_shift_item_diesel as $item)
-                    <th>{{ @$item->open_stock }}</th>
+                    <td>{{ @$item->open_stock }}</td>
                 @endforeach
                 <td></td>
             </tr>
@@ -141,7 +141,7 @@
                     @php
                         $total_diff += $item->balance;
                     @endphp
-                    <th>{{ @$item->balance }}</th>
+                    <td>{{ @$item->balance }}</td>
                 @endforeach
                 <td>{{ $total_diff }}</td>
             </tr>
@@ -164,14 +164,14 @@
             <tr>
                 <td>Closing</td>
                 @foreach ($close_shift_item_petrol as $item)
-                    <th>{{ @$item->current_stock }}</th>
+                    <td>{{ @$item->current_stock }}</td>
                 @endforeach
                 <td></td>
             </tr>
             <tr>
                 <td>Opening</td>
                 @foreach ($close_shift_item_petrol as $item)
-                    <th>{{ @$item->open_stock }}</th>
+                    <td>{{ @$item->open_stock }}</td>
                 @endforeach
                 <td></td>
             </tr>
@@ -181,7 +181,7 @@
                     @php
                         $total_super_diff += $item->balance;
                     @endphp
-                    <th>{{ @$item->balance }}</th>
+                    <td>{{ @$item->balance }}</td>
                 @endforeach
                 <td>{{ $total_super_diff }}</td>
             </tr>
