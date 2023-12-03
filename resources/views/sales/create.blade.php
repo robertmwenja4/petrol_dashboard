@@ -82,6 +82,19 @@
                 });
             }
         });
+        $('#printReceipt').on('click', function(e) {
+            e.preventDefault();
+            var url = "{{ route('print_latest_invoice_receipt') }}";
+            window.open(url, "Receipt", "width=500,height=600");
+        })
+        $(document).keydown(function(event) {
+            // Check if the key pressed is 'B' and the Ctrl key is pressed
+            if (event.ctrlKey && event.key === 'b') {
+                // Perform your desired function here
+                var url = "{{ route('print_latest_invoice_receipt') }}";
+                window.open(url, "Receipt", "width=500,height=600");
+            }
+        });
         //validate form before opening modal
         function validateForm() {
             var customerSelect = $('#customerSelect');

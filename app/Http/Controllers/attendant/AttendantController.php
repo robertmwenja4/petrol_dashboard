@@ -23,7 +23,8 @@ use App\Models\product_bin\ProductBin;
 
 class AttendantController extends Controller
 {
-    public function user_dashboard(){
+    public function user_dashboard()
+    {
         return view('users_dashboard.index');
     }
 
@@ -87,7 +88,7 @@ class AttendantController extends Controller
                     $data['created_by'] = $checkuser['user_id'];
                     $shift = Shift::create($data);
                     $products = Product::all();
-                    foreach($products as $product){
+                    foreach ($products as $product) {
                         ProductBin::create([
                             'product_id' => $product->id,
                             'shift_id' => $shift->id,
@@ -117,7 +118,7 @@ class AttendantController extends Controller
                         ];
                     }
                 } catch (\Throwable $th) {
-
+                    // dd($th);
                     DB::rollback();
                     $output = [
                         'success' => false,
@@ -218,7 +219,7 @@ class AttendantController extends Controller
                     ];
                 }
             } catch (\Throwable $th) {
-                
+
 
                 DB::rollback();
                 $output = [
@@ -271,8 +272,8 @@ class AttendantController extends Controller
         $shiftitem = ShiftItem::where([
             "pump_id" => $pump,
             "shift_id" => $shift
-            ])->first();
-            // dd($shiftitem);
+        ])->first();
+        // dd($shiftitem);
         if ($validate) {
             try {
                 DB::beginTransaction();
@@ -297,5 +298,19 @@ class AttendantController extends Controller
             }
         }
         return $output;
+    }
+
+
+    public function get_latest_invoice_receipt()
+    {
+
+        $sale =  Sale::latest('id')->first();
+        return view('prints.print_invoice', compact('sale'));
+    }
+    public function get_latest_cash_receipt()
+    {
+
+        $cash =  GiveCash::latest('id')->first();
+        return view('prints.print_cash_receipt', compact('cash'));
     }
 }
