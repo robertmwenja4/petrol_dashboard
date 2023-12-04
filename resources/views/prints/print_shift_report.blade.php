@@ -264,7 +264,38 @@
                 $balance = 0;
                 $total_cash = 0;
             @endphp
-            @foreach (collect($sales) as $sale)
+            @foreach (collect($pump_sales) as $selling)
+            {{-- {{dd($selling['give_cash'])}} --}}
+                @php
+                    $diff = $selling['amount'] - ($selling['price'] + $selling['give_cash']);
+                    $total_sales_by_meter += $selling['amount'];
+                    $credit_sale += $selling['price'];
+                    $balance += $diff;
+                    $total_cash += $selling['give_cash'];
+                    $t_sale = $selling['price'] + $selling['give_cash'];
+                    $t_amount = number_format($selling['amount'], '3');
+                    $t_diff = $selling['amount'] - ($selling['price'] + $selling['give_cash']);
+                    //New
+
+                @endphp
+            <tr>
+
+                <td rowspan="2">{{ $selling['pump_name'] }}</td>
+                <td rowspan="2">{{ $selling['user_name'] }}</td>
+                <td>{{ number_format($selling['price'], '3') }}</td>
+                <td rowspan="2">{{ number_format($t_sale, '3') }}</td>
+                <td rowspan="2">{{ $t_amount }}</td>
+                <td rowspan="2">{{ number_format($t_diff, '3') }}</td>
+                <td></td>
+                <td rowspan="2"></td>
+            </tr>
+            <tr>
+
+                <td>{{ number_format($selling['give_cash'], '3') }}</td>
+                <td></td>
+            </tr>
+            @endforeach
+            {{-- @foreach (collect($sales) as $sale)
                 @foreach (collect($sale) as $selling)
                     @php
                         $diff = $selling->amount - ($selling->price + $selling->give_cash);
@@ -275,6 +306,8 @@
                         $t_sale = $selling->price + $selling->give_cash;
                         $t_amount = number_format($selling->amount, '3');
                         $t_diff = $selling->amount - ($selling->price + $selling->give_cash);
+                        //New
+
                     @endphp
                     <tr>
 
@@ -292,8 +325,9 @@
                         <td>{{ number_format($selling->give_cash, '3') }}</td>
                         <td></td>
                     </tr>
+                    
                 @endforeach
-            @endforeach
+            @endforeach --}}
         </tbody>
     </table><br>
     {{-- {{dd($total_sales_by_meter)}} --}}

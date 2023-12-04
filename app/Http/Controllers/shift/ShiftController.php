@@ -472,7 +472,12 @@ class ShiftController extends Controller
             $v->product_price = $v->product ? $v->product->price : '';
             $v->category = $v->product ? $v->product->category : '';
             $close_shift_item = CloseShiftItem::where('nozzle_id', $v->id)->latest()->first();
-            $v->opening_stock = $close_shift_item ? $close_shift_item->current_stock : 0;
+            if($close_shift_item->isEmpty()){
+                $v->opening_stock = $v->readings;
+            }else{
+
+                $v->opening_stock = $close_shift_item ? $close_shift_item->current_stock : 0;
+            }
             $v->user_id = 0;
             $v->user_name = '';
             if($v->pump){

@@ -16,6 +16,10 @@
                     <input type="text" class="form-control" id="code" placeholder="eg. code" name="code" />
                 </div>
                 <div class="mb-1">
+                    <label class="form-label" for="readings">Readings</label>
+                    <input type="text" class="form-control" id="readings" placeholder="0.00" name="readings" />
+                </div>
+                <div class="mb-1">
                     <label class="form-label" for="pump">Pump Name</label>
                     <select name="pump_id" id="pump" class="select2 form-select">
                         @foreach ($pumps as $pump)

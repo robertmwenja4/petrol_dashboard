@@ -29,4 +29,6 @@ class Pump extends Model
     protected $guarded = [
         'id'
     ];
+
+    
 }

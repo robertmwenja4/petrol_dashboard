@@ -14,6 +14,8 @@ use App\Models\company\Company;
 use App\Models\product\Product;
 use App\Models\product\ProductPrice;
 use App\Models\product_bin\ProductBin;
+use App\Models\pump\Pump;
+use App\Models\shift\ShiftItem;
 
 class CloseShiftController extends Controller
 {
@@ -222,6 +224,36 @@ class CloseShiftController extends Controller
             'sales.user',
             'cash',
         ])->get();
+        $pump_sales = Pump::with(['close_shift_items.close_shift'=> function($q) use($request){
+            $q->where('shift_id', $request->shift_id);
+            // $q->with(['close_shift'=> function($v) use($request){
+            // }]);
+        }])
+        ->with('close_shift_items.user')
+        ->with(['sale' => function($q) use ($request){
+            $q->where('shift_id', $request->shift_id);
+        }])
+        ->with(['give_cash' => function($q) use ($request){
+            $q->where('shift_id', $request->shift_id);
+        }])
+        ->get();
+        // dd($pump_sales, $request->shift_id);
+        $pump_sale = [];
+        foreach($pump_sales as $sale){
+            $user = ShiftItem::where('pump_id', $sale->id)->where('shift_id', $request->shift_id)->first();
+            //$sale->sale()->where('shift_id',$request->shift_id)->sum('qty')
+            $pump_sale[] = [
+                'user_name' => @$user->user->name,
+                'pump_name' => $sale->name,
+                'price' => $sale->sale->sum('total_price'),
+                'amount' => $sale->close_shift_items()->whereHas('close_shift',function($q) use($request){ $q->where('shift_id',$request->shift_id);})->sum('amount'),
+                'give_cash' => $sale->give_cash()->where('shift_id',$request->shift_id)->where('status','approved')->sum('amount'), 
+                ];
+            // $sale->close_shift_items()->groupBy('pump_id')->user()->get()
+            // dd($sale,$user->user->name,  $sale->sale()->where('shift_id',$request->shift_id)->sum('qty'), $sale->sale->sum('total_price'), $sale->close_shift_items()->whereHas('close_shift',function($q) use($request){
+            //     $q->where('shift_id',$request->shift_id);})->sum('amount'), $sale->give_cash()->where('shift_id',$request->shift_id)->where('status','approved')->sum('amount'));
+        }
+        // dd($pump_sale);
         // Accessing the connected data
         // $userFromSales = $shift_item->sales ? $shift_item->sales->user :'';
         // dd($shift_item);
@@ -244,6 +276,7 @@ class CloseShiftController extends Controller
                 return $q;
             });
         }
+
         // dd($sales);
         $users = User::with(['sales' => function ($q) use ($request) {
             $q->with(['shift' => function ($q) use ($request) {
@@ -318,6 +351,7 @@ class CloseShiftController extends Controller
             'company' => $company,
             'product_bin' => $product_bin,
             'fuel_prices' => $fuel_prices,
+            'pump_sales' => $pump_sale,
 
         ];
         $html = view('prints.print_shift_report', $data)->render();

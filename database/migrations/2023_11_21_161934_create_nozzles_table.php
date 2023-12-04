@@ -18,6 +18,7 @@ class CreateNozzlesTable extends Migration
             //'pump_id', 'name','code', 'product_id'
             $table->unsignedBigInteger('pump_id');
             $table->unsignedBigInteger('product_id');
+            $table->unsignedDecimal('readings', 16, 4);
             $table->string('name');
             $table->string('code');
             $table->timestamps();

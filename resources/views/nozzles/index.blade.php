@@ -150,6 +150,10 @@
                                                         <input type="text" class="form-control" value="{{$nozzle->code}}" id="code" placeholder="eg. code" name="code" />
                                                     </div>
                                                     <div class="mb-1">
+                                                        <label class="form-label" for="readings">Readings</label>
+                                                        <input type="text" class="form-control" value="{{$nozzle->readings}}" id="readings" placeholder="0.00" name="readings" />
+                                                    </div>
+                                                    <div class="mb-1">
                                                         <label class="form-label" for="pump">Pump Name</label>
                                                         <select name="pump_id" id="pump-{{$nozzle->id}}" class=" form-select">
                                                             @foreach ($pumps as $pump)

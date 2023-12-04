@@ -12,7 +12,7 @@ class Nozzle extends Model
     use HasFactory;
 
     protected $fillable = [
-        'pump_id', 'name','code', 'product_id'
+        'pump_id', 'name','code', 'product_id','readings'
     ];
 
     /**
