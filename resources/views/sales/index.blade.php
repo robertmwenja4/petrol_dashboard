@@ -115,6 +115,7 @@
                                         <th>Sale Type</th>
                                         <th>Customer</th>
                                         <th>LPO No.</th>
+                                        <th>Assigned To</th>
                                         <th>Sold By</th>
                                         <th>Quantity</th>
                                         <th>Rate</th>
@@ -132,6 +133,7 @@
                                             <td>{{ $sale->customer ? $sale->customer->company : '' }}</td>
                                             <td>{{ $sale->lpo_no ? $sale->lpo_no : '' }}</td>
                                             <td>{{ $sale->user ? $sale->user->name : '' }}</td>
+                                            <td>{{ $sale->sold_usr ? $sale->sold_usr->name : '' }}</td>
                                             <td>{{ $sale->qty }}</td>
                                             {{-- <td>{{ +$sale->rate }}</td> --}}
                                             <td>{{ number_format($sale->rate, '3') }}</td>

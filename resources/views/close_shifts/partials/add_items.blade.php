@@ -3,13 +3,13 @@
         <thead>
             <tr class="item_header bg-gradient-directional-blue white ">
                 <th width="5%" class="text-center">User</th>
-                <th width="15%" class="text-center">Pump</th>
+                <th width="10%" class="text-center">Pump</th>
                 <th width="10%" class="text-center">Nozzle</th>
                 <th width="10%" class="text-center">Item</th>
-                <th width="20%" class="text-center">Opening Reading</th>
-                <th width="30%" class="text-center">Current Readings</th>
-                <th width="30%" class="text-center">Balance</th>
-                <th width="30%" class="text-center">Amount</th>
+                <th width="15%" class="text-center">Opening Reading</th>
+                <th width="15%" class="text-center">Current Readings</th>
+                <th width="15%" class="text-center">Balance</th>
+                <th width="20%" class="text-center">Amount</th>
                 {{-- <th width="10%" class="text-center">Actions</th>                --}}
             </tr>
         </thead>

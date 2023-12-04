@@ -2,6 +2,7 @@
     <div class="col-3">
         <label for="product">Search Product</label>
         <select id="product" name="product_id" class="select2 form-select" data-placeholder="Search Product">
+            <option value="">Search Product</option>
             @foreach ($products as $product)
                 <option value="{{$product->id}}" {{$product->id == @$purchase->product_id ? 'selected' : ''}}>{{$product->name}}</option>
             @endforeach

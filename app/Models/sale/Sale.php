@@ -62,6 +62,10 @@ class Sale extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function sold_usr()
+    {
+        return $this->belongsTo(User::class, 'sold_by');
+    }
     public function shift()
     {
         return $this->belongsTo(Shift::class, 'shift_id');

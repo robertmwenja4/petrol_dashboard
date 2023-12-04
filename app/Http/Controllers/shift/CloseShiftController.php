@@ -87,8 +87,10 @@ class CloseShiftController extends Controller
                     
                 ])->first();
                 $product_bins->stock_out = $close_shift_stock_out;
-                $product_bins->closing_stock = $close_shift_sum;
+                $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
                 $product_bins->update();
+                $product->readings = $product->readings - $close_shift_stock_out;
+                $product->update();
             }
             if ($shift) {
                 DB::commit();
@@ -170,8 +172,11 @@ class CloseShiftController extends Controller
                     ])->first();
                     // dd($product_bins, $close_shift_stock_out, $close_shift_sum);
                     $product_bins->stock_out = $close_shift_stock_out;
-                    $product_bins->closing_stock = $close_shift_sum;
+                    // $product_bins->closing_stock = $close_shift_sum;
+                    $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
                     $product_bins->update();
+                    $product->readings = $product->readings - $close_shift_stock_out;
+                    $product->update();
             }
             if ($close_shift) {
                 DB::commit();

@@ -61,10 +61,11 @@ class ProductPriceController extends Controller
                 DB::commit();
             }
         } catch (\Throwable $th) {
+            dd($th);
             DB::rollback();
-            return redirect()->back()->with('status', 'Error Creating Product Price');
+            return redirect()->back()->with('flash_error', 'Error Creating Product Price');
         }
-        return redirect()->route('product_price.index')->with('status', 'ProductPrice Created Successfully!!');
+        return redirect()->route('product_price.index')->with('flash_success', 'ProductPrice Created Successfully!!');
     }
 
     /**

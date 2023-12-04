@@ -59,14 +59,16 @@ class PurchaseController extends Controller
                 'stock_in' => $purchase->qty,
                 'stock_out' => 0
             ]);
-            $product_bin = ProductBin::where([
-                'type'=>'stock_movement',
-                'shift_id'=> $shift->id,
-                'product_id' => $product->id
-                
-            ])->first();
-            $product_bin->stock_in = $purchase->qty;
-            $product_bin->update();
+            if($shift){
+                $product_bin = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bin->stock_in = $purchase->qty;
+                $product_bin->update();
+            }
             $product->readings += $purchase->qty;
             $product->update();
             if($purchase){
@@ -142,14 +144,16 @@ class PurchaseController extends Controller
                 'stock_in' => $purchase->qty,
                 'stock_out' => 0
             ]);
-            $product_bins = ProductBin::where([
-                'type'=>'stock_movement',
-                'shift_id'=> $shift->id,
-                'product_id' => $product->id
-                
-            ])->first();
-            $product_bins->stock_in = $purchase->qty;
-            $product_bins->update();
+            if($shift){
+                $product_bins = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bins->stock_in = $purchase->qty;
+                $product_bins->update();
+            }
             if($purchase){
                 $product->readings += $purchase->qty;
                 $product->update();
@@ -157,6 +161,7 @@ class PurchaseController extends Controller
             }
 
         } catch (\Throwable $th) {
+            dd($th);
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Updating Purchase!!');
         }
@@ -183,14 +188,16 @@ class PurchaseController extends Controller
                 'transaction_id' => $purchase->id
             ])->first();
             $product_bin->delete();
-            $product_bins = ProductBin::where([
-                'type'=>'stock_movement',
-                'shift_id'=> $shift->id,
-                'product_id' => $product->id
-                
-            ])->first();
-            $product_bins->stock_in = 0;
-            $product_bins->update();
+            if($shift){
+                $product_bins = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bins->stock_in = 0;
+                $product_bins->update();
+            }
             if ($purchase->delete()) {
                 DB::commit();
             }

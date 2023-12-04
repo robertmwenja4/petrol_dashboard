@@ -99,10 +99,10 @@
                     <td>${v.pump_name}</td>    
                     <td>${v.code}</td>    
                     <td>${v.product_name}</td>    
-                    <td width="30%"><input name="open_stock[]" id="open_stock" class="form-control open_stock" value="${v.opening_stock}" readonly></td> 
-                    <td width="30%"><input name="current_stock[]" id="current_stock" class="form-control current_stock" ></td>
-                    <td width="30%"><input name="balance[]" id="balance" class="form-control balance" readonly></td>
-                    <td width="30%"><input name="amount[]" id="amount" class="form-control amount" readonly></td>
+                    <td><input name="open_stock[]" id="open_stock" class="form-control open_stock" value="${v.opening_stock}" readonly></td> 
+                    <td><input name="current_stock[]" id="current_stock" class="form-control current_stock" ></td>
+                    <td><input name="balance[]" id="balance" class="form-control balance" readonly></td>
+                    <td><input name="amount[]" id="amount" class="form-control amount" readonly></td>
                     <input type="hidden" name="product_id[]" id="product_id" value="${v.product_id}">
                     <input type="hidden" name="product_price[]" class="product_price" id="product_price" value="${v.product_price}">
                     <input type="hidden" name="category[]" class="category" id="category" value="${v.category}">
