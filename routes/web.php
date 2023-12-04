@@ -62,7 +62,6 @@ Route::middleware(['auth', 'admin_role'])->group(function () {
     Route::resource('purchase', PurchaseController::class);
     Route::resource('stock_adjustment', StockAdjustmentController::class);
     Route::get('stock_adjustment/stock_adjust/{id}', [StockAdjustmentController::class, 'stock_adjust'])->name('stock_adjust');
-    
 });
 Route::middleware(['auth', 'user_role'])->group(function () {
     //dashboard.create, shift.create
@@ -86,6 +85,8 @@ Route::middleware(['auth', 'user_role'])->group(function () {
 
     Route::get('print_invoice', [SaleController::class, 'fetchSale'])->name('print_invoice');
     Route::get('print_cash_receipt', [GiveCashController::class, 'fetchCashGiven'])->name('print_cash_receipt');
+    Route::get('print_latest_invoice_receipt', [AttendantController::class, 'get_latest_invoice_receipt'])->name('print_latest_invoice_receipt');
+    Route::get('print_latest_cash_receipt', [AttendantController::class, 'get_latest_cash_receipt'])->name('print_latest_cash_receipt');
     Route::get('user_verify/{pass_key}', [UserController::class, 'verifyUser'])->name('user.verify');
 });
 
