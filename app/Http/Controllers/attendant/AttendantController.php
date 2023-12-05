@@ -30,22 +30,38 @@ class AttendantController extends Controller
 
     public function index_shift()
     {
-        $data = checkShift();
-        // dd($data);
-        $shift = $data["shift"];
-        $users = $data["users"];
 
-        if (!$shift) {
-            $date = date('Y-m-d');
-            return $this->create_shift($date);
-        } else {
-            if ($shift->status == 'pending') {
-                return view('shifts.index', compact('shift', 'users'));
-            } else if ($shift->status == 'open') {
+        $openshift = Shift::where('status', 'open')
+
+            ->with('items.pump', 'items.user', 'user')
+            ->latest()->first();
+        if ($openshift) {
+            $shift = $openshift;
+            $users = User::whereHas('role', function ($q) {
+                $q->where('type', 'attendant');
+            })
+                ->pluck('name', 'id');
+            if ($openshift->status == 'open') {
                 return view('shifts.manage', compact('shift'));
-            } else if ($shift->status == 'closed') {
-                $date = date('Y-m-d', strtotime("+1 day"));
+            }
+        } else {
+            $data = checkShift();
+
+            $shift = $data["shift"];
+            $users = $data["users"];
+
+            if (!$shift) {
+                $date = date('Y-m-d');
                 return $this->create_shift($date);
+            } else {
+                if ($shift->status == 'pending') {
+                    return view('shifts.index', compact('shift', 'users'));
+                } else if ($shift->status == 'open') {
+                    return view('shifts.manage', compact('shift'));
+                } else if ($shift->status == 'closed') {
+                    $date = date('Y-m-d', strtotime("+1 day"));
+                    return $this->create_shift($date);
+                }
             }
         }
     }
@@ -157,21 +173,34 @@ class AttendantController extends Controller
         $products = Product::all()->pluck('name', 'id');
 
         $pumps = Pump::where('status', 'active')->get()->pluck('name', 'id');
-        $data = checkShift();
-        $shift = $data["shift"];
 
-
-        if (!$shift) {
-
-            return redirect()->route('shifts.index_shift');
-        } else {
-            if ($shift->status == 'pending') {
-                return redirect()->route('shifts.index_shift');
-            } else if ($shift->status == 'open') {
+        $openshift = Shift::where('status', 'open')
+            ->with('items.pump', 'items.user', 'user')
+            ->latest()->first();
+        if ($openshift) {
+            $shift = $openshift;
+            $users = User::whereHas('role', function ($q) {
+                $q->where('type', 'attendant');
+            })
+                ->pluck('name', 'id');
+            if ($openshift->status == 'open') {
                 return view('sales.create', compact('customers', 'products', 'pumps', 'shift'));
-            } else if ($shift->status == 'closed') {
+            }
+        } else {
+            $data = checkShift();
+            $shift = $data["shift"];
+            if (!$shift) {
 
                 return redirect()->route('shifts.index_shift');
+            } else {
+                if ($shift->status == 'pending') {
+                    return redirect()->route('shifts.index_shift');
+                } else if ($shift->status == 'open') {
+                    return view('sales.create', compact('customers', 'products', 'pumps', 'shift'));
+                } else if ($shift->status == 'closed') {
+
+                    return redirect()->route('shifts.index_shift');
+                }
             }
         }
     }
@@ -238,15 +267,29 @@ class AttendantController extends Controller
         $pumps = Pump::where('status', 'active')->get()->pluck('name', 'id');
         $data = checkShift();
         $shift = $data["shift"];
-        if (!$shift) {
-            return redirect()->route('shifts.index_shift');
-        } else {
-            if ($shift->status == 'pending') {
-                return redirect()->route('shifts.index_shift');
-            } else if ($shift->status == 'open') {
+        $openshift = Shift::where('status', 'open')
+            ->with('items.pump', 'items.user', 'user')
+            ->latest()->first();
+        if ($openshift) {
+            $shift = $openshift;
+            $users = User::whereHas('role', function ($q) {
+                $q->where('type', 'attendant');
+            })
+                ->pluck('name', 'id');
+            if ($openshift->status == 'open') {
                 return view('give_cash.create', compact('pumps', 'shift'));
-            } else if ($shift->status == 'closed') {
+            }
+        } else {
+            if (!$shift) {
                 return redirect()->route('shifts.index_shift');
+            } else {
+                if ($shift->status == 'pending') {
+                    return redirect()->route('shifts.index_shift');
+                } else if ($shift->status == 'open') {
+                    return view('give_cash.create', compact('pumps', 'shift'));
+                } else if ($shift->status == 'closed') {
+                    return redirect()->route('shifts.index_shift');
+                }
             }
         }
     }

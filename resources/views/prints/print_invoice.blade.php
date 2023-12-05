@@ -237,13 +237,13 @@
                             <p>{{ strtoupper($sale->product->name) }}</p>
                         </td>
                         <td width="25%">
-                            <p>{{ $sale->qty }}</p>
+                            <p>{{ number_format(floatval($sale->qty), 3) }}</p>
                         </td>
                         <td width="25%">
-                            <p>{{ number_format(floatval($sale->rate), 2) }}</p>
+                            <p>{{ number_format(floatval($sale->rate), 3) }}</p>
                         </td>
                         <td width="25%">
-                            <p>{{ number_format(floatval($sale->total_price), 2) }}</p>
+                            <p>{{ number_format(floatval($sale->total_price), 3) }}</p>
                         </td>
                     </tr>
                 </tbody>
@@ -257,7 +257,7 @@
             <table class="start">
                 <tr>
                     <td width="50%">TOTAL AMOUNT</td>
-                    <td class="end" width="50%">{{ number_format(floatval($sale->total_price), 2) }}</td>
+                    <td class="end" width="50%">{{ number_format(floatval($sale->total_price), 3) }}</td>
                 </tr>
                 {{-- <tr>
                     <td width="50%">DISCOUNT</td>

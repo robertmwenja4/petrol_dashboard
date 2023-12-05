@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Models\shift\Shift;
+use App\Models\shift\ShiftItem;
 use Illuminate\Support\Facades\Hash;
 
 // modify input array
@@ -53,7 +54,14 @@ function checkShift()
         ->orderBy('id', 'desc')
         ->first();
 
-    $users = User::whereHas('role', function ($q) {
+    // $shiftUsers = ShiftItem::where('shift_id', $shift->id)->whereNotNull('user_id')->pluck('user_id')->toArray();
+
+
+    // $users = User::whereNotIn('id', $shiftUsers)->whereHas('role', function ($q) {
+    //     $q->where('type', 'attendant');
+    // })
+    //     ->pluck('name', 'id');
+    $users = User::where('status', 'active')->whereHas('role', function ($q) {
         $q->where('type', 'attendant');
     })
         ->pluck('name', 'id');
