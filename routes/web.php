@@ -16,7 +16,7 @@ use App\Http\Controllers\product\ProductPriceController;
 use App\Http\Controllers\shift\CloseShiftController;
 use App\Http\Controllers\pump\NozzleController;
 use App\Http\Controllers\attendant\AttendantController;
-use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\purchase\PurchaseController;
 use App\Http\Controllers\product\StockAdjustmentController;
 /*

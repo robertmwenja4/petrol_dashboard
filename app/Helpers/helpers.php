@@ -60,3 +60,4 @@ function checkShift()
 
     return ["shift" => $shift, "users" => $users];
 }
+
