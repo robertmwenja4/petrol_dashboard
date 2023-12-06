@@ -15,7 +15,10 @@
             border-collapse: collapse;
             width: 100%;
             margin-bottom: 20px;
+            line-height:12px;
         }
+
+
 
         th,
         td {
@@ -50,63 +53,17 @@
         </div>
     </htmlpagefooter>
     <sethtmlpagefooter name="myfooter" value="on" />
-    {{-- <table class="header-table">
-		<tr>
-			<td>
-				<img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="object-fit:contain" width="100%"/>
-			</td>
-		</tr>
-	</table> --}}
-    <table>
-        <tbody>
-            <tr>
-                <td width="20%" class="no_border">
-                    <table class="no_border">
-                        <tbody>
-                            <tr class="no_border">
-                                <td class="no_border">VRN: {{ $company->vrn_no }}</td>
-                            </tr>
-                            <tr>
-                                <td class="no_border">TIN NO: {{ $company->tin_no }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-                <td width="60%" class="no_border">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="no_border"><img
-                                        src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}"
-                                        style="object-fit:contain" width="100%" /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-                <td width="20%" class="no_border">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="no_border"> {{ $company->address }}</td>
-                            </tr>
-                            <tr>
-                                <td class="no_border">Phone: {{ $company->phone_number }}</td>
-                            </tr>
-                            <tr>
-                                <td class="no_border">Email: {{ $company->email }}</td>
-                            </tr>
-                            <tr>
-                                <td class="no_border">Fax: {{ $company->fax }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div style="width:100%">
+        <div style="float:left;width:35%">  <img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="width:200px;" ></div>
+        <div style="float:left;width:65%"><h3>{{ $company->address }}</h3> Email: {{ $company->email }}<br>VRN: {{ $company->vrn_no }} &nbsp; TIN NO: {{ $company->tin_no }}<br><br>
+            <strong style="color:#000000;text-decoration:underline;">Shift Ends at <span>{{ date('d/m/Y', strtotime($shift->close_shift->created_at)) }}</span><span>
+                {{ date('h:i A', strtotime($shift->close_shift->created_at)) }}</span></strong></div>
+
+    </div>
+
+
     <br>
-    <h4 class="align_c">Shift Ends at <span>{{ date('d/m/Y', strtotime($shift->close_shift->created_at)) }}</span><span>
-            {{ date('h:i A', strtotime($shift->close_shift->created_at)) }}</span></h4>
+
     <table class="items">
         <thead>
             <tr>
@@ -124,14 +81,14 @@
             <tr>
                 <td>Closing</td>
                 @foreach ($close_shift_item_diesel as $item)
-                    <td>{{ @$item->current_stock }}</td>
+                    <td>{{ number_format(@$item->current_stock, '3')  }}</td>
                 @endforeach
                 <td></td>
             </tr>
             <tr>
                 <td>Opening</td>
                 @foreach ($close_shift_item_diesel as $item)
-                    <td>{{ @$item->open_stock }}</td>
+                    <td>{{ number_format(@$item->open_stock, '3')  }}</td>
                 @endforeach
                 <td></td>
             </tr>
@@ -141,7 +98,7 @@
                     @php
                         $total_diff += $item->balance;
                     @endphp
-                    <td>{{ @$item->balance }}</td>
+                    <td>{{  number_format(@$item->balance, '3')  }} </td>
                 @endforeach
                 <td>{{ $total_diff }}</td>
             </tr>
@@ -164,14 +121,14 @@
             <tr>
                 <td>Closing</td>
                 @foreach ($close_shift_item_petrol as $item)
-                    <td>{{ @$item->current_stock }}</td>
+                    <td>{{  number_format(@$item->current_stock, '3')  }} </td>
                 @endforeach
                 <td></td>
             </tr>
             <tr>
                 <td>Opening</td>
                 @foreach ($close_shift_item_petrol as $item)
-                    <td>{{ @$item->open_stock }}</td>
+                    <td>{{  number_format(@$item->open_stock, '3')  }} </td>
                 @endforeach
                 <td></td>
             </tr>
@@ -181,7 +138,7 @@
                     @php
                         $total_super_diff += $item->balance;
                     @endphp
-                    <td>{{ @$item->balance }}</td>
+                    <td>{{  number_format(@$item->balance, '3')  }}</td>
                 @endforeach
                 <td>{{ $total_super_diff }}</td>
             </tr>
@@ -201,7 +158,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                             @foreach ($product_bin as $item)
                                 <tr>
                                     <td>{{$item->product ? $item->product->description : ''}}</td>
@@ -209,10 +166,10 @@
                                     <td>{{$item->stock_in}}</td>
                                     <td>{{$item->stock_out}}</td>
                                     <td>{{$item->closing_stock}}</td>
-                                    
+
                                 </tr>
                             @endforeach
-                       
+
                         {{-- <tr>
                             <td>SUPER TANK</td>
                             <td>10000</td>
@@ -230,13 +187,13 @@
                 <table border="1">
                     <tbody>
                         @foreach ($fuel_prices as $price)
-                            
+
                             <tr>
                                 <td>{{$price->product ? $price->product->name : ''}}</td>
                                 <td>{{$price->price}}</td>
                             </tr>
                         @endforeach
-                       
+
                     </tbody>
                 </table>
             </td>
@@ -244,7 +201,7 @@
     </table>
     <table width="100%">
         <tr>
-            <th rowspan="2">Pump</th>
+            <th rowspan="2">Pump&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
             <th rowspan="2">User</th>
             <th>Credit Sale</th>
             <th rowspan="2">Total Sales (A)</th>
@@ -325,7 +282,7 @@
                         <td>{{ number_format($selling->give_cash, '3') }}</td>
                         <td></td>
                     </tr>
-                    
+
                 @endforeach
             @endforeach --}}
         </tbody>

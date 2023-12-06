@@ -26,7 +26,7 @@
 		}
 		.items {
 			border-bottom: 0.1mm solid black;
-			font-size: 10pt; 
+			font-size: 10pt;
 			border-collapse: collapse;
 			width: 100%;
 			font-family: sans-serif;
@@ -55,7 +55,7 @@
 			border-collapse: collapse;
 		}
 		.ref tr td {
-			border: 0.1mm solid #888888; 
+			border: 0.1mm solid #888888;
 		}
 		.ref tr:nth-child(2) td {
 			width: 50%;
@@ -72,8 +72,8 @@
 			border: 0.1mm solid #888888;
 		}
 		.customer-dt-title {
-			font-size: 7pt; 
-			color: #555555; 
+			font-size: 7pt;
+			color: #555555;
 			font-family: sans;
 		}
 		.doc-title-td {
@@ -107,16 +107,16 @@
 			text-align: right;
 		}
 		.header-table-text {
-			color:#0f4d9b; 
-			font-size:9pt; 
+			color:#0f4d9b;
+			font-size:9pt;
 			margin: 0;
 		}
 		.header-table-child {
-			color:#0f4d9b; 
+			color:#0f4d9b;
 			font-size:8pt;
 		}
 		.header-table-child tr:nth-child(2) td {
-			font-size:9pt; 
+			font-size:9pt;
 			padding-left:50px;
 		}
 		.footer {
@@ -124,7 +124,7 @@
 			text-align: center;
 		}
 		.items-table {
-			font-size: 7pt; 
+			font-size: 7pt;
 			border-collapse: collapse;
 			height: 700px;
 			width: 100%;
@@ -139,11 +139,12 @@
 			font-size: 8pt;
             margin: 0;
 		}
-	
+
 		table {
             border-collapse: collapse;
             width: 100%;
             margin-bottom: 20px;
+            line-height:12px;
         }
 
         th, td {
@@ -177,20 +178,19 @@
 		</div>
 	</htmlpagefooter>
 	<sethtmlpagefooter name="myfooter" value="on" />
-	<table class="header-table">
-		<tr>
-			<td class="no_border"><img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="object-fit:contain" width="100%"/></td>
-		</tr>
-	</table>
-	<table class="align_c no_border">
-		<tr>
-			<td class="align_c no_border">
-				<span class='align_c f-size'>
-					<b>Fuel Sales Day Book from {{date('d/m/Y',strtotime($date_from)) .' to '. date('d/m/Y',strtotime($date_to))}}</b>
-				</span>				
-			</td>
-		</tr>
-	</table><br>
+
+    <div style="width:100%">
+        <div style="float:left;width:30%">  <img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="width:200px;" ></div>
+        <div style="float:left;width:70%"><h2 style="padding-top:25px;margin-left:5px;text-transform: uppercase;">Fuel Sales Day Book from {{date('d/m/Y',strtotime($date_from)) .' to '. date('d/m/Y',strtotime($date_to))}}</h2>
+                </div>
+
+    </div>
+
+
+
+
+
+<br>
 	<table class="items" cellpadding="0">
 		<thead>
 			<tr>
