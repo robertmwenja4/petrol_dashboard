@@ -8,7 +8,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {{ Form::text('pass_key', null, ['placeholder' => 'Enter your password', 'class' => 'form-control', 'id' => 'passKey']) }}
+                {{-- {{ Form::password('pass_key', null, ['placeholder' => 'Enter your password', 'class' => 'form-control', 'id' => 'passKey']) }} --}}
+                <input type="password" name="pass_key" id="passKey" class="form-control" placeholder="Enter your password">
             </div>
             <div class="modal-footer justify-content-center">
                 {{ Form::submit('Proceed', ['class' => 'btn btn-md btn-success col-6', 'id' => 'modalButton']) }}

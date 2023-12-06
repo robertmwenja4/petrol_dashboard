@@ -8,6 +8,7 @@ use App\Models\product\StockAdjustment;
 use App\Models\product\Product;
 use App\Models\product_bin\ProductBin;
 use DB;
+use App\Models\shift\Shift;
 
 class StockAdjustmentController extends Controller
 {
@@ -47,6 +48,7 @@ class StockAdjustmentController extends Controller
             DB::beginTransaction();
             $stock_adjustment = StockAdjustment::create($data);
             $product = Product::find($data['product_id']);
+            $shift = Shift::where('status', 'open')->first();
             $product->readings = $stock_adjustment->current_qty;
             $product->update();
             ProductBin::create([
@@ -59,6 +61,17 @@ class StockAdjustmentController extends Controller
                 'stock_in' => $stock_adjustment->current_qty,
                 'stock_out' => 0
             ]);
+
+            if($shift){
+                $product_bins = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bins->opening_stock = $stock_adjustment->current_qty;
+                $product_bins->update();
+            }
 
             if($stock_adjustment){
                 DB::commit();
@@ -91,7 +104,8 @@ class StockAdjustmentController extends Controller
      */
     public function edit(StockAdjustment $stock_adjustment)
     {
-        return view('stock_adjustments.edit', compact('stock_adjustment'));
+        $products = Product::all();
+        return view('stock_adjustments.edit', compact('stock_adjustment', 'products'));
     }
 
     /**
@@ -107,9 +121,10 @@ class StockAdjustmentController extends Controller
         try {
             DB::beginTransaction();
             //Revert
-            $product = Product::find($data['product_id']);
+            $product = Product::find($stock_adjustment->product_id);
             $product->readings = $stock_adjustment->previous_qty;
             $product->update();
+            $shift = Shift::where('status', 'open')->first();
             $product_bin = ProductBin::where([
                 'type'=>'stock_adjustment',
                 'product_id' => $product->id,
@@ -130,11 +145,22 @@ class StockAdjustmentController extends Controller
                 'stock_in' => $stock_adjustment->current_qty,
                 'stock_out' => 0
             ]);
+            if($shift){
+                $product_bins = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bins->opening_stock = $stock_adjustment->current_qty;
+                $product_bins->update();
+            }
             if($stock_adjustment){
                 DB::commit();
             }
 
         } catch (\Throwable $th) {
+            
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Updating stock_adjustment!!');
         }
@@ -152,6 +178,7 @@ class StockAdjustmentController extends Controller
         try {
             DB::beginTransaction();
             $product = Product::find($stock_adjustment->product_id);
+            $shift = Shift::where('status', 'open')->first();
             $product->readings = $stock_adjustment->previous_qty;
             $product->update();
             $product_bin = ProductBin::where([
@@ -160,10 +187,21 @@ class StockAdjustmentController extends Controller
                 'transaction_id' => $stock_adjustment->id
             ])->first();
             $product_bin->delete();
+            if($shift){
+                $product_bins = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bins->opening_stock = $product->readings;
+                $product_bins->update();
+            }
             if ($stock_adjustment->delete()) {
                 DB::commit();
             }
         } catch (\Throwable $th) {
+            dd($th);
             DB::rollback();
             return redirect()->back()->with('flash_error', 'StockAdjustment Failed to Delete!!');
         }

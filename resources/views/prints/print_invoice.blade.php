@@ -169,6 +169,7 @@
                         <td width="50%">
                             <p class="saledescrip">
                                 {{-- CASH <br /> --}}
+                                Name: <b>{{$sale->customer ? $sale->customer->company : ''}}</b><br>
                                 LPO NO: <b>{{ strtoupper($sale->lpo_no) }}</b> <br />
                                 VRN: <b>{{ strtoupper($sale->vrn_no) }} </b><br />
                                 VEHICLE: <b>{{ strtoupper($sale->vehicle_no) }} </b><br />

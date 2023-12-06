@@ -20,7 +20,7 @@ class GiveCashController extends Controller
      */
     public function index()
     {
-        $give_cashs = GiveCash::all();
+        $give_cashs = GiveCash::orderBy('id', 'desc')->get();
         return view('give_cash.index', compact('give_cashs'));
     }
     /**

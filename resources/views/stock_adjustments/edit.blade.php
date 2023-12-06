@@ -37,3 +37,20 @@
     
 </div>
 @endsection
+@section('extra-scripts')
+    <script>
+        $('#product').prop('disabled', true);
+        $('#product').change(function () { 
+            const product_id = $(this).val();
+            $.ajax({
+                method: "GET",
+                url: "stock_adjust/"+product_id,
+                success: function (response) {
+                    console.log(response);
+                    $('#previous_qty').val(response.readings);
+                }
+            });
+            
+        });
+    </script>
+@endsection
