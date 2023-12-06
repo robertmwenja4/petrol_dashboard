@@ -36,7 +36,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('attendant.dashboard') }}">
-                    Dashboard
+                    <i class="btn btn-sm btn-primary" data-feather="arrow-left">Dashboard</i>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

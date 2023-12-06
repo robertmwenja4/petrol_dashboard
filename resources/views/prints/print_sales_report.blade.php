@@ -136,7 +136,7 @@
 	<style>
 		body {
 			font-family: "Times New Roman", Times, serif;
-			font-size: 10pt;
+			font-size: 8pt;
             margin: 0;
 		}
 	
@@ -165,6 +165,9 @@
         .no_border{
             border: none;
         }
+		.f-size{
+			font-size: 18px;
+		}
 	</style>
 </head>
 <body>
@@ -182,21 +185,21 @@
 	<table class="align_c no_border">
 		<tr>
 			<td class="align_c no_border">
-				<span class='align_c'>
+				<span class='align_c f-size'>
 					<b>Fuel Sales Day Book from {{date('d/m/Y',strtotime($date_from)) .' to '. date('d/m/Y',strtotime($date_to))}}</b>
 				</span>				
 			</td>
 		</tr>
 	</table><br>
-	<table class="items" cellpadding="8">
+	<table class="items" cellpadding="0">
 		<thead>
 			<tr>
-				<td width="8%">Fuel Inv</td>
-				<td width="10%">Sale No.</td>
-				<td width="15%">Date & Time</td>
+				<td width="15%">Fuel Inv</td>
+				<td width="8%">Sale No.</td>
+				<td width="18%">Date & Time</td>
 				<td width="20%">Customer</td>
-				<td width="8%">Item</td>
-				<td width="10%">Quantity</td>
+				<td width="10%">Item</td>
+				<td width="12%">Quantity</td>
 				<td width="15%">Amount</td>
 			</tr>
 		</thead>
@@ -210,33 +213,37 @@
 					@php
 						$total_price += $sale->total_price;
 						$total_qty += $sale->qty;
+						$timestamp = $sale->created_at;
+                		$date = date('d/m/Y', strtotime($timestamp));
+                		$time = date('h:i A', strtotime($timestamp));
+						$date_time = $date. ' '.$time;
 					@endphp
 					<td>{{$sale->lpo_no}}</td>
 					<td>{{$i+1}}</td>
-					<td>{{$sale->created_at}}</td>
+					<td>{{$date_time}}</td>
 					<td>{{$sale->customer ? $sale->customer->company : ''}}</td>
 					<td>{{$sale->product ? $sale->product->name : ''}}</td>
-					<td>{{$sale->qty}}</td>
-					<td>{{$sale->total_price}}</td>
+					<td>{{number_format($sale->qty, '3')}}</td>
+					<td>{{number_format($sale->total_price, '3')}}</td>
 				</tr>
 			@endforeach
 			<tr>
 				<td colspan="5" class="bd-t" rowspan="2">Total Invoice: {{$sales->count()}}</td>
-				<td class="bd-t">{{$total_qty}}</td>
-				<td class="bd-t">{{$total_price}}</td>
+				<td class="bd-t">{{number_format($total_qty, '3')}}</td>
+				<td class="bd-t">{{number_format($total_price, '3')}}</td>
 			</tr>
 		</tbody>
 	</table><br>
 	<h4>Day Book Summary by Attendant</h4>
-	<table class="items-table" cellpadding="6">
+	<table class="items-table" cellpadding="0">
 		<thead>
 			<tr>
 				<td width="20%">User</td>
 				<td width="10%">Pump</td>
-				<td width="15%">Sales Date</td>
-				<td width="20%">Super/Diesel</td>
+				<td width="25%">Sales Date</td>
+				<td width="10%">Super/Diesel</td>
 				<td width="8%">Item</td>
-				<td width="10%">Quantity</td>
+				<td width="12%">Quantity</td>
 				<td width="15%">Amount</td>
 			</tr>
 		</thead>
@@ -247,24 +254,30 @@
             </tr>
             @foreach ($user->sales as $sale)
                 <tr>
+					@php
+						$timestamp = $sale->created_at;
+                		$date = date('d/m/Y', strtotime($timestamp));
+                		$time = date('h:i A', strtotime($timestamp));
+						$date_time = $date. ' '.$time;
+					@endphp
                     <td>{{ @$sale->pump->name }}</td>
-                    <td>{{ $sale->created_at }}</td>
+                    <td>{{ $date_time }}</td>
                     <td>{{ @$sale->product->description }}</td>
                     <td>{{ @$sale->product->name }}</td>
-                    <td>{{ $sale->qty }}</td>
-                    <td>{{ $sale->total_price }}</td>
+                    <td>{{ number_format($sale->qty, '3') }}</td>
+                    <td>{{ number_format($sale->total_price, '3') }}</td>
                 </tr>
             @endforeach
             <tr>
                 <td class="bd-t" colspan="5"></td>
-                <td class="bd-t">{{ $user->sales->sum('qty') }}</td>
-                <td class="bd-t">{{ $user->sales->sum('total_price') }}</td>
+                <td class="bd-t">{{ number_format($user->sales->sum('qty'), '3') }}</td>
+                <td class="bd-t">{{ number_format($user->sales->sum('total_price'), '3') }}</td>
             </tr>
         @endforeach
         <tr>
             <td class="bd-t" colspan="5"></td>
-            <td class="bd-t">{{ $users->pluck('sales')->flatten()->sum('qty') }}</td>
-            <td class="bd-t">{{ $users->pluck('sales')->flatten()->sum('total_price') }}</td>
+            <td class="bd-t">{{ number_format($users->pluck('sales')->flatten()->sum('qty'), '3') }}</td>
+            <td class="bd-t">{{ number_format($users->pluck('sales')->flatten()->sum('total_price'), '3') }}</td>
         </tr>
 		</tbody>
 	</table>

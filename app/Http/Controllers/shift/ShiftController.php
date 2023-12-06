@@ -45,7 +45,7 @@ class ShiftController extends Controller
     }
 
     public function shifts_admin(){
-        $shifts = Shift::all();
+        $shifts = Shift::orderBy('id', 'desc')->get();
         return view('shifts.admin_index', compact('shifts'));
     }
 

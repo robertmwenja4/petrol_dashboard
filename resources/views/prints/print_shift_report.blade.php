@@ -193,11 +193,11 @@
                 <table border="1">
                     <thead>
                         <tr>
-                            <th width="40%">Tank</th>
-                            <th width="20%">B/F BALANCE</th>
-                            <th width="10%">IN</th>
-                            <th width="10%">OUT</th>
-                            <th width="20%">C/F BALANCE</th>
+                            <th>Tank</th>
+                            <th>B/F BALANCE</th>
+                            <th>IN</th>
+                            <th>OUT</th>
+                            <th>C/F BALANCE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -367,22 +367,22 @@
                     <tr>
                         <td>{{ $sale->user_name }}</td>
                         <td>{{ $sale->pump_name }}</td>
-                        <td>{{ date('d/m/Y', strtotime($sale->sales_date)) ?: '' }}</td>
+                        <td>{{ $sale->sales_date ? date('d/m/Y', strtotime($sale->sales_date)) : '' }}</td>
                         <td>{{ $sale->product_name }}</td>
                         <td>{{ ucfirst($sale->sales_type) }}</td>
-                        <td>{{ $sale->qty }}</td>
+                        <td>{{ number_format($sale->qty, '3') }}</td>
                         <td>{{ number_format($sale->amount, '3') }}</td>
                     </tr>
                     <tr>
                         <td colspan="4"></td>
                         <td>Actual</td>
-                        <td>{{ $sale->actual_qty }}</td>
+                        <td>{{ number_format($sale->actual_qty, '3') }}</td>
                         <td>{{ number_format($sale->actual_amount, '3') }}</td>
                     </tr>
                     <tr class="item">
                         <td colspan="4"></td>
                         <td>Diff</td>
-                        <td>{{ $sale->qty_diff }}</td>
+                        <td>{{ number_format($sale->qty_diff, '3') }}</td>
                         <td>{{ number_format($sale->amt_diff, '3') }}</td>
                     </tr>
                 @endforeach

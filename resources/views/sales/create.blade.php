@@ -257,10 +257,12 @@
                             },
                             buttonsStyling: false
                         });
+                        setTimeout(function() {
+                            var url = "{{ route('print_invoice') }}?id=" + result.data.id;
+                            window.open(url, "Receipt", "width=500,height=600");
+                            location.reload();
+                        }, 1500);
 
-                        var url = "{{ route('print_invoice') }}?id=" + result.data.id;
-                        window.open(url, "Receipt", "width=500,height=600");
-                        location.reload();
                     } else {
                         $("#modalButton").show();
                         // $("#spinner").hide();

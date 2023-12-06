@@ -1,7 +1,7 @@
 <div class="form-group row">
     <div class="col-4">
         <label for="shift">Shift Search</label>
-        <select name="shift_id" id="shift" class="select2 form-select" data-placeholder="Search Shift">
+        <select name="shift_id" id="shift" class="select2 form-select" data-placeholder="Search Shift" required>
             <option value="">Search Shift</option>
             @foreach ($shifts as $shift)
                 <option value="{{$shift->id}}" {{$shift->id == @$close_shift->shift_id ? 'selected' : ''}}>{{$shift->shift_name}}</option>

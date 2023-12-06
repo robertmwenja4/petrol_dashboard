@@ -72,8 +72,20 @@
             const product_price = row.find('.product_price').val();
 
             //difference
-            let balance = current_stock-open_stock;
-            let amount = balance*product_price;
+            let balance = 0;
+            let amount = 0;
+            // console.log(open_stock, current_stock);
+            if(current_stock < parseFloat(open_stock)){
+                row.find('.current_stock').val(parseFloat(open_stock));
+                balance = open_stock-open_stock;
+                amount = balance*product_price;
+                // console.log(open_stock);
+            }else{
+                // console.log(current_stock);
+                balance = current_stock-open_stock;
+                amount = balance*product_price;
+
+            }
             row.find('.balance').val(balance);
             row.find('.amount').val(amount);
         },
@@ -100,7 +112,7 @@
                     <td>${v.code}</td>    
                     <td>${v.product_name}</td>    
                     <td><input name="open_stock[]" id="open_stock" class="form-control open_stock" value="${v.opening_stock}" readonly></td> 
-                    <td><input name="current_stock[]" id="current_stock" class="form-control current_stock" ></td>
+                    <td><input name="current_stock[]" id="current_stock" class="form-control current_stock" required></td>
                     <td><input name="balance[]" id="balance" class="form-control balance" readonly></td>
                     <td><input name="amount[]" id="amount" class="form-control amount" readonly></td>
                     <input type="hidden" name="product_id[]" id="product_id" value="${v.product_id}">

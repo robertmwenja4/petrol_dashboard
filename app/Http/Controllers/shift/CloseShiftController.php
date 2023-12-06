@@ -26,7 +26,7 @@ class CloseShiftController extends Controller
      */
     public function index()
     {
-        $close_shifts = CloseShift::all();
+        $close_shifts = CloseShift::orderBy('id', 'desc')->get();
         $shifts = Shift::where('is_readings', 'yes')->get();
         return view('close_shifts.index', compact('close_shifts', 'shifts'));
     }

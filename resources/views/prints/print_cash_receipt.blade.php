@@ -144,7 +144,7 @@
         <div id="top">
             <!-- <div class="logo"></div> -->
             <div class="info">
-                <p>CASH RECEIPT NO : {{ $cash->tid }}</p>
+                <p>CASH RECEIPT NO : {{ gen4tid('RC - ', $cash->tid) }}</p>
             </div>
             <!-- End Info -->
         </div>
