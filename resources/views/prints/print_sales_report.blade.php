@@ -1,9 +1,10 @@
 <html>
+
 <head>
-	<title>
-		{{'Sales Report'}}
-	</title>
-	{{-- <style>
+    <title>
+        {{ 'Sales Report' }}
+    </title>
+    {{-- <style>
 		body {
 			font-family: "Times New Roman", Times, serif;
 			font-size: 10pt;
@@ -133,21 +134,22 @@
             border: 0.5px solid;
         }
 	</style> --}}
-	<style>
-		body {
-			font-family: "Times New Roman", Times, serif;
-			font-size: 8pt;
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 8pt;
             margin: 0;
-		}
+        }
 
-		table {
+        table {
             border-collapse: collapse;
             width: 100%;
             margin-bottom: 20px;
-            line-height:12px;
+            line-height: 12px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
@@ -156,33 +158,40 @@
         th {
             background-color: #f2f2f2;
         }
-        .item{
+
+        .item {
             background: grey;
         }
-        .align_c{
+
+        .align_c {
             align-items: center;
             text-align: center;
         }
-        .no_border{
+
+        .no_border {
             border: none;
         }
-		.f-size{
-			font-size: 18px;
-		}
-	</style>
+
+        .f-size {
+            font-size: 18px;
+        }
+    </style>
 </head>
+
 <body>
-	<htmlpagefooter name="myfooter">
-		<div class="footer">
-			Page {PAGENO} of {nb}
-		</div>
-	</htmlpagefooter>
-	<sethtmlpagefooter name="myfooter" value="on" />
+    <htmlpagefooter name="myfooter">
+        <div class="footer">
+            Page {PAGENO} of {nb}
+        </div>
+    </htmlpagefooter>
+    <sethtmlpagefooter name="myfooter" value="on" />
 
     <div style="width:100%">
-        <div style="float:left;width:30%">  <img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="width:200px;" ></div>
-        <div style="float:left;width:70%"><h2 style="padding-top:25px;margin-left:5px;text-transform: uppercase;">Fuel Sales Day Book from {{date('d/m/Y',strtotime($date_from)) .' to '. date('d/m/Y',strtotime($date_to))}}</h2>
-                </div>
+        <div style="float:left;width:30%"> <img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div>
+        <div style="float:left;width:70%">
+            <h2 style="padding-top:25px;margin-left:5px;text-transform: uppercase;">Fuel Sales Day Book from
+                {{ date('d/m/Y', strtotime($date_from)) . ' to ' . date('d/m/Y', strtotime($date_to)) }}</h2>
+        </div>
 
     </div>
 
@@ -190,97 +199,98 @@
 
 
 
-<br>
-	<table class="items" cellpadding="0">
-		<thead>
-			<tr>
-				<td width="15%">Fuel Inv</td>
-				<td width="8%">Sale No.</td>
-				<td width="18%">Date & Time</td>
-				<td width="20%">Customer</td>
-				<td width="10%">Item</td>
-				<td width="12%">Quantity</td>
-				<td width="15%">Amount</td>
-			</tr>
-		</thead>
-		<tbody>
-			@php
-				$total_price = 0;
-				$total_qty = 0;
-			@endphp
-			@foreach ($sales as $i => $sale)
-				<tr>
-					@php
-						$total_price += $sale->total_price;
-						$total_qty += $sale->qty;
-						$timestamp = $sale->created_at;
-                		$date = date('d/m/Y', strtotime($timestamp));
-                		$time = date('h:i A', strtotime($timestamp));
-						$date_time = $date. ' '.$time;
-					@endphp
-					<td>{{$sale->lpo_no}}</td>
-					<td>{{$i+1}}</td>
-					<td>{{$date_time}}</td>
-					<td>{{$sale->customer ? $sale->customer->company : ''}}</td>
-					<td>{{$sale->product ? $sale->product->name : ''}}</td>
-					<td>{{number_format($sale->qty, '3')}}</td>
-					<td>{{number_format($sale->total_price, '3')}}</td>
-				</tr>
-			@endforeach
-			<tr>
-				<td colspan="5" class="bd-t" rowspan="2">Total Invoice: {{$sales->count()}}</td>
-				<td class="bd-t">{{number_format($total_qty, '3')}}</td>
-				<td class="bd-t">{{number_format($total_price, '3')}}</td>
-			</tr>
-		</tbody>
-	</table><br>
-	<h4>Day Book Summary by Attendant</h4>
-	<table class="items-table" cellpadding="0">
-		<thead>
-			<tr>
-				<td width="20%">User</td>
-				<td width="10%">Pump</td>
-				<td width="25%">Sales Date</td>
-				<td width="10%">Super/Diesel</td>
-				<td width="8%">Item</td>
-				<td width="12%">Quantity</td>
-				<td width="15%">Amount</td>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach ($users as $user)
+    <br>
+    <table class="items" cellpadding="0">
+        <thead>
             <tr>
-                <td rowspan="{{ $user->sales->count() + 1 }}">{{ $user->name }}</td>
+                <td width="15%">Fuel Inv</td>
+                <td width="8%">Sale No.</td>
+                <td width="18%">Date & Time</td>
+                <td width="20%">Customer</td>
+                <td width="10%">Item</td>
+                <td width="12%">Quantity</td>
+                <td width="15%">Amount</td>
             </tr>
-            @foreach ($user->sales as $sale)
+        </thead>
+        <tbody>
+            @php
+                $total_price = 0;
+                $total_qty = 0;
+            @endphp
+            @foreach ($sales as $i => $sale)
                 <tr>
-					@php
-						$timestamp = $sale->created_at;
-                		$date = date('d/m/Y', strtotime($timestamp));
-                		$time = date('h:i A', strtotime($timestamp));
-						$date_time = $date. ' '.$time;
-					@endphp
-                    <td>{{ @$sale->pump->name }}</td>
+                    @php
+                        $total_price += $sale->total_price;
+                        $total_qty += $sale->qty;
+                        $timestamp = $sale->created_at;
+                        $date = date('d/m/Y', strtotime($timestamp));
+                        $time = date('h:i A', strtotime($timestamp));
+                        $date_time = $date . ' ' . $time;
+                    @endphp
+                    <td>{{ $sale->lpo_no }}</td>
+                    <td>{{ $i + 1 }}</td>
                     <td>{{ $date_time }}</td>
-                    <td>{{ @$sale->product->description }}</td>
-                    <td>{{ @$sale->product->name }}</td>
+                    <td>{{ $sale->customer ? $sale->customer->company : '' }}</td>
+                    <td>{{ $sale->product ? $sale->product->name : '' }}</td>
                     <td>{{ number_format($sale->qty, '3') }}</td>
                     <td>{{ number_format($sale->total_price, '3') }}</td>
                 </tr>
             @endforeach
             <tr>
-                <td class="bd-t" colspan="5"></td>
-                <td class="bd-t">{{ number_format($user->sales->sum('qty'), '3') }}</td>
-                <td class="bd-t">{{ number_format($user->sales->sum('total_price'), '3') }}</td>
+                <td colspan="5" class="bd-t" rowspan="2">Total Invoice: {{ $sales->count() }}</td>
+                <td class="bd-t">{{ number_format($total_qty, '3') }}</td>
+                <td class="bd-t">{{ number_format($total_price, '3') }}</td>
             </tr>
-        @endforeach
-        <tr>
-            <td class="bd-t" colspan="5"></td>
-            <td class="bd-t">{{ number_format($users->pluck('sales')->flatten()->sum('qty'), '3') }}</td>
-            <td class="bd-t">{{ number_format($users->pluck('sales')->flatten()->sum('total_price'), '3') }}</td>
-        </tr>
-		</tbody>
-	</table>
+        </tbody>
+    </table><br>
+    <h4>Day Book Summary by Attendant</h4>
+    <table class="items-table" cellpadding="0">
+        <thead>
+            <tr>
+                <td width="20%">User</td>
+                <td width="10%">Pump</td>
+                <td width="25%">Sales Date</td>
+                <td width="10%">Super/Diesel</td>
+                <td width="8%">Item</td>
+                <td width="12%">Quantity</td>
+                <td width="15%">Amount</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($users as $user)
+                <tr>
+                    <td rowspan="{{ $user->sales->count() + 1 }}">{{ $user->name }}</td>
+                </tr>
+                @foreach ($user->sales as $sale)
+                    <tr>
+                        @php
+                            $timestamp = $sale->created_at;
+                            $date = date('d/m/Y', strtotime($timestamp));
+                            $time = date('h:i A', strtotime($timestamp));
+                            $date_time = $date . ' ' . $time;
+                        @endphp
+                        <td>{{ @$sale->pump->name }}</td>
+                        <td>{{ $date_time }}</td>
+                        <td>{{ @$sale->product->description }}</td>
+                        <td>{{ @$sale->product->name }}</td>
+                        <td>{{ number_format($sale->qty, '3') }}</td>
+                        <td>{{ number_format($sale->total_price, '3') }}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <td class="bd-t" colspan="5"></td>
+                    <td class="bd-t">{{ number_format($user->sales->sum('qty'), '3') }}</td>
+                    <td class="bd-t">{{ number_format($user->sales->sum('total_price'), '3') }}</td>
+                </tr>
+            @endforeach
+            <tr>
+                <td class="bd-t" colspan="5"></td>
+                <td class="bd-t">{{ number_format($users->pluck('sales')->flatten()->sum('qty'),'3') }}</td>
+                <td class="bd-t">{{ number_format($users->pluck('sales')->flatten()->sum('total_price'),'3') }}</td>
+            </tr>
+        </tbody>
+    </table>
 
 </body>
+
 </html>

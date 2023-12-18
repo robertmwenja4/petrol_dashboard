@@ -142,7 +142,7 @@
 <body>
     <div id="invoice-Receipt">
         <div id="top">
-            <!-- <div class="logo"></div> -->
+            <div><img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div>
             <div class="info">
                 <p>CASH RECEIPT NO : {{ gen4tid('RC - ', $cash->tid) }}</p>
             </div>
@@ -151,6 +151,7 @@
         <!-- End InvoiceTop -->
         <!-- Company Details -->
         <div id="mid">
+
             <div class="info">
                 <p class="descrip">
                     Clock Tower Service Station Ltd<br />

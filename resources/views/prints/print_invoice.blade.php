@@ -45,13 +45,6 @@
                 min-height: 80px;
             }
 
-            #top .logo {
-                /* float: left; */
-                height: 60px;
-                width: 60px;
-                /* background: url(http://michaeltruong.ca/images/logo1.png) no-repeat; */
-                background-size: 60px 60px;
-            }
 
             .clientlogo {
                 float: left;
@@ -142,7 +135,7 @@
 <body>
     <div id="invoice-Receipt">
         <div id="top">
-            <!-- <div class="logo"></div> -->
+            <div><img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div>
             <div class="info">
                 <p>DELIVERY NOTE NO : {{ gen4tid('DN-', $sale->tid) }}</p>
             </div>
@@ -151,6 +144,7 @@
         <!-- End InvoiceTop -->
         <!-- Company Details -->
         <div id="mid">
+
             <div class="info">
                 <p class="descrip">
                     Clock Tower Service Station Ltd<br />
@@ -169,7 +163,7 @@
                         <td width="50%">
                             <p class="saledescrip">
                                 {{-- CASH <br /> --}}
-                                Name: <b>{{$sale->customer ? $sale->customer->company : ''}}</b><br>
+                                Name: <b>{{ $sale->customer ? $sale->customer->company : '' }}</b><br>
                                 LPO NO: <b>{{ strtoupper($sale->lpo_no) }}</b> <br />
                                 VRN: <b>{{ strtoupper($sale->vrn_no) }} </b><br />
                                 VEHICLE: <b>{{ strtoupper($sale->vehicle_no) }} </b><br />

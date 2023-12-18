@@ -15,7 +15,7 @@
             border-collapse: collapse;
             width: 100%;
             margin-bottom: 20px;
-            line-height:12px;
+            line-height: 12px;
         }
 
 
@@ -53,11 +53,16 @@
         </div>
     </htmlpagefooter>
     <sethtmlpagefooter name="myfooter" value="on" />
+
     <div style="width:100%">
-        <div style="float:left;width:35%">  <img src="{{ Storage::disk('public')->url('app/public/img/company/oxyr.jpg') }}" style="width:200px;" ></div>
-        <div style="float:left;width:65%"><h3>{{ $company->address }}</h3> Email: {{ $company->email }}<br>VRN: {{ $company->vrn_no }} &nbsp; TIN NO: {{ $company->tin_no }}<br><br>
-            <strong style="color:#000000;text-decoration:underline;">Shift Ends at <span>{{ date('d/m/Y', strtotime($shift->close_shift->created_at)) }}</span><span>
-                {{ date('h:i A', strtotime($shift->close_shift->created_at)) }}</span></strong></div>
+        <div style="float:left;width:35%"> <img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div>
+        <div style="float:left;width:65%">
+            <h3>{{ $company->address }}</h3> Email: {{ $company->email }}<br>VRN: {{ $company->vrn_no }} &nbsp; TIN NO:
+            {{ $company->tin_no }}<br><br>
+            <strong style="color:#000000;text-decoration:underline;">Shift Ends at
+                <span>{{ date('d/m/Y', strtotime($shift->close_shift->created_at)) }}</span><span>
+                    {{ date('h:i A', strtotime($shift->close_shift->created_at)) }}</span></strong>
+        </div>
 
     </div>
 
@@ -81,14 +86,14 @@
             <tr>
                 <td>Closing</td>
                 @foreach ($close_shift_item_diesel as $item)
-                    <td>{{ number_format(@$item->current_stock, '3')  }}</td>
+                    <td>{{ number_format(@$item->current_stock, '3') }}</td>
                 @endforeach
                 <td></td>
             </tr>
             <tr>
                 <td>Opening</td>
                 @foreach ($close_shift_item_diesel as $item)
-                    <td>{{ number_format(@$item->open_stock, '3')  }}</td>
+                    <td>{{ number_format(@$item->open_stock, '3') }}</td>
                 @endforeach
                 <td></td>
             </tr>
@@ -98,7 +103,7 @@
                     @php
                         $total_diff += $item->balance;
                     @endphp
-                    <td>{{  number_format(@$item->balance, '3')  }} </td>
+                    <td>{{ number_format(@$item->balance, '3') }} </td>
                 @endforeach
                 <td>{{ $total_diff }}</td>
             </tr>
@@ -121,14 +126,14 @@
             <tr>
                 <td>Closing</td>
                 @foreach ($close_shift_item_petrol as $item)
-                    <td>{{  number_format(@$item->current_stock, '3')  }} </td>
+                    <td>{{ number_format(@$item->current_stock, '3') }} </td>
                 @endforeach
                 <td></td>
             </tr>
             <tr>
                 <td>Opening</td>
                 @foreach ($close_shift_item_petrol as $item)
-                    <td>{{  number_format(@$item->open_stock, '3')  }} </td>
+                    <td>{{ number_format(@$item->open_stock, '3') }} </td>
                 @endforeach
                 <td></td>
             </tr>
@@ -138,7 +143,7 @@
                     @php
                         $total_super_diff += $item->balance;
                     @endphp
-                    <td>{{  number_format(@$item->balance, '3')  }}</td>
+                    <td>{{ number_format(@$item->balance, '3') }}</td>
                 @endforeach
                 <td>{{ $total_super_diff }}</td>
             </tr>
@@ -159,16 +164,16 @@
                     </thead>
                     <tbody>
 
-                            @foreach ($product_bin as $item)
-                                <tr>
-                                    <td>{{$item->product ? $item->product->description : ''}}</td>
-                                    <td>{{$item->opening_stock}}</td>
-                                    <td>{{$item->stock_in}}</td>
-                                    <td>{{$item->stock_out}}</td>
-                                    <td>{{$item->closing_stock}}</td>
+                        @foreach ($product_bin as $item)
+                            <tr>
+                                <td>{{ $item->product ? $item->product->description : '' }}</td>
+                                <td>{{ $item->opening_stock }}</td>
+                                <td>{{ $item->stock_in }}</td>
+                                <td>{{ $item->stock_out }}</td>
+                                <td>{{ $item->closing_stock }}</td>
 
-                                </tr>
-                            @endforeach
+                            </tr>
+                        @endforeach
 
                         {{-- <tr>
                             <td>SUPER TANK</td>
@@ -187,10 +192,9 @@
                 <table border="1">
                     <tbody>
                         @foreach ($fuel_prices as $price)
-
                             <tr>
-                                <td>{{$price->product ? $price->product->name : ''}}</td>
-                                <td>{{$price->price}}</td>
+                                <td>{{ $price->product ? $price->product->name : '' }}</td>
+                                <td>{{ $price->price }}</td>
                             </tr>
                         @endforeach
 
@@ -222,7 +226,7 @@
                 $total_cash = 0;
             @endphp
             @foreach (collect($pump_sales) as $selling)
-            {{-- {{dd($selling['give_cash'])}} --}}
+                {{-- {{dd($selling['give_cash'])}} --}}
                 @php
                     $diff = $selling['amount'] - ($selling['price'] + $selling['give_cash']);
                     $total_sales_by_meter += $selling['amount'];
@@ -233,24 +237,23 @@
                     $t_amount = number_format($selling['amount'], '3');
                     $t_diff = $selling['amount'] - ($selling['price'] + $selling['give_cash']);
                     //New
-
                 @endphp
-            <tr>
+                <tr>
 
-                <td rowspan="2">{{ $selling['pump_name'] }}</td>
-                <td rowspan="2">{{ $selling['user_name'] }}</td>
-                <td>{{ number_format($selling['price'], '3') }}</td>
-                <td rowspan="2">{{ number_format($t_sale, '3') }}</td>
-                <td rowspan="2">{{ $t_amount }}</td>
-                <td rowspan="2">{{ number_format($t_diff, '3') }}</td>
-                <td></td>
-                <td rowspan="2"></td>
-            </tr>
-            <tr>
+                    <td rowspan="2">{{ $selling['pump_name'] }}</td>
+                    <td rowspan="2">{{ $selling['user_name'] }}</td>
+                    <td>{{ number_format($selling['price'], '3') }}</td>
+                    <td rowspan="2">{{ number_format($t_sale, '3') }}</td>
+                    <td rowspan="2">{{ $t_amount }}</td>
+                    <td rowspan="2">{{ number_format($t_diff, '3') }}</td>
+                    <td></td>
+                    <td rowspan="2"></td>
+                </tr>
+                <tr>
 
-                <td>{{ number_format($selling['give_cash'], '3') }}</td>
-                <td></td>
-            </tr>
+                    <td>{{ number_format($selling['give_cash'], '3') }}</td>
+                    <td></td>
+                </tr>
             @endforeach
             {{-- @foreach (collect($sales) as $sale)
                 @foreach (collect($sale) as $selling)
