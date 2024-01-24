@@ -1,7 +1,6 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('content')
-<div class="app-content content ">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
     <div class="card">
@@ -37,7 +36,6 @@
         </div>
     </div>
     
-</div>
 @endsection
 
 @section('extra-scripts')

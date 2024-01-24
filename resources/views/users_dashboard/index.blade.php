@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('content')
     <div class="text-center text-dark d-flex flex-column justify-content-center align-items-center">

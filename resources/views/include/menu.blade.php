@@ -31,7 +31,6 @@
             <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
         </ul>
     </div>
-
     @php
     $segment1 = Request::segment(1);
     $segment2 = Request::segment(2);
@@ -39,169 +38,84 @@
     <div class="shadow-bottom"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span><span class="badge badge-light-warning rounded-pill ms-auto me-1">2</span></a>
+             <li class="{{ ($segment1 == 'dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('dashboard.index')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboard</span></a>
+            </li>
+           <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Users Information</span><i data-feather="more-horizontal"></i>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="User">Roles &amp; Permission</span></a>
                 <ul class="menu-content">
-                    <li><a class="d-flex align-items-center" href="dashboard-analytics.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Analytics">Analytics</span></a>
-                    </li>
-                    <li ><a class="d-flex align-items-center" href="dashboard-ecommerce.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="eCommerce">eCommerce</span></a>
+                    <li class="{{ ($segment1 == 'role') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('role.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Roles</span></a>
                     </li>
                 </ul>
             </li>
-            <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Academics  Module</span><i data-feather="more-horizontal"></i>
+           <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">Users</span></a>
+                <ul class="menu-content">
+                    <li class="{{ ($segment1 == 'user') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('user.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage Users</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">User Activities</span><i data-feather="more-horizontal"></i>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='user-plus'></i><span class="menu-title text-truncate" data-i18n="User">Shifts</span></a>
+                <ul class="menu-content">
+                    <li class="{{ ($segment1 == 'shift' &&  $segment2 == 'get') ||($segment1 == 'shift' &&  $segment2 == 'edit') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('shift.shifts_admin')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage Shift</span></a>
+                    </li>
+                    <li class="{{ ($segment1 == 'close_shift' || $segment1 == '' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('close_shift.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Close Shift</span></a>
+                    </li>
+               
+                </ul>
             </li>
 
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="User">School Settings</span></a>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='user-plus'></i><span class="menu-title text-truncate" data-i18n="User">Give Cash</span></a>
                 <ul class="menu-content">
-                    <li class="{{ ($segment1 == 'stream') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('stream.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Stream</span></a>
+                    <li class="{{ ($segment1 == 'give_cash') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('give_cash.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage</span></a>
                     </li>
-                    <li class="{{ ($segment1 == 'subject') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('subject.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subject </span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'schoolsubject') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('schoolsubject.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">School Subject </span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'allocationconfig') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('allocationconfig.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Allocation Config </span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'countysubcounty') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('countysubcounty.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">County & SubCounty </span></a>
-                    </li>
+                  
+               
+                </ul>
+            </li>
+            <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Sales</span><i data-feather="more-horizontal"></i>
+            </li>
 
+        <li class=" nav-item"><a class="d-flex align-items-center" href="#"> <i data-feather='tool'></i><span class="menu-title text-truncate" data-i18n="User">Sales</span></a>
+                <ul class="menu-content">
+                    <li class="{{ ($segment1 == 'sale') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('sale.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Sales Report</span></a>
+                    </li>
                 
                 </ul>
             </li>
-
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">Student Master</span></a>
-                <ul class="menu-content">
-                    <li class="{{ ($segment1 == 'student' &&  $segment2 == '') ||($segment1 == 'student' &&  $segment2 == 'edit') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('student.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'studentimport' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('studentimport')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Import</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'studsubjectalloc' || $segment1 == 'subjectallocation' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('studsubjectalloc.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subject Allocation</span></a>
-                    </li>
-
-                    
-              
-                </ul>
+            <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Pump & Products</span><i data-feather="more-horizontal"></i>
             </li>
-
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='user-plus'></i><span class="menu-title text-truncate" data-i18n="User">Staff Master</span></a>
+            
+             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='paperclip'></i><span class="menu-title text-truncate" data-i18n="User">Pumps & Products</span></a>
                 <ul class="menu-content">
-                    <li class="{{ ($segment1 == 'staff' &&  $segment2 == '') ||($segment1 == 'staff' &&  $segment2 == 'edit') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('staff.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage</span></a>
+                    <li class="{{ ($segment1 == 'pump'  ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('pump.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage Pumps</span></a>
                     </li>
-                    <li class="{{ ($segment1 == 'teachersubjectalloc' || $segment1 == 'teachersubjectallocation' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('teachersubjectalloc.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subject Allocation</span></a>
+                    <li class="{{ ($segment1 == 'nozzle'   ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('nozzle.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage Nozzle </span></a>
                     </li>
-                    <li class="{{ ($segment1 == 'classteacher' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('classteacher.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Class Teacher</span></a>
+                    <li class="{{ ($segment1 == 'product' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('product.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage Products</span></a>
                     </li>
-
-                    
-                </ul>
-            </li>
-          
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"> <i data-feather='tool'></i><span class="menu-title text-truncate" data-i18n="User">Academic Settings</span></a>
-                <ul class="menu-content">
-                    <li class="{{ ($segment1 == 'academicyear') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('academicyear.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Academic Year</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'schoolterm') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('schoolterm.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">School Term</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'grades' ) ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('grades.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Grade Remarks</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'meangrade' || $segment1 == 'filtermeangrade' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('meangrade.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Mean Grade</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'subjectgrade' || $segment1 == 'filtersubjectgrade'  ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('subjectgrade.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subject Grades</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'subjectremarks'  ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('subjectremarks.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subject Remarks</span></a>
-                    </li>
+                  
                    
-               
-
-                     
                 </ul>
             </li>
-
-            
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='paperclip'></i><span class="menu-title text-truncate" data-i18n="User">Exams Center</span></a>
+            <li class=" nav-item {{ ($segment1 == 'product_price') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('product_price.index')}}"><i data-feather="file-text"></i><span class="menu-title text-truncate" data-i18n="Todo">Fuel Prices</span></a>
+            </li>
+            <li class=" nav-item {{ ($segment1 == 'stock_adjustment') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('stock_adjustment.index')}}"><i data-feather="file-text"></i><span class="menu-title text-truncate" data-i18n="Todo">Stock Adjustment</span></a>
+            </li>
+            <li class=" nav-item {{ ($segment1 == 'purchase') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('purchase.index')}}"><i data-feather="file-text"></i><span class="menu-title text-truncate" data-i18n="Todo">Purchases</span></a>
+            </li>
+            <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Customers</span><i data-feather="more-horizontal"></i>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">Customers</span></a>
                 <ul class="menu-content">
-                    
-                    <li class="{{ ($segment1 == 'exams'  ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('exams.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Exams</span></a>
+                    <li class="{{ ($segment1 == 'customer' &&  $segment2 == '') ||($segment1 == 'customer' &&  $segment2 == 'edit') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('customer.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage</span></a>
                     </li>
-                    <li class="{{ ($segment1 == 'marks' || $segment1 == 'filterstudent'   ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('marks.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Add Marks</span></a>
+                    <li class="{{ ($segment1 == 'customer' &&  $segment2 == 'create') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('customer.create')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Add</span></a>
                     </li>
-                    <li class="{{ ($segment1 == 'results' || $segment1 == 'meritbystream' || $segment1 == 'subjectstreamanalysis' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('results.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Exam Analysis</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'generatereportcard' || $segment1 == 'filterreportcard' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('generatereportcard.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Gen. Report Card</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'viewreportcard' || $segment1 == 'showreportcard' ) ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('viewreportcard')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Print Report Card</span></a>
-                    </li>
-
-                     
                 </ul>
             </li>
-
-           
-           
-            
-            
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='layers'></i><span class="menu-title text-truncate" data-i18n="User">Institutions</span></a>
-                <ul class="menu-content">
-                    <li class="{{ ($segment1 == 'institution' &&  $segment2 == '') ||($segment1 == 'institution' &&  $segment2 == 'edit') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('institution.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'institution' &&  $segment2 == 'create') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('institution.create')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Add</span></a>
-                    </li>
-              
-                </ul>
-            </li>
-
-            
-            <li class=" nav-item {{ ($segment1 == 'roles') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('roles')}}"><i data-feather="shield"></i><span class="menu-title text-truncate" data-i18n="Todo">Roles &amp; Permission </span></a> </li> 
-
-            <li class=" navigation-header"><span data-i18n="User Interface">Tender Module</span><i data-feather="more-horizontal"></i>
-            </li>
-            <li class=" nav-item {{ ($segment1 == 'tendercategorymaster') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('tendercategorymaster.index')}}"><i data-feather="check-square"></i><span class="menu-title text-truncate" data-i18n="Todo">Tender Category</span></a>
-            </li>
-            <li class=" nav-item {{ ($segment1 == 'requirement') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('requirement.index')}}"><i data-feather="check-square"></i><span class="menu-title text-truncate" data-i18n="Todo">Tender Requirement</span></a>
-            </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">Tender Master</span></a>
-                <ul class="menu-content">
-                    <li class="{{ ($segment1 == 'tendermaster' &&  $segment2 == '') ||($segment1 == 'tendermaster' &&  $segment2 == 'edit') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('tendermaster.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'tendermaster' &&  $segment2 == 'create') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('tendermaster.create')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Add</span></a>
-                    </li>
-              
-                </ul>
-            </li>
-            <li class=" navigation-header"><span data-i18n="User Interface">Finance Module</span><i data-feather="more-horizontal"></i>
-            </li>
-            <li class=" nav-item {{ ($segment1 == 'studentreceipt' || $segment1 == 'filterstudentfees') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('studentreceipt.index')}}"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="Todo">Collect Fees </span></a>
-            </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="User">Account Settings</span></a>
-                <ul class="menu-content">
-                    <li class="{{ ($segment1 == 'financialyear') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('financialyear.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Financial Year </span></a>
-                    </li> 
-                    <li class="{{ ($segment1 == 'accountgroup') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('accountgroup.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Account Group</span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'votehead') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('votehead.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Voteheads </span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'chartsofaccount') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('chartsofaccount.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Charts Of Accounts </span></a>
-                    </li>
-                    <li class="{{ ($segment1 == 'feesstructure' || $segment1 == 'filterfees') ? 'active' : '' }}" ><a class="d-flex align-items-center" href="{{route('feesstructure.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Fees Structure </span></a>
-                    </li> 
-                                  
-                </ul>
-            </li>
-            <li class=" nav-item {{ ($segment1 == 'studentinvoicing'|| $segment1 == 'showstudentinvoices' || $segment1 == 'showfeesitem') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('studentinvoicing.index')}}"><i data-feather="file-text"></i><span class="menu-title text-truncate" data-i18n="Todo">Student Invoicing</span></a>
-            </li>
-            
-            <li class=" navigation-header"><span data-i18n="User Interface">Transport</span><i data-feather="more-horizontal"></i>
-            </li>
-
-            <li class=" nav-item {{ ($segment1 == 'transportzones') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('transportzones.index')}}"><i data-feather='move'></i><span class="menu-title text-truncate" data-i18n="Todo">Transport Zones </span></a> </li>
-            <li class=" nav-item {{ ($segment1 == 'vehicle') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('vehicle.index')}}"><i data-feather='truck'></i><span class="menu-title text-truncate" data-i18n="Todo">Vehicles </span></a> </li> 
-            <li class=" nav-item {{ ($segment1 == 'transportallocation' ||$segment1 == 'transalloc') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('transportallocation.index')}}"><i data-feather='plus'></i><span class="menu-title text-truncate" data-i18n="Todo">Allocate Students </span></a> </li>   
-
-
-            <li class=" navigation-header"><span data-i18n="User Interface">Cocurricular</span><i data-feather="more-horizontal"></i>
-            </li>
-            <li class=" nav-item {{ ($segment1 == 'cocurricular') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('cocurricular.index')}}"><i data-feather='dribbble'></i><span class="menu-title text-truncate" data-i18n="Todo">Cocurricular </span></a> </li>
-            <li class=" nav-item {{ ($segment1 == 'cocurricularallocation' ||$segment1 == 'cocurricalloc') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('cocurricularallocation.index')}}"><i data-feather='plus'></i><span class="menu-title text-truncate" data-i18n="Todo">Allocate Students </span></a> </li>   
-             --}}
-
+         
         </ul>
     </div>
 </div>
