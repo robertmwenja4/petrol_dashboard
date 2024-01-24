@@ -18,7 +18,7 @@
 <script src="{{asset('app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->
-
+<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
 <!-- BEGIN: Theme JS-->
 <script src="{{asset('app-assets/js/core/app-menu.js') }}"></script>
 <script src="{{asset('app-assets/js/core/app.js') }}"></script>

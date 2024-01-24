@@ -10,7 +10,8 @@
 			font-size: 10pt;
 		}
 		table {
-			font-family: "Myriad Pro", "Myriad", "Liberation Sans", "Nimbus Sans L", "Helvetica Neue", Helvetica, Arial, sans-serif;
+			font-family: "Myriad Pro", "Myriad", "Liberation Sans", "Nimbus Sans L", "Helvetica Neue", Helvetica, Arial, sans-serif
+;
 			font-size: 10pt;
 		}
 		table thead td {

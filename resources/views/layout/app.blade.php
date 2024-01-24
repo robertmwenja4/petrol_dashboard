@@ -11,42 +11,50 @@
     <meta name="keywords" content="fuel, management, solution">
     <meta name="author" content="PIXINVENT">
     <title>ORYX</title>
-    <link rel="apple-touch-icon" href="{{asset('core/app-assets/images/ico/apple-icon-120.png')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('core/app-assets/images/ico/favicon.ico')}}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+    <link rel="apple-touch-icon" href="{{ asset('core/app-assets/images/ico/apple-icon-120.png') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('core/app-assets/images/ico/favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+        rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/vendors.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/charts/apexcharts.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/extensions/toastr.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/vendors/css/vendors.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/vendors/css/charts/apexcharts.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/vendors/css/extensions/toastr.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/all.min.css') }}">
     {{-- <link rel="stylesheet" type="text/css" href="{{asset('core/assets/css/bootstrap.min.css')}}"> --}}
     <!-- END: Vendor CSS-->
-
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/forms/select/select2.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css')}}">
+    
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('core/app-assets/vendors/css/forms/select/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('core/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('core/app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('core/app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('core/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css') }}">
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/bootstrap.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/bootstrap-extended.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/colors.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/components.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/themes/dark-layout.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/themes/bordered-layout.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/themes/semi-dark-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/bootstrap-extended.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/colors.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/components.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/themes/dark-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/themes/bordered-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/themes/semi-dark-layout.css') }}">
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/pages/dashboard-ecommerce.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/plugins/charts/chart-apex.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('core/app-assets/css/plugins/extensions/ext-component-toastr.css')}}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('core/app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/pages/dashboard-ecommerce.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/app-assets/css/plugins/charts/chart-apex.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('core/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('core/assets/css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('core/assets/css/style.css') }}">
     <!-- END: Custom CSS-->
 
 </head>
@@ -54,20 +62,31 @@
 
 <!-- BEGIN: Body-->
 
-<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
+<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click"
+    data-menu="vertical-menu-modern" data-col="">
 
     <!-- BEGIN: Header-->
-    <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl">
+    <nav
+        class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl">
         <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
                 <ul class="nav navbar-nav d-xl-none">
-                    <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
+                    <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon"
+                                data-feather="menu"></i></a></li>
                 </ul>
                 <ul class="nav navbar-nav bookmark-icons">
-                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Email"><i class="ficon" data-feather="mail"></i></a></li>
-                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Chat"><i class="ficon" data-feather="message-square"></i></a></li>
-                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Calendar"><i class="ficon" data-feather="calendar"></i></a></li>
-                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Todo"><i class="ficon" data-feather="check-square"></i></a></li>
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="#"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Email"><i class="ficon"
+                                data-feather="mail"></i></a></li>
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="#"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Chat"><i class="ficon"
+                                data-feather="message-square"></i></a></li>
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="#"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Calendar"><i class="ficon"
+                                data-feather="calendar"></i></a></li>
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="#"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Todo"><i class="ficon"
+                                data-feather="check-square"></i></a></li>
                 </ul>
                 {{-- <ul class="nav navbar-nav">
                     <li class="nav-item d-none d-lg-block"><a class="nav-link bookmark-star"><i class="ficon text-warning" data-feather="star"></i></a>
@@ -80,15 +99,23 @@
                 </ul> --}}
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
-                <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us"></i> English</a>
+                <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle"
+                        id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span
+                            class="selected-language">English</span></a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag"><a
+                            class="dropdown-item" href="#" data-language="en"><i
+                                class="flag-icon flag-icon-us"></i> English</a>
                         {{-- <a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr"></i> French</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de"></i> German</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt"></i> Portuguese</a></div> --}}
                 </li>
-                <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i></a></li>
-                <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon" data-feather="search"></i></a>
+                <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon"
+                            data-feather="moon"></i></a></li>
+                <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon"
+                            data-feather="search"></i></a>
                     <div class="search-input">
                         <div class="search-input-icon"><i data-feather="search"></i></div>
-                        <input class="form-control input" type="text" placeholder="Explore Vuexy..." tabindex="-1" data-search="search">
+                        <input class="form-control input" type="text" placeholder="Explore Vuexy..."
+                            tabindex="-1" data-search="search">
                         <div class="search-input-close"><i data-feather="x"></i></div>
                         <ul class="search-list search-list-main"></ul>
                     </div>
@@ -258,14 +285,24 @@
                         <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" href="#">Read all notifications</a></li>
                     </ul>
                 </li> --}}
-                <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="user-nav d-sm-flex d-none"><span class="user-name fw-bolder">{{auth()->user()->name}}</span><span class="user-status">{{auth()->user()->role->name}}</span></div><span class="avatar"><img class="round" src="{{asset('core/app-assets/images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
+                <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link"
+                        id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <div class="user-nav d-sm-flex d-none"><span
+                                class="user-name fw-bolder">{{ auth()->user()->name }}</span><span
+                                class="user-status">{{ auth()->user()->role->name }}</span></div><span
+                            class="avatar"><img class="round"
+                                src="{{ asset('core/app-assets/images/portrait/small/avatar-s-11.jpg') }}"
+                                alt="avatar" height="40" width="40"><span
+                                class="avatar-status-online"></span></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                         {{-- <a class="dropdown-item" href="page-profile.html"><i class="me-50" data-feather="user"></i> Profile</a><a class="dropdown-item" href="app-email.html"><i class="me-50" data-feather="mail"></i> Inbox</a><a class="dropdown-item" href="app-todo.html"><i class="me-50" data-feather="check-square"></i> Task</a><a class="dropdown-item" href="app-chat.html"><i class="me-50" data-feather="message-square"></i> Chats</a>
                         <div class="dropdown-divider"></div><a class="dropdown-item" href="page-account-settings-account.html"><i class="me-50" data-feather="settings"></i> Settings</a><a class="dropdown-item" href="page-pricing.html"><i class="me-50" data-feather="credit-card"></i> Pricing</a><a class="dropdown-item" href="page-faq.html"><i class="me-50" data-feather="help-circle"></i> FAQ</a> --}}
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();"><i class="me-50" data-feather="power"></i> Logout</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();"><i
+                                class="me-50" data-feather="power"></i> Logout</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
@@ -278,77 +315,106 @@
         <li class="d-flex align-items-center"><a href="#">
                 <h6 class="section-label mt-75 mb-0">Files</h6>
             </a></li>
-        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100" href="app-file-manager.html">
+        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100"
+                href="app-file-manager.html">
                 <div class="d-flex">
-                    <div class="me-75"><img src="{{asset('core/app-assets/images/icons/xls.png')}}" alt="png" height="32"></div>
+                    <div class="me-75"><img src="{{ asset('core/app-assets/images/icons/xls.png') }}"
+                            alt="png" height="32"></div>
                     <div class="search-data">
-                        <p class="search-data-title mb-0">Two new item submitted</p><small class="text-muted">Marketing Manager</small>
+                        <p class="search-data-title mb-0">Two new item submitted</p><small
+                            class="text-muted">Marketing Manager</small>
                     </div>
                 </div><small class="search-data-size me-50 text-muted">&apos;17kb</small>
             </a></li>
-        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100" href="app-file-manager.html">
+        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100"
+                href="app-file-manager.html">
                 <div class="d-flex">
-                    <div class="me-75"><img src="{{asset('core/app-assets/images/icons/jpg.png')}}" alt="png" height="32"></div>
+                    <div class="me-75"><img src="{{ asset('core/app-assets/images/icons/jpg.png') }}"
+                            alt="png" height="32"></div>
                     <div class="search-data">
-                        <p class="search-data-title mb-0">52 JPG file Generated</p><small class="text-muted">FontEnd Developer</small>
+                        <p class="search-data-title mb-0">52 JPG file Generated</p><small class="text-muted">FontEnd
+                            Developer</small>
                     </div>
                 </div><small class="search-data-size me-50 text-muted">&apos;11kb</small>
             </a></li>
-        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100" href="app-file-manager.html">
+        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100"
+                href="app-file-manager.html">
                 <div class="d-flex">
-                    <div class="me-75"><img src="{{asset('core/app-assets/images/icons/pdf.png')}}" alt="png" height="32"></div>
+                    <div class="me-75"><img src="{{ asset('core/app-assets/images/icons/pdf.png') }}"
+                            alt="png" height="32"></div>
                     <div class="search-data">
-                        <p class="search-data-title mb-0">25 PDF File Uploaded</p><small class="text-muted">Digital Marketing Manager</small>
+                        <p class="search-data-title mb-0">25 PDF File Uploaded</p><small class="text-muted">Digital
+                            Marketing Manager</small>
                     </div>
                 </div><small class="search-data-size me-50 text-muted">&apos;150kb</small>
             </a></li>
-        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100" href="app-file-manager.html">
+        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100"
+                href="app-file-manager.html">
                 <div class="d-flex">
-                    <div class="me-75"><img src="{{asset('core/app-assets/images/icons/doc.png')}}" alt="png" height="32"></div>
+                    <div class="me-75"><img src="{{ asset('core/app-assets/images/icons/doc.png') }}"
+                            alt="png" height="32"></div>
                     <div class="search-data">
-                        <p class="search-data-title mb-0">Anna_Strong.doc</p><small class="text-muted">Web Designer</small>
+                        <p class="search-data-title mb-0">Anna_Strong.doc</p><small class="text-muted">Web
+                            Designer</small>
                     </div>
                 </div><small class="search-data-size me-50 text-muted">&apos;256kb</small>
             </a></li>
         <li class="d-flex align-items-center"><a href="#">
                 <h6 class="section-label mt-75 mb-0">Members</h6>
             </a></li>
-        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between py-50 w-100" href="app-user-view-account.html">
+        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between py-50 w-100"
+                href="app-user-view-account.html">
                 <div class="d-flex align-items-center">
-                    <div class="avatar me-75"><img src="{{asset('core/app-assets/images/portrait/small/avatar-s-8.jpg')}}" alt="png" height="32"></div>
+                    <div class="avatar me-75"><img
+                            src="{{ asset('core/app-assets/images/portrait/small/avatar-s-8.jpg') }}" alt="png"
+                            height="32"></div>
                     <div class="search-data">
                         <p class="search-data-title mb-0">John Doe</p><small class="text-muted">UI designer</small>
                     </div>
                 </div>
             </a></li>
-        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between py-50 w-100" href="app-user-view-account.html">
+        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between py-50 w-100"
+                href="app-user-view-account.html">
                 <div class="d-flex align-items-center">
-                    <div class="avatar me-75"><img src="{{asset('core/app-assets/images/portrait/small/avatar-s-1.jpg')}}" alt="png" height="32"></div>
+                    <div class="avatar me-75"><img
+                            src="{{ asset('core/app-assets/images/portrait/small/avatar-s-1.jpg') }}" alt="png"
+                            height="32"></div>
                     <div class="search-data">
-                        <p class="search-data-title mb-0">Michal Clark</p><small class="text-muted">FontEnd Developer</small>
+                        <p class="search-data-title mb-0">Michal Clark</p><small class="text-muted">FontEnd
+                            Developer</small>
                     </div>
                 </div>
             </a></li>
-        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between py-50 w-100" href="app-user-view-account.html">
+        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between py-50 w-100"
+                href="app-user-view-account.html">
                 <div class="d-flex align-items-center">
-                    <div class="avatar me-75"><img src="{{asset('core/app-assets/images/portrait/small/avatar-s-14.jpg')}}" alt="png" height="32"></div>
+                    <div class="avatar me-75"><img
+                            src="{{ asset('core/app-assets/images/portrait/small/avatar-s-14.jpg') }}" alt="png"
+                            height="32"></div>
                     <div class="search-data">
-                        <p class="search-data-title mb-0">Milena Gibson</p><small class="text-muted">Digital Marketing Manager</small>
+                        <p class="search-data-title mb-0">Milena Gibson</p><small class="text-muted">Digital Marketing
+                            Manager</small>
                     </div>
                 </div>
             </a></li>
-        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between py-50 w-100" href="app-user-view-account.html">
+        <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between py-50 w-100"
+                href="app-user-view-account.html">
                 <div class="d-flex align-items-center">
-                    <div class="avatar me-75"><img src="{{asset('core/app-assets/images/portrait/small/avatar-s-6.jpg')}}" alt="png" height="32"></div>
+                    <div class="avatar me-75"><img
+                            src="{{ asset('core/app-assets/images/portrait/small/avatar-s-6.jpg') }}" alt="png"
+                            height="32"></div>
                     <div class="search-data">
-                        <p class="search-data-title mb-0">Anna Strong</p><small class="text-muted">Web Designer</small>
+                        <p class="search-data-title mb-0">Anna Strong</p><small class="text-muted">Web
+                            Designer</small>
                     </div>
                 </div>
             </a></li>
     </ul>
     <ul class="main-search-list-defaultlist-other-list d-none">
-        <li class="auto-suggestion justify-content-between"><a class="d-flex align-items-center justify-content-between w-100 py-50">
-                <div class="d-flex justify-content-start"><span class="me-75" data-feather="alert-circle"></span><span>No results found.</span></div>
+        <li class="auto-suggestion justify-content-between"><a
+                class="d-flex align-items-center justify-content-between w-100 py-50">
+                <div class="d-flex justify-content-start"><span class="me-75"
+                        data-feather="alert-circle"></span><span>No results found.</span></div>
             </a></li>
     </ul>
     <!-- END: Header-->
@@ -358,8 +424,9 @@
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
-                <li class="nav-item me-auto"><a class="navbar-brand" href="{{url('dashboard')}}"><span class="brand-logo">
-                            <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">
+                <li class="nav-item me-auto"><a class="navbar-brand" href="{{ url('dashboard') }}"><span
+                            class="brand-logo">
+                            {{-- <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">
                                 <defs>
                                     <lineargradient id="linearGradient-1" x1="100%" y1="10.5120544%" x2="50%" y2="89.4879456%">
                                         <stop stop-color="#000000" offset="0%"></stop>
@@ -381,115 +448,182 @@
                                         </g>
                                     </g>
                                 </g>
-                            </svg></span>
+                            </svg> --}}
+                            <img src="{{ url('storage/img/company/oxyr.jpg') }}">
+                        </span>
                         <h2 class="brand-text">ORYX</h2>
                     </a></li>
-                <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
+                <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0"
+                        data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4"
+                            data-feather="x"></i><i
+                            class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary"
+                            data-feather="disc" data-ticon="disc"></i></a></li>
             </ul>
         </div>
-        <div class="shadow-bottom"></div>        <div class="main-menu-content">
+        <div class="shadow-bottom"></div>
+        <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span><span class="badge badge-light-warning rounded-pill ms-auto me-1">2</span></a>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="index.html"><i
+                            data-feather="home"></i><span class="menu-title text-truncate"
+                            data-i18n="Dashboards">Dashboards</span><span
+                            class="badge badge-light-warning rounded-pill ms-auto me-1">2</span></a>
                     <ul class="menu-content">
-                        <li class="active"><a class="d-flex align-items-center" href="{{route('dashboard.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="eCommerce">Activity</span></a>
+                        <li class="active"><a class="d-flex align-items-center"
+                                href="{{ route('dashboard.index') }}"><i data-feather="circle"></i><span
+                                    class="menu-item text-truncate" data-i18n="eCommerce">Activity</span></a>
                         </li>
                     </ul>
                 </li>
-                <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Users Information</span><i data-feather="more-horizontal"></i>
+                <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Users Information</span><i
+                        data-feather="more-horizontal"></i>
                 </li>
 
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="shield"></i><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">Roles &amp; Permission</span></a>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                            data-feather="shield"></i><span class="menu-title text-truncate"
+                            data-i18n="Roles &amp; Permission">Roles &amp; Permission</span></a>
                     <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('role.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Roles</span></a>
+                        <li><a class="d-flex align-items-center" href="{{ route('role.index') }}"><i
+                                    data-feather="circle"></i><span class="menu-item text-truncate"
+                                    data-i18n="Roles">Roles</span></a>
                         </li>
-                        </li>
-                    </ul>
                 </li>
+            </ul>
+            </li>
 
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">User</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('user.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="user"></i><span class="menu-title text-truncate"
+                        data-i18n="User">User</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('user.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
 
-                    </ul>
-                </li>
+                </ul>
+            </li>
 
-                <li class=" navigation-header"><span data-i18n="User Activities">User Activities</span><i data-feather="more-horizontal"></i>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="Shifts">Shifts</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('shift.shifts_admin')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                        {{-- <li><a class="d-flex align-items-center" href="{{route('user_allocation.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Shift">Shift Allocation</span></a>
+            <li class=" navigation-header"><span data-i18n="User Activities">User Activities</span><i
+                    data-feather="more-horizontal"></i>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="credit-card"></i><span class="menu-title text-truncate"
+                        data-i18n="Shifts">Shifts</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('shift.shifts_admin') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
+                    {{-- <li><a class="d-flex align-items-center" href="{{route('user_allocation.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Shift">Shift Allocation</span></a>
                         </li> --}}
-                        <li><a class="d-flex align-items-center" href="{{route('close_shift.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="CLose Shift">CLose Shift</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="GiveCash">GiveCash</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('give_cash.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Manage</span></a>
-                        </li>
-                        {{-- <li><a class="d-flex align-items-center" href="{{route('user_allocation.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Shift">Shift Allocation</span></a>
+                    <li><a class="d-flex align-items-center" href="{{ route('close_shift.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="CLose Shift">CLose Shift</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="credit-card"></i><span class="menu-title text-truncate"
+                        data-i18n="GiveCash">GiveCash</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('give_cash.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">Manage</span></a>
+                    </li>
+                    {{-- <li><a class="d-flex align-items-center" href="{{route('user_allocation.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Shift">Shift Allocation</span></a>
                         </li> --}}
-                        {{-- <li><a class="d-flex align-items-center" href="{{route('close_shift.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="CLose Shift">CLose Shift</span></a>
+                    {{-- <li><a class="d-flex align-items-center" href="{{route('close_shift.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="CLose Shift">CLose Shift</span></a>
                         </li> --}}
-                    </ul>
-                </li>
-                <li class=" navigation-header"><span data-i18n="Sales">Sales</span><i data-feather="more-horizontal"></i>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Sales Report">Sales Report</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('sale.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class=" navigation-header"><span data-i18n="Products">Products</span><i data-feather="more-horizontal"></i>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Pumps">Pumps</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('pump.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="{{route('nozzle.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Nozzle">Nozzle</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Manage Products">Products</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('product.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="Fuel Prices">Fuel Prices</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('product_price.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="credit-card"></i><span class="menu-title text-truncate" data-i18n="Fuel Prices">Stock Adjustment</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('stock_adjustment.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class=" navigation-header"><span data-i18n="Purchases">Purchases</span><i data-feather="more-horizontal"></i>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="pie-chart"></i><span class="menu-title text-truncate" data-i18n="Manage Purchase">Purchase</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('purchase.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class=" navigation-header"><span data-i18n="Customers">Customers</span><i data-feather="more-horizontal"></i>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="pie-chart"></i><span class="menu-title text-truncate" data-i18n="Manage Customers">Customers</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{route('customer.index')}}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="{{route('customer.create')}}"><i data-feather="plus"></i><span class="menu-item text-truncate" data-i18n="Add Customer">Add Customer</span></a>
-                        </li>
-                    </ul>
-                </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span data-i18n="Sales">Sales</span><i data-feather="more-horizontal"></i>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Sales Report">Sales
+                        Report</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('sale.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span data-i18n="Products">Products</span><i
+                    data-feather="more-horizontal"></i>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="copy"></i><span class="menu-title text-truncate"
+                        data-i18n="Pumps">Pumps</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('pump.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
+                    <li><a class="d-flex align-items-center" href="{{ route('nozzle.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="Nozzle">Nozzle</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="copy"></i><span class="menu-title text-truncate"
+                        data-i18n="Manage Products">Products</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('product.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="credit-card"></i><span class="menu-title text-truncate"
+                        data-i18n="Fuel Prices">Fuel Prices</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('product_price.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="credit-card"></i><span class="menu-title text-truncate"
+                        data-i18n="Fuel Prices">Stock Adjustment</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('stock_adjustment.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span data-i18n="Purchases">Purchases</span><i
+                    data-feather="more-horizontal"></i>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="pie-chart"></i><span class="menu-title text-truncate"
+                        data-i18n="Manage Purchase">Purchase</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('purchase.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span data-i18n="Customers">Customers</span><i
+                    data-feather="more-horizontal"></i>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+                        data-feather="pie-chart"></i><span class="menu-title text-truncate"
+                        data-i18n="Manage Customers">Customers</span></a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('customer.index') }}"><i
+                                data-feather="circle"></i><span class="menu-item text-truncate"
+                                data-i18n="List">List</span></a>
+                    </li>
+                    <li><a class="d-flex align-items-center" href="{{ route('customer.create') }}"><i
+                                data-feather="plus"></i><span class="menu-item text-truncate"
+                                data-i18n="Add Customer">Add Customer</span></a>
+                    </li>
+                </ul>
+            </li>
             </ul>
         </div>
     </div>
@@ -497,7 +631,7 @@
 
     <!-- BEGIN: Content-->
     <main class="py-4">
-        
+
         @yield('content')
     </main>
     <!-- END: Content-->
@@ -507,46 +641,49 @@
 
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
-        <p class="clearfix mb-0"><span class="float-md-start d-block d-md-inline-block mt-25">COPYRIGHT &copy; 2023<a class="ms-25" href="https://1.envato.market/pixinvent_portfolio" target="_blank">ORYX</a><span class="d-none d-sm-inline-block">, All rights Reserved</span></span><span class="float-md-end d-none d-md-block">Hand-crafted & Made with<i data-feather="heart"></i></span></p>
+        <p class="clearfix mb-0"><span class="float-md-start d-block d-md-inline-block mt-25">COPYRIGHT &copy; 2023<a
+                    class="ms-25" href="https://1.envato.market/pixinvent_portfolio" target="_blank">ORYX</a><span
+                    class="d-none d-sm-inline-block">, All rights Reserved</span></span><span
+                class="float-md-end d-none d-md-block">Hand-crafted & Made with<i data-feather="heart"></i></span></p>
     </footer>
     <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
     <!-- END: Footer-->
 
     <!-- BEGIN: Vendor JS-->
-    <script src="{{asset('core/app-assets/vendors/js/vendors.min.js')}}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/vendors.min.js') }}"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
-    <script src="{{asset('core/app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/charts/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
     <!-- END: Page Vendor JS-->
-
-    <script src="{{asset('core/app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/jszip.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/pdfmake.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/vfs_fonts.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/buttons.print.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/forms/cleave/cleave.min.js')}}"></script>
-    <script src="{{asset('core/app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js')}}"></script>
+    
+    <script src="{{ asset('core/app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/jszip.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/forms/cleave/cleave.min.js') }}"></script>
+    <script src="{{ asset('core/app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js') }}"></script>
 
     <!-- BEGIN: Theme JS-->
-    <script src="{{asset('core/app-assets/js/core/app-menu.js')}}"></script>
+    <script src="{{ asset('core/app-assets/js/core/app-menu.js') }}"></script>
     {{-- <script src="{{asset('core/app-assets/js/core/jquery.min.js')}}"></script> --}}
-    <script src="{{asset('core/app-assets/js/core/app.js')}}"></script>
+    <script src="{{ asset('core/app-assets/js/core/app.js') }}"></script>
     {{-- <script src="{{asset('core/assets/js/bootstrap.bundle.min.js')}}"></script> --}}
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="{{asset('core/app-assets/js/scripts/pages/dashboard-ecommerce.js')}}"></script>
-    <script src="{{asset('core/app-assets/js/scripts/pages/app-user-list.js')}}"></script>
+    <script src="{{ asset('core/app-assets/js/scripts/pages/dashboard-ecommerce.js') }}"></script>
+    <script src="{{ asset('core/app-assets/js/scripts/pages/app-user-list.js') }}"></script>
     <!-- END: Page JS-->
 
     <script>

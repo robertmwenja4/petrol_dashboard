@@ -2,11 +2,11 @@
 
 <head>
     <title>
-        {{ 'Sales Report' }}
+        {{ 'Shift Sales Report' }}
     </title>
     <style>
         body {
-            font-family: "Times New Roman", Times, serif;
+            font-family: Calibri, Candara, sans-serif;
             font-size: 10pt;
             margin: 0;
         }
@@ -291,7 +291,7 @@
         </tbody>
     </table><br>
     {{-- {{dd($total_sales_by_meter)}} --}}
-    <div style="page: break;"></div>
+    
     <table>
         <thead>
             <tr>

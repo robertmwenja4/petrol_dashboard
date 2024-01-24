@@ -59,7 +59,7 @@ class CloseShiftController extends Controller
         try {
             DB::beginTransaction();
             $running_shift = Shift::find($data['shift_id']);
-            if($running_shift->status == 'open'){
+            if ($running_shift->status == 'open') {
                 return redirect()->back()->with('flash_error', 'Log out all users First!!');
             }
             $running_shift->is_readings = 'yes';
@@ -76,15 +76,15 @@ class CloseShiftController extends Controller
             CloseShiftItem::insert($data_items);
             $main_shift = $shift->shift->id;
             $products = Product::all();
-            foreach($products as $product){
+            foreach ($products as $product) {
 
                 $close_shift_stock_out = $shift->close_shift_items->where('product_id', $product->id)->sum('balance');
                 $close_shift_sum = $shift->close_shift_items->where('product_id', $product->id)->sum('current_stock');
                 $product_bins = ProductBin::where([
-                    'type'=>'stock_movement',
-                    'shift_id'=> $main_shift,
+                    'type' => 'stock_movement',
+                    'shift_id' => $main_shift,
                     'product_id' => $product->id
-                    
+
                 ])->first();
                 $product_bins->stock_out = $close_shift_stock_out;
                 $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
@@ -96,7 +96,7 @@ class CloseShiftController extends Controller
                 DB::commit();
             }
         } catch (\Throwable $th) {
-            dd($th);
+            //dd($th);
             //throw $th;
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Creating Closing Shift!!');
@@ -160,23 +160,23 @@ class CloseShiftController extends Controller
             }
             $main_shift = $close_shift->shift->id;
             $products = Product::all();
-            foreach($products as $product){
+            foreach ($products as $product) {
 
                 $close_shift_stock_out = $close_shift->close_shift_items->where('product_id', $product->id)->sum('balance');
-                    $close_shift_sum = $close_shift->close_shift_items->where('product_id', $product->id)->sum('current_stock');
-                    $product_bins = ProductBin::where([
-                        'type'=>'stock_movement',
-                        'shift_id'=> $main_shift,
-                        'product_id' => $product->id
-                        
-                    ])->first();
-                    // dd($product_bins, $close_shift_stock_out, $close_shift_sum);
-                    $product_bins->stock_out = $close_shift_stock_out;
-                    // $product_bins->closing_stock = $close_shift_sum;
-                    $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
-                    $product_bins->update();
-                    $product->readings = $product->readings - $close_shift_stock_out;
-                    $product->update();
+                $close_shift_sum = $close_shift->close_shift_items->where('product_id', $product->id)->sum('current_stock');
+                $product_bins = ProductBin::where([
+                    'type' => 'stock_movement',
+                    'shift_id' => $main_shift,
+                    'product_id' => $product->id
+
+                ])->first();
+                // dd($product_bins, $close_shift_stock_out, $close_shift_sum);
+                $product_bins->stock_out = $close_shift_stock_out;
+                // $product_bins->closing_stock = $close_shift_sum;
+                $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
+                $product_bins->update();
+                $product->readings = $product->readings - $close_shift_stock_out;
+                $product->update();
             }
             if ($close_shift) {
                 DB::commit();
@@ -229,31 +229,33 @@ class CloseShiftController extends Controller
             'sales.user',
             'cash',
         ])->get();
-        $pump_sales = Pump::with(['close_shift_items.close_shift'=> function($q) use($request){
+        $pump_sales = Pump::with(['close_shift_items.close_shift' => function ($q) use ($request) {
             $q->where('shift_id', $request->shift_id);
             // $q->with(['close_shift'=> function($v) use($request){
             // }]);
         }])
-        ->with('close_shift_items.user')
-        ->with(['sale' => function($q) use ($request){
-            $q->where('shift_id', $request->shift_id);
-        }])
-        ->with(['give_cash' => function($q) use ($request){
-            $q->where('shift_id', $request->shift_id);
-        }])
-        ->get();
+            ->with('close_shift_items.user')
+            ->with(['sale' => function ($q) use ($request) {
+                $q->where('shift_id', $request->shift_id);
+            }])
+            ->with(['give_cash' => function ($q) use ($request) {
+                $q->where('shift_id', $request->shift_id);
+            }])
+            ->get();
         // dd($pump_sales, $request->shift_id);
         $pump_sale = [];
-        foreach($pump_sales as $sale){
+        foreach ($pump_sales as $sale) {
             $user = ShiftItem::where('pump_id', $sale->id)->where('shift_id', $request->shift_id)->first();
             //$sale->sale()->where('shift_id',$request->shift_id)->sum('qty')
             $pump_sale[] = [
                 'user_name' => @$user->user->name,
                 'pump_name' => $sale->name,
                 'price' => $sale->sale->sum('total_price'),
-                'amount' => $sale->close_shift_items()->whereHas('close_shift',function($q) use($request){ $q->where('shift_id',$request->shift_id);})->sum('amount'),
-                'give_cash' => $sale->give_cash()->where('shift_id',$request->shift_id)->where('status','approved')->sum('amount'), 
-                ];
+                'amount' => $sale->close_shift_items()->whereHas('close_shift', function ($q) use ($request) {
+                    $q->where('shift_id', $request->shift_id);
+                })->sum('amount'),
+                'give_cash' => $sale->give_cash()->where('shift_id', $request->shift_id)->where('status', 'approved')->sum('amount'),
+            ];
             // $sale->close_shift_items()->groupBy('pump_id')->user()->get()
             // dd($sale,$user->user->name,  $sale->sale()->where('shift_id',$request->shift_id)->sum('qty'), $sale->sale->sum('total_price'), $sale->close_shift_items()->whereHas('close_shift',function($q) use($request){
             //     $q->where('shift_id',$request->shift_id);})->sum('amount'), $sale->give_cash()->where('shift_id',$request->shift_id)->where('status','approved')->sum('amount'));
@@ -277,7 +279,7 @@ class CloseShiftController extends Controller
                 $q->price = $q->sum('total_price');
                 $q->pump_name = $item->close_shift->close_shift_items->where('pump_id', $q->first()->pump_id)->first()->pump->name;
                 $q->amount = $item->close_shift->close_shift_items->where('pump_id', $q->first()->pump_id)->first()->amount;
-                $q->give_cash = $item->cash->where('user_id', $q->first()->user_id)->where('status','approved')->sum('amount');
+                $q->give_cash = $item->cash->where('user_id', $q->first()->user_id)->where('status', 'approved')->sum('amount');
                 return $q;
             });
         }
@@ -288,8 +290,8 @@ class CloseShiftController extends Controller
                 $q->where('id', $request->shift_id);
                 $q->with('close_shift.close_shift_items');
             }]);
-        }])->whereHas('role',function($q){
-            $q->where('type','attendant');
+        }])->whereHas('role', function ($q) {
+            $q->where('type', 'attendant');
         })->get();
         $user_sales = [];
         // dd($users);
@@ -306,13 +308,12 @@ class CloseShiftController extends Controller
                     $q->amount = $q->sum('total_price');
                     $q->actual_qty = 0;
                     $q->actual_amount = 0;
-                    if($q->first()->shift){
-                        if($q->first()->shift->close_shift){
-                            if($q->first()->shift->close_shift->close_shift_items){
+                    if ($q->first()->shift) {
+                        if ($q->first()->shift->close_shift) {
+                            if ($q->first()->shift->close_shift->close_shift_items) {
                                 $q->actual_qty = $q->first()->shift->close_shift->close_shift_items->sum('balance');
                                 $q->actual_amount = $q->first()->shift->close_shift->close_shift_items->sum('amount');
                             }
-
                         }
                     }
                     // $q->actual_qty = $q->first()->shift->close_shift->close_shift_items->sum('balance') ?: 0;
@@ -345,7 +346,7 @@ class CloseShiftController extends Controller
             'shift_id' => $request->shift_id
         ])->get();
         $fuel_prices = ProductPrice::where('status', 'active')->get();
-        if($shift->readings == 'no') return;
+        if ($shift->readings == 'no') return;
         $data = [
             'close_shift_item_diesel' => $close_shift_item_diesel,
             'close_shift_item_petrol' => $close_shift_item_petrol,
