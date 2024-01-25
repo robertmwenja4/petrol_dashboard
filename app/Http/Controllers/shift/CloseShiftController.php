@@ -182,7 +182,7 @@ class CloseShiftController extends Controller
                 DB::commit();
             }
         } catch (\Throwable $th) {
-            dd($th);
+            // dd($th);
             //throw $th;
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Updating Closing Shift!!');

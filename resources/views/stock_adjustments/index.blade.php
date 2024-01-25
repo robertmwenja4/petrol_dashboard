@@ -5,20 +5,20 @@
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper container-xxl p-0">
         <div class="content-header row">
-            @if(session('flash_success'))
+            @if (session('flash_success'))
                 <div class="alert bg-success alert-dismissible m-1" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
-                    <strong>Success!</strong> {!!session('flash_success')!!}
+                    <strong>Success!</strong> {!! session('flash_success') !!}
                 </div>
             @endif
-            @if(session('flash_error'))
+            @if (session('flash_error'))
                 <div class="alert bg-danger alert-dismissible m-1" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
-                    <strong>Error!</strong> {!!session('flash_error')!!}
+                    <strong>Error!</strong> {!! session('flash_error') !!}
                 </div>
             @endif
         </div>
@@ -30,7 +30,7 @@
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h3 class="fw-bolder mb-75">{{$stock_adjustments->count()}}</h3>
+                                    <h3 class="fw-bolder mb-75">{{ $stock_adjustments->count() }}</h3>
                                     <span>Total StockAdjustments</span>
                                 </div>
                                 <div class="avatar bg-light-primary p-50">
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                 </div>
                 <!-- list and filter start -->
                 <div class="card">
@@ -49,7 +49,7 @@
                         {{-- <button type="button" id="btnPop" class="btn btn-primary" style="margin-right: 0;">
                             Add stock_adjustment
                         </button> --}}
-                        <a href="{{route('stock_adjustment.create')}}" class="btn btn-primary">Add StockAdjustment</a>
+                        <a href="{{ route('stock_adjustment.create') }}" class="btn btn-primary">Add StockAdjustment</a>
                         {{-- @include('stock_adjustment.partials.user_modal') --}}
                     </div>
                     {{-- <div class="card-body border-bottom">
@@ -69,28 +69,31 @@
                                     <th>Product Name</th>
                                     <th>Previous Qty</th>
                                     <th>Current Qty</th>
+                                    <th>Date/Time</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($stock_adjustments as $i => $stock_adjustment)
                                     <tr>
-                                        <td>{{$i+1}}</td>
-                                        <td>{{$stock_adjustment->product ? $stock_adjustment->product->name : ''}}</td>
-                                        <td>{{$stock_adjustment->previous_qty}}</td>
-                                        <td>{{$stock_adjustment->current_qty}}</td>
-                                        
+                                        <td>{{ $i + 1 }}</td>
+                                        <td>{{ $stock_adjustment->product ? $stock_adjustment->product->name : '' }}</td>
+                                        <td>{{ $stock_adjustment->previous_qty }}</td>
+                                        <td>{{ $stock_adjustment->current_qty }}</td>
+                                        <td> {{ date('d/m/Y', strtotime($stock_adjustment->created_at)) }}--{{ date('h:m A', strtotime($stock_adjustment->created_at)) }}
+                                        </td>
+
                                         <td>
                                             @include('stock_adjustments.partials.action_buttons')
                                         </td>
-                                        
+
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                     <!-- Modal to add new user starts-->
-                     <!-- Modal to add new user Ends-->
+                    <!-- Modal to add new user Ends-->
                 </div>
                 <!-- list and filter end -->
             </section>
@@ -102,8 +105,11 @@
 
 @section('extra-scripts')
     <script>
-       $.ajaxSetup({headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            }
+        });
         $('#stock_adjustmentsTbl').DataTable();
-       
     </script>
 @endsection

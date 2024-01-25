@@ -204,13 +204,13 @@
     <table class="items" cellpadding="0">
         <thead>
             <tr>
-                <td width="15%">Fuel Inv</td>
+                {{-- <td width="15%">Fuel Inv</td> --}}
                 <td width="8%">Sale No.</td>
                 <td width="18%">Date & Time</td>
-                <td width="20%">Customer</td>
+                <td width="30%">Customer</td>
                 <td width="10%">Item</td>
                 <td width="12%">Quantity</td>
-                <td width="15%">Amount</td>
+                <td width="20%">Amount</td>
             </tr>
         </thead>
         <tbody>
@@ -228,7 +228,7 @@
                         $time = date('h:i A', strtotime($timestamp));
                         $date_time = $date . ' ' . $time;
                     @endphp
-                    <td>{{ $sale->lpo_no }}</td>
+                    {{-- <td>{{ $sale->lpo_no }}</td> --}}
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $date_time }}</td>
                     <td>{{ $sale->customer ? $sale->customer->company : '' }}</td>
@@ -238,7 +238,7 @@
                 </tr>
             @endforeach
             <tr>
-                <td colspan="5" class="bd-t" rowspan="2">Total Invoice: {{ $sales->count() }}</td>
+                <td colspan="4" class="bd-t" rowspan="2">Total Invoice: {{ $sales->count() }}</td>
                 <td class="bd-t">{{ number_format($total_qty, '3') }}</td>
                 <td class="bd-t">{{ number_format($total_price, '3') }}</td>
             </tr>

@@ -100,6 +100,7 @@
             <tr>
                 <td>Sales</td>
                 @foreach ($close_shift_item_diesel as $item)
+                    {{-- @dd($item); --}}
                     @php
                         $total_diff += $item->balance;
                     @endphp
@@ -291,7 +292,7 @@
         </tbody>
     </table><br>
     {{-- {{dd($total_sales_by_meter)}} --}}
-    
+
     <table>
         <thead>
             <tr>
