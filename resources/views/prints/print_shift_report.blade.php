@@ -81,7 +81,7 @@
         <div style="float:left;width:35%"> <img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div>
         <div style="float:left;width:65%">
             <h3>{{ $company->address }}</h3> Email: {{ $company->email }}<br>VRN: {{ $company->vrn_no }} &nbsp; TIN NO:
-            {{ $company->tin_no }}<br><br>
+            {{ $company->tin_no }}<br>
             <strong style="color:#000000;text-decoration:underline;">Shift Ends at
                 <span>{{ date('d/m/Y', strtotime($shift->close_shift->created_at)) }}</span><span>
                     {{ date('h:i A', strtotime($shift->close_shift->created_at)) }}</span></strong>
