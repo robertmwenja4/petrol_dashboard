@@ -14,6 +14,10 @@
 ;
 			font-size: 10pt;
 		}
+ 	    .table-container {
+            max-height: 500px; /* Set the maximum height */
+            overflow-y: auto; /* Enable vertical scrolling if necessary */
+        }
 		table thead td {
 			background-color: #BAD2FA;
 			text-align: center;
@@ -28,7 +32,7 @@
 		}
 		.items {
 			border-bottom: 0.1mm solid black;
-			font-size: 10pt;
+			font-size: 7pt;
 			border-collapse: collapse;
 			width: 100%;
 			font-family: sans-serif;
@@ -141,11 +145,16 @@
             font-size: 8pt;
             margin: 0;
         }
+        .table-container {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto; /* Enable vertical scrolling if necessary */
+        }
 
         table {
             border-collapse: collapse;
             width: 100%;
             margin-bottom: 20px;
+            max-height: calc(100vh - 100px);
             line-height: 12px;
         }
 
@@ -153,7 +162,7 @@
         td {
             border: 1px solid #dddddd;
             text-align: left;
-            padding: 8px;
+            padding: 3px;
         }
 
         th {
@@ -201,16 +210,17 @@
 
 
     <br>
-    <table class="items" cellpadding="0">
+    <table class="items table-container" cellpadding="0">
         <thead>
             <tr>
                 {{-- <td width="15%">Fuel Inv</td> --}}
-                <td width="8%">Sale No.</td>
+                <td width="12%">Sale No.</td>
                 <td width="18%">Date & Time</td>
                 <td width="30%">Customer</td>
                 <td width="10%">Item</td>
                 <td width="12%">Quantity</td>
                 <td width="20%">Amount</td>
+                <td width="11%">Pump</td>
             </tr>
         </thead>
         <tbody>
@@ -229,12 +239,13 @@
                         $date_time = $date . ' ' . $time;
                     @endphp
                     {{-- <td>{{ $sale->lpo_no }}</td> --}}
-                    <td>{{ $i + 1 }}</td>
+                    <td>{{ gen4tid("DN-",$sale->tid) }}</td>
                     <td>{{ $date_time }}</td>
                     <td>{{ $sale->customer ? $sale->customer->company : '' }}</td>
                     <td>{{ $sale->product ? $sale->product->name : '' }}</td>
                     <td>{{ number_format($sale->qty, '3') }}</td>
                     <td>{{ number_format($sale->total_price, '3') }}</td>
+                    <td>{{ $sale->pump? $sale->pump->code: '' }}</td>
                 </tr>
             @endforeach
             <tr>
@@ -245,7 +256,7 @@
         </tbody>
     </table><br>
     <h4>Day Book Summary by Attendant</h4>
-    <table class="items-table" cellpadding="0">
+    <table class="items-table table-container" cellpadding="0">
         <thead>
             <tr>
                 <td width="20%">User</td>
@@ -260,22 +271,22 @@
         <tbody>
             @foreach ($users as $user)
                 <tr>
-                    <td rowspan="{{ $user->sales->count() + 1 }}">{{ $user->name }}</td>
+                    <td rowspan="{{$user->sales->groupBy('product_id')->count() + 1}}">{{ $user->name }}</td>
                 </tr>
-                @foreach ($user->sales as $sale)
+                @foreach ($user->sales->groupBy('product_id') as $sale)
                     <tr>
                         @php
-                            $timestamp = $sale->created_at;
+                            $timestamp = $sale->first()->created_at;
                             $date = date('d/m/Y', strtotime($timestamp));
                             $time = date('h:i A', strtotime($timestamp));
                             $date_time = $date . ' ' . $time;
                         @endphp
-                        <td>{{ @$sale->pump->name }}</td>
+                        <td>{{ @$sale->first()->pump->name }}</td>
                         <td>{{ $date_time }}</td>
-                        <td>{{ @$sale->product->description }}</td>
-                        <td>{{ @$sale->product->name }}</td>
-                        <td>{{ number_format($sale->qty, '3') }}</td>
-                        <td>{{ number_format($sale->total_price, '3') }}</td>
+                        <td>{{ @$sale->first()->product->description }}</td>
+                        <td>{{ @$sale->first()->product->name }}</td>
+                        <td>{{ number_format($sale->sum('qty'), '3') }}</td>
+                        <td>{{ number_format($sale->sum('total_price'), '3') }}</td>
                     </tr>
                 @endforeach
                 <tr>

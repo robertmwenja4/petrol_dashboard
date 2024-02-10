@@ -76,6 +76,7 @@ class CloseShiftController extends Controller
             CloseShiftItem::insert($data_items);
             $main_shift = $shift->shift->id;
             $products = Product::all();
+            $open_shift = Shift::where('status','open')->first();
             foreach ($products as $product) {
 
                 $close_shift_stock_out = $shift->close_shift_items->where('product_id', $product->id)->sum('balance');
@@ -91,6 +92,16 @@ class CloseShiftController extends Controller
                 $product_bins->update();
                 $product->readings = $product->readings - $close_shift_stock_out;
                 $product->update();
+                if($open_shift){
+                    $product_bin_current_shift = ProductBin::where([
+                        'type' => 'stock_movement',
+                        'shift_id' => $open_shift->id,
+                        'product_id' => $product->id
+    
+                    ])->first();
+                    $product_bin_current_shift->opening_stock = $product->readings;
+                    $product_bin_current_shift->update();
+                }
             }
             if ($shift) {
                 DB::commit();
@@ -160,6 +171,7 @@ class CloseShiftController extends Controller
             }
             $main_shift = $close_shift->shift->id;
             $products = Product::all();
+            $open_shift = Shift::where('status','open')->first();
             foreach ($products as $product) {
 
                 $close_shift_stock_out = $close_shift->close_shift_items->where('product_id', $product->id)->sum('balance');
@@ -177,6 +189,16 @@ class CloseShiftController extends Controller
                 $product_bins->update();
                 $product->readings = $product->readings - $close_shift_stock_out;
                 $product->update();
+                if($open_shift){
+                    $product_bin_current_shift = ProductBin::where([
+                        'type' => 'stock_movement',
+                        'shift_id' => $open_shift->id,
+                        'product_id' => $product->id
+    
+                    ])->first();
+                    $product_bin_current_shift->opening_stock = $product->readings;
+                    $product_bin_current_shift->update();
+                }
             }
             if ($close_shift) {
                 DB::commit();

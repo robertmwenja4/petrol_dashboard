@@ -50,6 +50,14 @@
             </select>
         </div>
         <div class="col-3">
+            <label for="shift">Shift</label>
+            <select name="shift_id" id="shift" class="select2 form-select">
+                @foreach ($shifts as $shift)
+                    <option value="{{$shift->id}}" {{$shift->id == $sale->shift_id ? 'selected' : ''}}>{{$shift->shift_name}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-3">
             <label for="product">Product</label>
             <select name="product_id" id="product" class="select2 form-select">
                 @foreach ($products as $product)
@@ -66,14 +74,15 @@
               @endforeach
             </select>
         </div>
-        <div class="col-3">
-            <label for="Quantity">Quantity</label>
-            <input type="text" name="qty" value="{{$sale->qty}}" class="form-control" readonly id="quantity">
-        </div>
+        
         
     </div>
     <br>
     <div class="form-group row">
+        <div class="col-3">
+            <label for="Quantity">Quantity</label>
+            <input type="text" name="qty" value="{{$sale->qty}}" class="form-control" readonly id="quantity">
+        </div>
         <div class="col-3">
             <label for="Rate">Rate</label>
             <input type="text" name="rate" value="{{$sale->rate}}" class="form-control" readonly id="rate">

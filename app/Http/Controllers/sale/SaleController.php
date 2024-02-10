@@ -148,7 +148,8 @@ class SaleController extends Controller
         $customers = Customer::all();
         $pumps = Pump::where('status','active')->get();
         $products = Product::all();
-        return view('sales.edit', compact('sale','pumps','customers','products'));
+        $shifts = Shift::all();
+        return view('sales.edit', compact('sale','pumps','customers','products','shifts'));
     }
 
     /**
