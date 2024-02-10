@@ -284,15 +284,27 @@ class CloseShiftController extends Controller
             });
         }
 
-        // dd($sales);
-        $users = User::with(['sales' => function ($q) use ($request) {
-            $q->with(['shift' => function ($q) use ($request) {
-                $q->where('id', $request->shift_id);
-                $q->with('close_shift.close_shift_items');
-            }]);
-        }])->whereHas('role', function ($q) {
+        // dd($request->shift_id);
+        // $users = User::with(['sales' => function ($q) use ($request) {
+        //     $q->with(['shift' => function ($q) use ($request) {
+        //         $q->where('id', $request->shift_id);
+        //         $q->with('close_shift.close_shift_items');
+        //     }]);
+        // }])->whereHas('role', function ($q) {
+        //     $q->where('type', 'attendant');
+        // })->get();
+        $users = User::whereHas('sales', function ($q) use ($request) {
+            $q->where('shift_id', $request->shift_id);
+        })->whereHas('role', function ($q) {
             $q->where('type', 'attendant');
-        })->get();
+        })
+            ->with(['sales' => function ($q) use ($request) {
+                $q->where('shift_id', $request->shift_id)->with(['shift' => function ($q) use ($request) {
+                    $q->where('id', $request->shift_id);
+                    $q->with('close_shift.close_shift_items');
+                }]);
+            }])
+            ->get();
         $user_sales = [];
         // dd($users);
         foreach ($users as $user) {
@@ -363,7 +375,7 @@ class CloseShiftController extends Controller
         $html = view('prints.print_shift_report', $data)->render();
         $pdf = new \Mpdf\Mpdf();
         $pdf->WriteHTML($html);
-        $pdf->WriteHTML('<div style="page: break;"></div>');
+        // $pdf->WriteHTML('<div style="page: break;"></div>');
         // $pdf->WriteHTML($html);
         // dd($pdf);
         return Response::stream($pdf->Output('sales.pdf', 'I'), 200, $this->headers);

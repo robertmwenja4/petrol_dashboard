@@ -14,25 +14,38 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             line-height: 12px;
         }
 
+        table.items {
 
+            font-size: 1em;
+        }
 
-        th,
         td {
-            border: 1px solid #dddddd;
+            border: 1px solid #000;
             text-align: left;
-            padding: 8px;
+            padding: 5px 4px;
+
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #fff;
+            border: 1px solid #000;
+            text-align: center;
+            padding: 5px 4px;
         }
 
         .item {
             background: grey;
+        }
+
+        table.subitems {
+            width: 10%;
+
+            font-size: 10pt;
+            line-height: 12px;
         }
 
         .align_c {
@@ -42,6 +55,16 @@
 
         .no_border {
             border: none;
+
+        }
+
+        table.price {
+            line-height: 0px;
+        }
+
+        table.price th,
+        table.price td {
+            padding: 5px 4px;
         }
     </style>
 </head>
@@ -64,19 +87,23 @@
                     {{ date('h:i A', strtotime($shift->close_shift->created_at)) }}</span></strong>
         </div>
 
-    </div>
-
-
-    <br>
+    </div><br>
 
     <table class="items">
         <thead>
             <tr>
                 <th>Details</th>
+
                 @foreach ($close_shift_item_diesel as $item)
-                    <th>{{ @$item->nozzle->code }}</th>
+                    @php
+                        // Extract the numeric part of the nozzle code
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
+                    @endphp
+                    @if ($numeric_part <= 8)
+                        <th>{{ @$item->nozzle->code }}</th>
+                    @endif
                 @endforeach
-                <th>Total</th>
+
             </tr>
         </thead>
         <tbody>
@@ -84,21 +111,21 @@
                 $total_diff = 0;
             @endphp
             <tr>
-                <td>Closing</td>
+                <th>Closing</th>
                 @foreach ($close_shift_item_diesel as $item)
                     <td>{{ number_format(@$item->current_stock, '3') }}</td>
                 @endforeach
-                <td></td>
+
             </tr>
             <tr>
-                <td>Opening</td>
+                <th>Opening</th>
                 @foreach ($close_shift_item_diesel as $item)
                     <td>{{ number_format(@$item->open_stock, '3') }}</td>
                 @endforeach
-                <td></td>
+
             </tr>
             <tr>
-                <td>Sales</td>
+                <th>Sales</th>
                 @foreach ($close_shift_item_diesel as $item)
                     {{-- @dd($item); --}}
                     @php
@@ -106,16 +133,110 @@
                     @endphp
                     <td>{{ number_format(@$item->balance, '3') }} </td>
                 @endforeach
+
+            </tr>
+        </tbody>
+    </table>
+    <table class="subitems">
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php
+                $total_diff = 0;
+            @endphp
+
+            <tr>
+                <th>Sales</th>
+                @foreach ($close_shift_item_diesel as $item)
+                    {{-- @dd($item); --}}
+                    @php
+                        $total_diff += $item->balance;
+                    @endphp
+                @endforeach
                 <td>{{ $total_diff }}</td>
             </tr>
         </tbody>
-    </table><br>
+    </table>
+    <br>
+
     <table class="items">
+        {{-- @dd($close_shift_item_petrol) --}}
         <thead>
             <tr>
                 <th>Details</th>
                 @foreach ($close_shift_item_petrol as $item)
-                    <th>{{ @$item->nozzle->code }}</th>
+                    @php
+                        // Extract the numeric part of the nozzle code
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
+                    @endphp
+                    @if ($numeric_part <= 8)
+                        <th>{{ @$item->nozzle->code }}</th>
+                    @endif
+                @endforeach
+
+            </tr>
+        </thead>
+        <tbody>
+            @php
+                $total_super_diff = 0;
+            @endphp
+            <tr>
+                <th>Closing</th>
+                @foreach ($close_shift_item_petrol as $item)
+                    @php
+                        // Extract the numeric part of the nozzle code
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
+                    @endphp
+                    @if ($numeric_part <= 8)
+                        <td>{{ number_format(@$item->current_stock, '3') }} </td>
+                    @endif
+                @endforeach
+
+            </tr>
+            <tr>
+                <th>Opening</th>
+                @foreach ($close_shift_item_petrol as $item)
+                    @php
+                        // Extract the numeric part of the nozzle code
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
+                    @endphp
+                    @if ($numeric_part <= 8)
+                        <td>{{ number_format(@$item->open_stock, '3') }} </td>
+                    @endif
+                @endforeach
+
+            </tr>
+            <tr>
+                <th>Sales</th>
+                @foreach ($close_shift_item_petrol as $item)
+                    @php
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
+                        $total_super_diff += $item->balance;
+                    @endphp
+                    @if ($numeric_part <= 8)
+                        <td>{{ number_format(@$item->balance, '3') }}</td>
+                    @endif
+                @endforeach
+
+            </tr>
+        </tbody>
+    </table>
+    <table class="subitems">
+        <thead>
+            <tr>
+                <th>Details</th>
+                @foreach ($close_shift_item_petrol as $item)
+                    @php
+                        // Extract the numeric part of the nozzle code
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
+                    @endphp
+                    @if ($numeric_part > 8)
+                        <th>{{ @$item->nozzle->code }}</th>
+                    @endif
                 @endforeach
                 <th>Total</th>
             </tr>
@@ -125,32 +246,47 @@
                 $total_super_diff = 0;
             @endphp
             <tr>
-                <td>Closing</td>
-                @foreach ($close_shift_item_petrol as $item)
-                    <td>{{ number_format(@$item->current_stock, '3') }} </td>
-                @endforeach
-                <td></td>
-            </tr>
-            <tr>
-                <td>Opening</td>
-                @foreach ($close_shift_item_petrol as $item)
-                    <td>{{ number_format(@$item->open_stock, '3') }} </td>
-                @endforeach
-                <td></td>
-            </tr>
-            <tr>
-                <td>Sales</td>
+                <th>Closing</th>
                 @foreach ($close_shift_item_petrol as $item)
                     @php
+                        // Extract the numeric part of the nozzle code
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
+                    @endphp
+                    @if ($numeric_part > 8)
+                        <td>{{ number_format(@$item->current_stock, '3') }} </td>
+                    @endif
+                @endforeach
+                <td></td>
+            </tr>
+            <tr>
+                <th>Opening</th>
+                @foreach ($close_shift_item_petrol as $item)
+                    @php
+                        // Extract the numeric part of the nozzle code
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
+                    @endphp
+                    @if ($numeric_part > 8)
+                        <td>{{ number_format(@$item->open_stock, '3') }} </td>
+                    @endif
+                @endforeach
+                <td></td>
+            </tr>
+            <tr>
+                <th>Sales</th>
+                @foreach ($close_shift_item_petrol as $item)
+                    @php
+                        $numeric_part = (int) substr($item->nozzle->code, 1);
                         $total_super_diff += $item->balance;
                     @endphp
-                    <td>{{ number_format(@$item->balance, '3') }}</td>
+                    @if ($numeric_part > 8)
+                        <td>{{ number_format(@$item->balance, '3') }}</td>
+                    @endif
                 @endforeach
                 <td>{{ $total_super_diff }}</td>
             </tr>
         </tbody>
     </table><br>
-    <table>
+    <table class="price">
         <tr>
             <td width="60%" class="no_border" style="padding:0 px">
                 <table border="1">
@@ -186,10 +322,10 @@
                     </tbody>
                 </table>
             </td>
-            <td width="40%" class="no_border">
+            <td width="40%" class="no_border" style="padding: 0 40px;">
                 <p style="color: blue">
                     <b><i>Fuel Prices</i></b>
-                </p><br />
+                </p>
                 <table border="1">
                     <tbody>
                         @foreach ($fuel_prices as $price)
