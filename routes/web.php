@@ -19,6 +19,7 @@ use App\Http\Controllers\attendant\AttendantController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\purchase\PurchaseController;
 use App\Http\Controllers\product\StockAdjustmentController;
+use App\Http\Controllers\shift\ShiftTypeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,6 +55,7 @@ Route::middleware(['auth', 'admin_role'])->group(function () {
     Route::post('sales/search', [SaleController::class, 'search'])->name('sales.search');
     Route::post('print/shift', [CloseShiftController::class, 'shift'])->name('print.shift');
     Route::resource('nozzle', NozzleController::class);
+    Route::resource('shift_type', ShiftTypeController::class);
 
     //admin shift
     Route::post('shifts/goods', [ShiftController::class, 'goods'])->name('shifts.goods');

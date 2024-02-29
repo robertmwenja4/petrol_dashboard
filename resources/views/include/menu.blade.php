@@ -95,6 +95,11 @@
                                   data-feather="circle"></i><span class="menu-item text-truncate"
                                   data-i18n="List">Manage Shift</span></a>
                       </li>
+                      <li class="{{ $segment1 == 'shift_type' || $segment1 == '' ? 'active' : '' }}"><a
+                              class="d-flex align-items-center" href="{{ route('shift_type.index') }}"><i
+                                  data-feather="circle"></i><span class="menu-item text-truncate"
+                                  data-i18n="List">Shift Type</span></a>
+                      </li>
                       <li class="{{ $segment1 == 'close_shift' || $segment1 == '' ? 'active' : '' }}"><a
                               class="d-flex align-items-center" href="{{ route('close_shift.index') }}"><i
                                   data-feather="circle"></i><span class="menu-item text-truncate"
