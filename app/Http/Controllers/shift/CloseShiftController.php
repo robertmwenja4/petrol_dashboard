@@ -16,6 +16,7 @@ use App\Models\product\ProductPrice;
 use App\Models\product_bin\ProductBin;
 use App\Models\pump\Pump;
 use App\Models\shift\ShiftItem;
+use App\Models\purchase\Purchase;
 
 class CloseShiftController extends Controller
 {
@@ -77,6 +78,7 @@ class CloseShiftController extends Controller
             $main_shift = $shift->shift->id;
             $products = Product::all();
             $open_shift = Shift::where('status','open')->first();
+            
             foreach ($products as $product) {
 
                 $close_shift_stock_out = $shift->close_shift_items->where('product_id', $product->id)->sum('balance');
@@ -87,9 +89,26 @@ class CloseShiftController extends Controller
                     'product_id' => $product->id
 
                 ])->first();
-                $product_bins->stock_out = $close_shift_stock_out;
-                $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
-                $product_bins->update();
+                //check if the opened shift there is a purchase
+                if($open_shift){
+                    $purchase = Purchase::where('shift_id', $open_shift->id)->where('product_id', $product->id)->sum('qty');
+                    if($purchase){
+                        $product_bins->stock_out = $close_shift_stock_out;
+                        $product_bins->closing_stock = ($product->readings - $purchase) - $close_shift_stock_out;
+                        $product_bins->update();
+                    }else{
+                        $product_bins->stock_out = $close_shift_stock_out;
+                        $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
+                        $product_bins->update();
+                    }
+                }else{
+                    $product_bins->stock_out = $close_shift_stock_out;
+                    $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
+                    $product_bins->update();
+                }
+                
+                
+                
                 $product->readings = $product->readings - $close_shift_stock_out;
                 $product->update();
                 if($open_shift){
@@ -107,7 +126,7 @@ class CloseShiftController extends Controller
                 DB::commit();
             }
         } catch (\Throwable $th) {
-            //dd($th);
+            dd($th);
             //throw $th;
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Creating Closing Shift!!');
@@ -154,6 +173,16 @@ class CloseShiftController extends Controller
             'open_stock', 'category',
             'current_stock', 'id'
         ]);
+        $products = Product::all();
+        foreach ($products as $product) {
+            $prev_close_shift_stock_out = $close_shift->close_shift_items->where('product_id', $product->id)->sum('balance');
+            // $close_shift_sum = $close_shift->close_shift_items->where('product_id', $product->id)->sum('current_stock');
+            $product->readings = $product->readings + $prev_close_shift_stock_out;
+            // if($product->id == 2){
+                // dd($prev_close_shift_stock_out, $product->readings);
+            // }
+            $product->update();
+        }
         $data_items = modify_array($data_items);
         try {
             DB::beginTransaction();
@@ -168,13 +197,15 @@ class CloseShiftController extends Controller
                 $close_shift_item->fill(array_replace($item, ['close_shift_id' => $close_shift['id']]));
                 if (!$close_shift_item->id) unset($close_shift_item->id);
                 $close_shift_item->save();
+                // dd($item, $close_shift_item);
             }
             $main_shift = $close_shift->shift->id;
-            $products = Product::all();
+            // dd(CloseShiftItem::where('close_shift_id', $close_shift['id'])->where('product_id', 2)->sum('balance'), $close_shift->close_shift_items->where('product_id', 2)->sum('balance'));
+            
             $open_shift = Shift::where('status','open')->first();
             foreach ($products as $product) {
 
-                $close_shift_stock_out = $close_shift->close_shift_items->where('product_id', $product->id)->sum('balance');
+                $close_shift_stock_out = CloseShiftItem::where('close_shift_id', $close_shift['id'])->where('product_id', $product->id)->sum('balance');
                 $close_shift_sum = $close_shift->close_shift_items->where('product_id', $product->id)->sum('current_stock');
                 $product_bins = ProductBin::where([
                     'type' => 'stock_movement',
@@ -182,11 +213,33 @@ class CloseShiftController extends Controller
                     'product_id' => $product->id
 
                 ])->first();
-                // dd($product_bins, $close_shift_stock_out, $close_shift_sum);
-                $product_bins->stock_out = $close_shift_stock_out;
-                // $product_bins->closing_stock = $close_shift_sum;
-                $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
-                $product_bins->update();
+                // if($product->id == 2){
+                //     dd($close_shift_stock_out, $product->readings, 2); 15186.481
+                // }
+                // // dd($product_bins, $close_shift_stock_out, $close_shift_sum);
+                // $product_bins->stock_out = $close_shift_stock_out;
+                // // $product_bins->closing_stock = $close_shift_sum;
+                // $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
+                // $product_bins->update();
+                 //check if the opened shift there is a purchase
+                 if($open_shift){
+                    $purchase = Purchase::where('shift_id', $open_shift->id)->where('product_id', $product->id)->sum('qty');
+                    if($purchase){
+                        // dd($close_shift_stock_out, $product->readings, 1);
+                        $product_bins->stock_out = $close_shift_stock_out;
+                        $product_bins->closing_stock = ($product->readings - $purchase) - $close_shift_stock_out;
+                        $product_bins->update();
+                    }else{
+                        $product_bins->stock_out = $close_shift_stock_out;
+                        $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
+                        $product_bins->update();
+                    }
+                }else{
+                    $product_bins->stock_out = $close_shift_stock_out;
+                    $product_bins->closing_stock = $product->readings - $close_shift_stock_out;
+                    // dd($close_shift_stock_out, $product->readings, 3);
+                    $product_bins->update();
+                }
                 $product->readings = $product->readings - $close_shift_stock_out;
                 $product->update();
                 if($open_shift){
@@ -199,12 +252,13 @@ class CloseShiftController extends Controller
                     $product_bin_current_shift->opening_stock = $product->readings;
                     $product_bin_current_shift->update();
                 }
+                // dd($close_shift_stock_out, $product->readings);
             }
             if ($close_shift) {
                 DB::commit();
             }
         } catch (\Throwable $th) {
-            // dd($th);
+            dd($th);
             //throw $th;
             DB::rollback();
             return redirect()->back()->with('flash_error', 'Error Updating Closing Shift!!');

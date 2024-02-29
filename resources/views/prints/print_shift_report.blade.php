@@ -55,7 +55,7 @@
     <sethtmlpagefooter name="myfooter" value="on" />
 
     <div style="width:100%">
-        <div style="float:left;width:35%"> <img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div>
+        {{-- <div style="float:left;width:35%"> <img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div> --}}
         <div style="float:left;width:65%">
             <h3>{{ $company->address }}</h3> Email: {{ $company->email }}<br>VRN: {{ $company->vrn_no }} &nbsp; TIN NO:
             {{ $company->tin_no }}<br><br>

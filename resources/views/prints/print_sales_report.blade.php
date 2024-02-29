@@ -197,7 +197,7 @@
     <sethtmlpagefooter name="myfooter" value="on" />
 
     <div style="width:100%">
-        <div style="float:left;width:30%"> <img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div>
+        {{-- <div style="float:left;width:30%"> <img src="{{ url('storage/img/company/oxyr.jpg') }}" style="width:200px;"></div> --}}
         <div style="float:left;width:70%">
             <h2 style="padding-top:25px;margin-left:5px;text-transform: uppercase;">Fuel Sales Day Book from
                 {{ date('d/m/Y', strtotime($date_from)) . ' to ' . date('d/m/Y', strtotime($date_to)) }}</h2>
@@ -240,6 +240,7 @@
                     @endphp
                     {{-- <td>{{ $sale->lpo_no }}</td> --}}
                     <td>{{ gen4tid("DN-",$sale->tid) }}</td>
+                    <td>{{ gen4tid("DN-",$sale->tid) }}</td>
                     <td>{{ $date_time }}</td>
                     <td>{{ $sale->customer ? $sale->customer->company : '' }}</td>
                     <td>{{ $sale->product ? $sale->product->name : '' }}</td>
@@ -271,9 +272,11 @@
         <tbody>
             @foreach ($users as $user)
                 <tr>
+                    {{-- <td rowspan="{{ $user->sales->count() + 1 }}">{{ $user->name }}</td> --}}
                     <td rowspan="{{$user->sales->groupBy('product_id')->count() + 1}}">{{ $user->name }}</td>
                 </tr>
                 @foreach ($user->sales->groupBy('product_id') as $sale)
+                {{-- {{dd($sale)}} --}}
                     <tr>
                         @php
                             $timestamp = $sale->first()->created_at;

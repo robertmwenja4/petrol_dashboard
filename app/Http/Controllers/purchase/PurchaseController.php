@@ -31,7 +31,8 @@ class PurchaseController extends Controller
     public function create()
     {
         $products = Product::all();
-        return view('purchases.create', compact('products'));
+        $shifts = Shift::where('is_readings', 'no')->get();
+        return view('purchases.create', compact('products', 'shifts'));
     }
 
     /**
@@ -47,7 +48,7 @@ class PurchaseController extends Controller
             DB::beginTransaction();
             $purchase = Purchase::create($data);
             $product = Product::find($purchase->product_id);
-            $shift = Shift::where('status', 'open')->first();
+            $shift = Shift::find($request->shift_id);
             
             ProductBin::create([
                 'product_id' => $product->id,
@@ -66,7 +67,17 @@ class PurchaseController extends Controller
                     'product_id' => $product->id
                     
                 ])->first();
-                $product_bin->stock_in = $purchase->qty;
+                $product_bin->stock_in += $purchase->qty;
+                $product_bin->update();
+            }else{
+                $shift = Shift::latest()->first();
+                $product_bin = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bin->stock_in += $purchase->qty;
                 $product_bin->update();
             }
             $product->readings += $purchase->qty;
@@ -103,7 +114,8 @@ class PurchaseController extends Controller
     public function edit(Purchase $purchase)
     {
         $products = Product::all();
-         return view('purchases.edit', compact('purchase','products'));
+        $shifts = Shift::where('is_readings', 'no')->get();
+        return view('purchases.edit', compact('purchase','products', 'shifts'));
     }
 
     /**
@@ -120,7 +132,29 @@ class PurchaseController extends Controller
             DB::beginTransaction();
             //Revert
             $product = Product::find($purchase->product_id);
-            $shift = Shift::where('status', 'open')->first();
+            $shift = Shift::find($purchase->shift_id);
+            $shift_request = Shift::find($request->shift_id);
+            if($shift){
+                $product_bins = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bins->stock_in -= $purchase->qty;
+                $product_bins->update();
+            }else{
+                $shift = Shift::latest()->first();
+                $product_bin = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bin->stock_in -= $purchase->qty;
+                // dd($product_bin);
+                $product_bin->update();
+            }
             if($product){
                 $product->readings -= $purchase->qty;
                 $product->update();
@@ -144,15 +178,25 @@ class PurchaseController extends Controller
                 'stock_in' => $purchase->qty,
                 'stock_out' => 0
             ]);
-            if($shift){
+            if($shift_request){
                 $product_bins = ProductBin::where([
+                    'type'=>'stock_movement',
+                    'shift_id'=> $shift_request->id,
+                    'product_id' => $product->id
+                    
+                ])->first();
+                $product_bins->stock_in += $purchase->qty;
+                $product_bins->update();
+            }else{
+                $shift = Shift::latest()->first();
+                $product_bin = ProductBin::where([
                     'type'=>'stock_movement',
                     'shift_id'=> $shift->id,
                     'product_id' => $product->id
                     
                 ])->first();
-                $product_bins->stock_in = $purchase->qty;
-                $product_bins->update();
+                $product_bin->stock_in += $purchase->qty;
+                $product_bin->update();
             }
             if($purchase){
                 $product->readings += $purchase->qty;
@@ -179,7 +223,7 @@ class PurchaseController extends Controller
         try {
             DB::beginTransaction();
             $product = Product::find($purchase->product_id);
-            $shift = Shift::where('status', 'open')->first();
+            $shift = Shift::find($purchase->shift_id);
             $product->readings -= $purchase->qty;
             $product->update();
             $product_bin = ProductBin::where([
@@ -195,7 +239,7 @@ class PurchaseController extends Controller
                     'product_id' => $product->id
                     
                 ])->first();
-                $product_bins->stock_in = 0;
+                $product_bins->stock_in -= $purchase->qty;
                 $product_bins->update();
             }
             if ($purchase->delete()) {

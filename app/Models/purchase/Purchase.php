@@ -11,7 +11,7 @@ class Purchase extends Model
     use HasFactory;
 
     protected $fillable = [
-        'invoice_no', 'product_id','qty','cost'
+        'invoice_no', 'product_id','qty','cost', 'shift_id'
     ];
 
 
