@@ -18,7 +18,7 @@ use App\Models\sale\Sale;
 use App\Models\product\Product;
 use App\Models\cash\GiveCash;
 use App\Models\product_bin\ProductBin;
-
+use App\Models\shift\ShiftType;
 
 
 class AttendantController extends Controller
@@ -32,9 +32,9 @@ class AttendantController extends Controller
     {
 
         $openshift = Shift::where('status', 'open')
-
-            ->with('items.pump', 'items.user', 'user')
+            ->with('items.pump', 'items.user', 'user', 'shift_type')
             ->latest()->first();
+
         if ($openshift) {
             $shift = $openshift;
             $users = User::whereHas('role', function ($q) {
@@ -59,7 +59,7 @@ class AttendantController extends Controller
                 } else if ($shift->status == 'open') {
                     return view('shifts.manage', compact('shift'));
                 } else if ($shift->status == 'closed') {
-                    $date = date('Y-m-d', strtotime("+1 day"));
+                    $date = date('Y-m-d');
                     return $this->create_shift($date);
                 }
             }
@@ -68,13 +68,18 @@ class AttendantController extends Controller
 
     public function create_shift($date)
     {
-
-        return view('shifts.create', compact('date'));
+        $shifts = Shift::whereDate('shift_name', '=', date('Y-m-d'))->get();
+        $shift_types = [];
+        foreach ($shifts as $shift) {
+            $shift_types[] = $shift->shift_type_id;
+        }
+        $times = ShiftType::whereNotIn('id', $shift_types)->get();
+        return view('shifts.create', compact('date', 'times'));
     }
 
     public function store_shift(Request $request)
     {
-        $data = $request->only(['shift_name', 'pass_key']);
+        $data = $request->only(['shift_name', 'pass_key', 'shift_type_id']);
         $validate = true;
         $checkuser = verifyUser($data['pass_key']);
         if (!$checkuser['status']) {
@@ -133,13 +138,13 @@ class AttendantController extends Controller
                             'data' => $shift
                         ];
                     }
-                } catch (\Throwable $th) {
-                    // dd($th);
+                } catch (\Exception $th) {
+
                     DB::rollback();
                     $output = [
                         'success' => false,
                         'msg' => 'Error Creating Shift',
-                        'data' => null
+                        'data' =>  $data
                     ];
                 }
             }

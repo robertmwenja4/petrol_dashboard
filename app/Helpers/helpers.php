@@ -48,19 +48,11 @@ function verifyUser($passkey)
 function checkShift()
 {
     $shift = Shift::whereHas('items')
-        ->with('items.pump', 'items.user', 'user')
+        ->with('items.pump', 'items.user', 'user', 'shift_type')
         ->whereDate('shift_name', '=', date('Y-m-d'))
-        ->orWhereDate('shift_name', '=', date('Y-m-d', strtotime("+1 day")))
         ->orderBy('id', 'desc')
         ->first();
 
-    // $shiftUsers = ShiftItem::where('shift_id', $shift->id)->whereNotNull('user_id')->pluck('user_id')->toArray();
-
-
-    // $users = User::whereNotIn('id', $shiftUsers)->whereHas('role', function ($q) {
-    //     $q->where('type', 'attendant');
-    // })
-    //     ->pluck('name', 'id');
     $users = User::where('status', 'active')->whereHas('role', function ($q) {
         $q->where('type', 'attendant');
     })
@@ -68,4 +60,3 @@ function checkShift()
 
     return ["shift" => $shift, "users" => $users];
 }
-

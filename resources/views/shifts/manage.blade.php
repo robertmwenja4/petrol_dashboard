@@ -8,7 +8,7 @@
 
             </div>
             <div class="card-body">
-                <h4>Shift Name : {{ $shift->shift_name }}</h4>
+                <h4>Shift Name : {{ $shift->shift_name }} - {{ $shift->shift_type->name }}</h4>
                 <h4>Created By : {{ $shift->user->name }}</h4>
 
             </div>

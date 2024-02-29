@@ -28,9 +28,23 @@
                 }
             }
         };
+        $('.select2').select2();
         $('#createShiftBtn').click(function(event) {
-            event.preventDefault(); // Prevent the default form submission behavior
-            $('#passKeyModal').modal('show');
+            event.preventDefault();
+            if (validateForm()) {
+                $('#passKeyModal').modal('show');
+            } else {
+                Swal.fire({
+                    position: 'top',
+                    title: 'Error!',
+                    text: 'Please select time so as to proceed.',
+                    icon: 'error',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
+            }
         });
         $('#shiftForm').on('submit', function(e) {
 
@@ -68,7 +82,7 @@
                         $("#modalButton").show();
                         // $("#spinner").hide();
 
-
+                        console.log(result.data);
                         Swal.fire({
                             position: 'top',
                             title: 'Error!',
@@ -85,5 +99,17 @@
             });
 
         });
+
+        function validateForm() {
+            var timeSelect = $('#timeSelect');
+            // Perform your validation logic here
+            if (
+                timeSelect.val().trim() === ''
+            ) {
+                return false; // Validation failed
+            }
+
+            return true; // Validation passed
+        }
     </script>
 @endsection

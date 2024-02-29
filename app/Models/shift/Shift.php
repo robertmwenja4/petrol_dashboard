@@ -10,13 +10,14 @@ use App\Models\pump\Pump;
 use App\Models\shift\CloseShift;
 use App\Models\cash\GiveCash;
 use App\Models\sale\Sale;
+use App\Models\shift\ShiftType;
 
 class Shift extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'shift_name', 'created_by', 'status', 'end_date', 'allocated_by', 'closed_by'
+        'shift_name', 'created_by', 'status', 'end_date', 'allocated_by', 'closed_by', 'shift_type_id'
     ];
 
     public function items()
@@ -47,5 +48,9 @@ class Shift extends Model
     public function sales_report()
     {
         return $this->hasMany(Sale::class)->groupBy('user_id');
+    }
+    public function shift_type()
+    {
+        return $this->belongsTo(ShiftType::class);
     }
 }

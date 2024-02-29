@@ -44,7 +44,8 @@ class ShiftController extends Controller
         }
     }
 
-    public function shifts_admin(){
+    public function shifts_admin()
+    {
         $shifts = Shift::orderBy('id', 'desc')->get();
         return view('shifts.admin_index', compact('shifts'));
     }
@@ -160,7 +161,7 @@ class ShiftController extends Controller
         // $shift = Shift::find($id);
         $users =  $users = User::whereHas('role', function ($q) {
             $q->where('type', 'attendant');
-        })->get(['id','name']);
+        })->get(['id', 'name']);
         return view('shifts.edit', compact('shift', 'users'));
     }
 
@@ -464,25 +465,24 @@ class ShiftController extends Controller
             ->items
             ->pluck('pump.nozzles')
             ->flatten();
-            // dd($nozzles);
-        $nozzles = $nozzles->map(function ($v) use($shift) {
+        // dd($nozzles);
+        $nozzles = $nozzles->map(function ($v) use ($shift) {
             // dd($v);
             $v->pump_name = $v->pump ? $v->pump->name : '';
             $v->product_name = $v->product ? $v->product->name : '';
             $v->product_price = $v->product ? $v->product->price : '';
             $v->category = $v->product ? $v->product->category : '';
             $close_shift_item = CloseShiftItem::where('nozzle_id', $v->id)->latest()->first();
-            if($close_shift_item){
+            if ($close_shift_item) {
                 $v->opening_stock = $close_shift_item ? $close_shift_item->current_stock : 0;
-            }else{
+            } else {
                 $v->opening_stock = $v->readings;
-
             }
             $v->user_id = 0;
             $v->user_name = '';
-            if($v->pump){
-                if($v->pump->shift_items){
-                    $item = $v->pump->shift_items->where('shift_id',$shift->id)->first();
+            if ($v->pump) {
+                if ($v->pump->shift_items) {
+                    $item = $v->pump->shift_items->where('shift_id', $shift->id)->first();
                     $v->user_id = $item->user_id;
                     $v->user_name = $item->user->name;
                     // dd($item);
